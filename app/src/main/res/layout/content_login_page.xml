@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.group26.coupletones.loginPage"
-    tools:showIn="@layout/activity_login_page">
+    tools:showIn="@layout/activity_login_page"
+    android:textAlignment="center">
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp"
-        android:text="email"
+        android:hint="Email"
         android:textAlignment="center"
         android:textSize="25dp" />
 
@@ -40,10 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:hint="Password"
         android:ems="10"
         android:id="@+id/editText2"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="41dp"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:textAlignment="center" />
 </RelativeLayout>
