@@ -3,16 +3,13 @@ package com.example.group26.coupletones;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,7 +20,10 @@ public class loginPage extends AppCompatActivity {
 
     private Button submitButton;
     private Button signUpButton;
-    Firebase ref = new Firebase("https://coupletonescse100.firebaseio.com");
+    private String ref = "https://coupletonescse100.firebaseio.com";
+    private TextView email;
+    private TextView password;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -34,23 +34,37 @@ public class loginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+        email = (TextView) findViewById(R.id.emailTV);
+        password = (TextView) findViewById(R.id.passwordTV);
+
+        /******[START]******/
+        //create submit and sign up buttons and set there respective actions
         submitButton = (Button) findViewById(R.id.submitButton);
         signUpButton = (Button) findViewById(R.id.signUpButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(loginPage.this, favMap.class));
+                login user = new login(ref);
+                String result = user.authenticateUser((String) email.getText(), (String) password.getText());
+                if (result == "No Errors"){
+                    startActivity(new Intent(loginPage.this, favMap.class));
+                }
+                else{
+                    //TODO
+                    //take care of errors by making some sort of alert saying you messed up
+                }
             }
         });
-        //TODO
-        /*make the sign up page and link it to that
-        submitButton.setOnClickListener(new View.OnClickListener() {
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //simply go to sign up page
                 startActivity(new Intent(loginPage.this, signUpPage.class));
             }
         });
-        */
+        /*****[END]*****/
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();

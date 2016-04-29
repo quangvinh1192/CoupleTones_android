@@ -35,7 +35,7 @@ public class login {
 
         //if there were no errors then return no error
         if (error == null)
-            value = "No Error";
+            value = "No Errors";
 
         else {
             //figure out what went wrong and return it to the devleoper
@@ -65,7 +65,7 @@ public class login {
         result.onError(error);
 
         if(error == null){
-            value = "No Error";
+            value = "No Errors";
             ref.authWithPassword(email, password, authResultHandler);
             ref.child("users").setValue(email);
         }
