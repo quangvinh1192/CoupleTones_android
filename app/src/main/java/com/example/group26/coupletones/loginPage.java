@@ -12,13 +12,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+
+
 public class loginPage extends AppCompatActivity {
 
-    private Button btn;
+    private Button submitButton;
+    private Button signUpButton;
+    Firebase ref = new Firebase("https://coupletonescse100.firebaseio.com");
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -29,14 +34,23 @@ public class loginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-        btn = (Button) findViewById(R.id.submitButton);
-
-        btn.setOnClickListener(new View.OnClickListener() {
+        submitButton = (Button) findViewById(R.id.submitButton);
+        signUpButton = (Button) findViewById(R.id.signUpButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(loginPage.this, favMap.class));
             }
         });
+        //TODO
+        /*make the sign up page and link it to that
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(loginPage.this, signUpPage.class));
+            }
+        });
+        */
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
