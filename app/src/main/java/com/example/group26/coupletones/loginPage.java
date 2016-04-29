@@ -46,12 +46,13 @@ public class loginPage extends AppCompatActivity {
             public void onClick(View v) {
                 login user = new login(ref);
                 String result = user.authenticateUser((String) email.getText(), (String) password.getText());
-                if (result == "No Errors"){
+                if (result.equals("No Errors")){
                     startActivity(new Intent(loginPage.this, favMap.class));
                 }
                 else{
                     //TODO
                     //take care of errors by making some sort of alert saying you messed up
+                    //the errors are going to be strings which are state in login.java
                 }
             }
         });
