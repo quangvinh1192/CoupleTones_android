@@ -10,19 +10,21 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 
 
+
 public class loginPage extends AppCompatActivity {
 
-    private Button submitButton;
-    private Button signUpButton;
-    private String ref = "https://coupletonescse100.firebaseio.com";
     private TextView email;
     private TextView password;
+    private Firebase ref;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -32,6 +34,8 @@ public class loginPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Firebase.setAndroidContext(this);
+        ref = new Firebase("https://coupletonescse100.firebaseio.com");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
@@ -39,20 +43,36 @@ public class loginPage extends AppCompatActivity {
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
-        submitButton = (Button) findViewById(R.id.submitButton);
-        signUpButton = (Button) findViewById(R.id.signUpButton);
+        Button submitButton = (Button) findViewById(R.id.submitButton);
+        Button signUpButton = (Button) findViewById(R.id.signUpButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login user = new login(ref);
-                String result = user.authenticateUser((String) email.getText(), (String) password.getText());
-                if (result.equals("No Errors")){
-                    startActivity(new Intent(loginPage.this, favMap.class));
+                //check if at least both fields are filled
+                if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
+                    // Create a handler to handle the result of the authentication
+                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                        @Override
+                        public void onAuthenticated(AuthData authData) {
+                            // Authenticated successfully with payload authData
+                            //move to maps page
+                            startActivity(new Intent(loginPage.this, favMap.class));
+                        }
+
+                        @Override
+                        public void onAuthenticationError(FirebaseError firebaseError) {
+                            // Authenticated failed with error firebaseError
+                            //figure out what went wrong and return it to the developer
+                            //TODO
+                        }
+                    };
+                    ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
                 }
-                else{
+                //either the password or the email field is missing
+                //give the user an appropriate error message
+                else {
                     //TODO
-                    //take care of errors by making some sort of alert saying you messed up
-                    //the errors are going to be strings which are state in login.java
+                    System.out.println("one of the fields is missing");
                 }
             }
         });
@@ -64,6 +84,7 @@ public class loginPage extends AppCompatActivity {
                 startActivity(new Intent(loginPage.this, signUpPage.class));
             }
         });
+
         /*****[END]*****/
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
