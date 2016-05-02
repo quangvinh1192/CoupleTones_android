@@ -1,4 +1,10 @@
-<fragment
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapActivity" >
+
+    <fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,4 +15,53 @@
     tools:context="com.example.group26.coupletones.favMap"
     tools:layout="@android:layout/simple_gallery_item" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Favorite Place"
+        android:id="@+id/addPlaceBtnID"
+        android:layout_gravity="left|top" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="153dp"
+        android:layout_gravity="left|bottom"
+        android:background="#140f0f">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/textView2"
+            android:textColor="#ffffff"
+            android:layout_alignBottom="@+id/editText"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/textView2"
+            android:background="#ffffff" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:id="@+id/confirmAddBtn"
+            android:layout_marginEnd="55dp"
+            android:layout_alignTop="@+id/button"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/button"
+            android:layout_centerVertical="true"
+            android:layout_alignStart="@+id/editText" />
+
+    </RelativeLayout>
+
+</FrameLayout>
