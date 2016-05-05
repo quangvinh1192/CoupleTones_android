@@ -26,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="153dp"
         android:layout_gravity="left|bottom"
-        android:background="#140f0f">
+        android:background="#140f0f"
+        android:id="@+id/addingPlaceViewID">
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,16 +50,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirm"
-            android:id="@+id/confirmAddBtn"
+            android:id="@+id/confirmAddID"
             android:layout_marginEnd="55dp"
-            android:layout_alignTop="@+id/button"
+            android:layout_alignTop="@+id/cancelAddID"
             android:layout_alignParentEnd="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:id="@+id/button"
+            android:id="@+id/cancelAddID"
             android:layout_centerVertical="true"
             android:layout_alignStart="@+id/editText" />
 
