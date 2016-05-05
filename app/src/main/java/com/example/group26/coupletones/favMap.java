@@ -80,8 +80,6 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
         confirmAddBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                addingMode = false;
-                addPlaceBtn.setEnabled(true);
                 addingView.setVisibility(View.INVISIBLE);
                 addPlaceToServer();
             }
@@ -89,7 +87,6 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
         cancelAddBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                addingMode = true;
                 addingView.setVisibility(View.INVISIBLE);
                 temporaryMarker.remove();
             }
