@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -25,6 +26,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+
 public class favMap extends FragmentActivity implements OnMapReadyCallback    {
 
     private GoogleMap mMap;
@@ -35,6 +38,7 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
     private Button cancelAddBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
+    private String nameOfPlace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -89,6 +93,7 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
             public void onClick(View v) {
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
+                temporaryMarker.setTitle(nameOfPlace);
                 addPlaceToServer();
             }
         });
@@ -120,50 +125,81 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
 
         // Add zoom feature
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        showYourFavMap();
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng point) {
                 if (addingMode){
                     addingView.setVisibility(View.VISIBLE);
                     //temporaryMarker.position(point);
-                    temporaryMarker = mMap.addMarker(new MarkerOptions().position(point).title("Marker in Sydney"));
+                    temporaryMarker = mMap.addMarker(new MarkerOptions().position(point).title(""));
                 }
             }
 
         });
 
     }
+    public void showYourFavMap(){
+        AuthData authData = myFirebaseRef.getAuth();
+        String userId = authData.getUid();
+        final Firebase tempRef = myFirebaseRef.child("users").child(userId).child("favPlaces");
+
+        tempRef.addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to the database
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                String temp = snapshot.getKey();
+                aFavoritePlace tempClass = snapshot.getValue(aFavoritePlace.class);
+                Log.e("Count " ,tempClass.getLatitude()+ "" );
+                Log.e("Count " ,tempClass.getLongitude()+ "" );
+                LatLng favPoint  = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
+
+                mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));;
+
+
+//                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+//                    <YourClass> post = postSnapshot.getValue(<YourClass>.class);
+//                    Log.e("Get Data", post.<YourMethod>());
+//                }
+            }
+
+                @Override
+                public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
+            }
+
+            @Override
+            public void onCancelled(FirebaseError e) {
+            }
+            //... ChildEventListener also defines onChildChanged, onChildRemoved,
+            //    onChildMoved and onCanceled, covered in later sections.
+        });
+    }
+
     public void addPlaceToServer(){
 
-        String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
+        nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
         Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
-//        tempUser.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//                System.out.println(snapshot.getValue());
-//            }
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//                System.out.println("The read failed: " + firebaseError.getMessage());
-//            }
-//        });
 
-        // Null check for name
 
         if (nameOfPlace.isEmpty()) {
 
             //TODO Create popup so user doesn't forget to put in name
             nameOfPlace = "Haha no string given";
         }
-
-        aFavoritePlace newPlaceToAdd = new aFavoritePlace(temporaryMarker.getPosition(), nameOfPlace,false);
+        double lat = temporaryMarker.getPosition().latitude;
+        double longitude = temporaryMarker.getPosition().longitude;
+        aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude,false);
         temp.push().setValue(newPlaceToAdd);
     }
 }
