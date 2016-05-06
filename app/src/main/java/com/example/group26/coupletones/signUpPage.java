@@ -48,7 +48,7 @@ public class signUpPage extends AppCompatActivity {
                             ref = ref.child("users").child(ref.getAuth().getUid());
                             userEmail.put("email", email.getText().toString());
                             ref.updateChildren(userEmail);
-                            startActivity(new Intent(signUpPage.this, favMap.class));
+                            startActivity(new Intent(signUpPage.this, favMapPage.class));
                         }
                         //user was not created successfully
                         //show appropriate error

@@ -29,7 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class favMap extends FragmentActivity implements OnMapReadyCallback    {
+public class favMapPage extends FragmentActivity implements OnMapReadyCallback    {
 
     private GoogleMap mMap;
     private Button addPlaceBtn;

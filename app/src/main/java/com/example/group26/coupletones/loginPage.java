@@ -56,7 +56,7 @@ public class loginPage extends AppCompatActivity {
                         public void onAuthenticated(AuthData authData) {
                             // Authenticated successfully with payload authData
                             //move to maps page
-                            startActivity(new Intent(loginPage.this, favMap.class));
+                            startActivity(new Intent(loginPage.this, favMapPage.class));
                         }
 
                         @Override
