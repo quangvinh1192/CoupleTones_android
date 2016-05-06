@@ -1,39 +1,53 @@
 package com.example.group26.coupletones;
+import android.location.Location;
+
 import java.util.*; // for HashSet
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.*;
+
+import static android.location.Location.distanceBetween;
 
 /**
  * Created by jkapi on 5/5/2016.
  */
+
 public class VisitFavoritesCalculator {
+    float[] results = new float[3];
+    private final double MIN_DIST = 160; // 160m = 1/10th mile
 
-    //TODO when logging in to firebase, if this hashSet is empty, check to see if there is info in
+    /** Name: distanceBetweenTwoPlaces
+     *
+     * @param p1
+     * @param ourLocation
+     * @return double that is the distance between the two locations in meters
+     */
+    public double distanceBetweenTwoPlaces(aFavoritePlace p1,aFavoritePlace ourLocation){
+         double distance = MIN_DIST + 1;
+         distanceBetween(p1.getLatitude(), p1.getLongitude(), ourLocation.getLatitude(),
+                                        ourLocation.getLongitude(), results);
+         distance = results[0];
+        return distance;
+    }
 
-    // firebase and pull that to add it to the local favoriteLocations
-    private HashSet<aFavoritePlace> favoriteLocations;//TODO check to see if this is accurate with firebase
-    private aFavoritePlace currentLocation;
 
-    /** this constantly calculates the distance between current location and favorites location to
+    /** name: aFavoritePlace
+     * Parameters:
+     *      aFavoritePlace currentLocation- current location based on GPS
+     *      HashSet<aFavoritePlace> favoriteLocations - a hashset of all the favoriteLocations
+     * Returns: Null if none are visited or aFavoritePlace that has been visited
+     * this constantly calculates the distance between current location and favorites location to
      * check if a favorites location has been visited. If the current location is within 1/10th of
      * a mile, then //TODO S.O. should be notified
      */
-    Iterator itr;
-    public aFavoritePlace constantlyCalculate (aFavoritePlace currentLocation) {
+    public aFavoritePlace constantlyCalculate (aFavoritePlace currentLocation,
+                                               HashSet<aFavoritePlace> favoriteLocations) {
         aFavoritePlace visited = null;
         aFavoritePlace temp = null;
-        itr = favoriteLocations.iterator();
+        Iterator itr = favoriteLocations.iterator();
 
         while (itr.hasNext()) {
             temp = (aFavoritePlace) itr.next();
-            if (temp.lat() == currentLocation.lat()) {
+            if (distanceBetweenTwoPlaces(temp, currentLocation) <= MIN_DIST) {
                 visited = temp;
                 break;
             }

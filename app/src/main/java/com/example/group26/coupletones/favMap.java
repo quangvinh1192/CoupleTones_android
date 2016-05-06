@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class favMap extends FragmentActivity implements OnMapReadyCallback    {
 
@@ -39,8 +40,11 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private String nameOfPlace;
+    private HashSet<aFavoritePlace> favoriteLocations;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
@@ -156,7 +160,8 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
                 LatLng favPoint  = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
 
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));;
-
+                //TODO TEST if this is correctly adding
+                favoriteLocations.add(tempClass);
 
 //                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
 //                    <YourClass> post = postSnapshot.getValue(<YourClass>.class);
@@ -201,5 +206,7 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
         double longitude = temporaryMarker.getPosition().longitude;
         aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude,false);
         temp.push().setValue(newPlaceToAdd);
+
+        //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
     }
 }
