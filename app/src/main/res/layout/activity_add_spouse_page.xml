@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.group26.coupletones.AddSpousePage">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Add Your Spouse"
+        android:id="@+id/addSpouseTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/SpouseEmail"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:hint="Spouse Email"
+        android:textAlignment="center"
+        android:textSize="25dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Spouse Phone ID"
+        android:ems="10"
+        android:id="@+id/phoneID"
+        android:layout_below="@+id/SpouseEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
+        android:textSize="25dp"
+        android:textAlignment="center" />
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Spouse"
+        android:id="@+id/updateSpouseButton"
+        android:layout_below="@+id/phoneID"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your ID"
+        android:id="@+id/yourIDButton"
+        android:layout_below="@+id/updateSpouseButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Press button to print ID"
+        android:gravity="center"
+        android:id="@+id/yourID"
+        android:layout_below="@+id/yourIDButton"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:allowUndo="false"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
