@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -36,14 +37,16 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
     private Firebase myFirebaseRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav_map);
 
+        // Firebase server location
         String id = "https://coupletonescse100.firebaseio.com";
         myFirebaseRef = new Firebase(id);
 
-
-
+        // Debug comment
         Log.d("MyApp",id);
 
 
@@ -53,10 +56,13 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        // Buttons for adding location or cancelling an add call
         addPlaceBtn = (Button)findViewById(R.id.addPlaceBtnID);
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
 
+        // Setup display for adding mode
         addingView = (RelativeLayout) findViewById(R.id.addingPlaceViewID);
         addingMode = false;
         addingView.setVisibility(View.INVISIBLE);
@@ -77,6 +83,8 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
                 }
             }
         });
+
+        // Sends favorite location to server
         confirmAddBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -110,6 +118,9 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // Add zoom feature
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -128,9 +139,11 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
 
     }
     public void addPlaceToServer(){
+
+        String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
         AuthData authData = myFirebaseRef.getAuth();
-        String a = authData.getUid();
-        Firebase temp = myFirebaseRef.child("users").child(a).child("favPlaces");
+        String userId = authData.getUid();
+        Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
 //        tempUser.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot snapshot) {
@@ -141,7 +154,16 @@ public class favMap extends FragmentActivity implements OnMapReadyCallback    {
 //                System.out.println("The read failed: " + firebaseError.getMessage());
 //            }
 //        });
-        aFavoritePlace newPlaceToAdd = new aFavoritePlace(temporaryMarker.getPosition(),"haha",false);
+
+        // Null check for name
+
+        if (nameOfPlace.isEmpty()) {
+
+            //TODO Create popup so user doesn't forget to put in name
+            nameOfPlace = "Haha no string given";
+        }
+
+        aFavoritePlace newPlaceToAdd = new aFavoritePlace(temporaryMarker.getPosition(), nameOfPlace,false);
         temp.push().setValue(newPlaceToAdd);
     }
 }
