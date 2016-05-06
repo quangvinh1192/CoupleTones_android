@@ -21,7 +21,7 @@ public class VisitFavoritesCalculator {
      * @param ourLocation
      * @return double that is the distance between the two locations in meters
      */
-    public double distanceBetweenTwoPlaces(aFavoritePlace p1,aFavoritePlace ourLocation){
+    public double distanceBetweenTwoPlaces(aFavoritePlace ourLocation,aFavoritePlace p1){
          double distance = MIN_DIST + 1;
          distanceBetween(p1.getLatitude(), p1.getLongitude(), ourLocation.getLatitude(),
                                         ourLocation.getLongitude(), results);
@@ -30,7 +30,7 @@ public class VisitFavoritesCalculator {
     }
 
 
-    /** name: aFavoritePlace
+    /** name: calculateVisited
      * Parameters:
      *      aFavoritePlace currentLocation- current location based on GPS
      *      HashSet<aFavoritePlace> favoriteLocations - a hashset of all the favoriteLocations
@@ -39,7 +39,7 @@ public class VisitFavoritesCalculator {
      * check if a favorites location has been visited. If the current location is within 1/10th of
      * a mile, then //TODO S.O. should be notified
      */
-    public aFavoritePlace constantlyCalculate (aFavoritePlace currentLocation,
+    public aFavoritePlace calculateVisited (aFavoritePlace currentLocation,
                                                HashSet<aFavoritePlace> favoriteLocations) {
         aFavoritePlace visited = null;
         aFavoritePlace temp = null;
