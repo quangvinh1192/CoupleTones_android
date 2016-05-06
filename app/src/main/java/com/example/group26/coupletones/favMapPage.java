@@ -44,7 +44,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        favoriteLocations = new HashSet<aFavoritePlace>();
 
         // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
@@ -161,6 +161,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
 
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));;
                 //TODO TEST if this is correctly adding
+
                 favoriteLocations.add(tempClass);
 
 //                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
