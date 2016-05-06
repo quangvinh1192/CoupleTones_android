@@ -161,11 +161,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
 
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));;
                 //TODO TEST if this is correctly adding
-                Log.d("TESTING", "123");
 
                 favoriteLocations.add(tempClass);
 
-                Log.d("TESTING", "adding succeeded");
 //                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
 //                    <YourClass> post = postSnapshot.getValue(<YourClass>.class);
 //                    Log.e("Get Data", post.<YourMethod>());
