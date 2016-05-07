@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
@@ -45,6 +46,12 @@ public class signUpPage extends AppCompatActivity {
                         @Override
                         public void onSuccess(Map<String, Object> result) {
                             Map<String, Object> userEmail = new HashMap<String, Object>();
+                            Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                                public void onAuthenticated(AuthData authData) {};
+                                public void onAuthenticationError(FirebaseError firebaseError) {};
+                            };
+
+                            ref.authWithPassword(email.getText().toString(),password.getText().toString(), authResultHandler);
                             ref = ref.child("users").child(ref.getAuth().getUid());
                             userEmail.put("email", email.getText().toString());
                             ref.updateChildren(userEmail);
