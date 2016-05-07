@@ -23,15 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Enter Your Spouse Phone ID"
+        android:hint="Enter Your Spouse Email"
         android:ems="10"
-        android:id="@+id/phoneID"
-        android:layout_marginTop="41dp"
+        android:id="@+id/spouseEmail"
+        android:layout_marginTop="46dp"
         android:textSize="25dp"
         android:textAlignment="center"
-        android:layout_below="@+id/textView"
-        android:layout_alignEnd="@+id/yourID"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/addSpouseTitle"
+        android:layout_centerHorizontal="true" />
 
 
 
@@ -40,32 +39,9 @@
         android:layout_height="wrap_content"
         android:text="Update Spouse"
         android:id="@+id/updateSpouseButton"
-        android:layout_below="@+id/phoneID"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="59dp"
+        android:layout_below="@+id/spouseEmail"
+        android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your ID"
-        android:id="@+id/yourIDButton"
-        android:layout_below="@+id/updateSpouseButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Press button to print ID"
-        android:gravity="center"
-        android:id="@+id/yourID"
-        android:layout_below="@+id/yourIDButton"
-
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:allowUndo="false"
-        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
