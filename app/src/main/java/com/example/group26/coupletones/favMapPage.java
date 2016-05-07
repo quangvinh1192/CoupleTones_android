@@ -1,9 +1,15 @@
 package com.example.group26.coupletones;
 
+import android.Manifest;
 import android.bluetooth.le.AdvertiseData;
+import android.content.pm.PackageManager;
 import android.gesture.GestureOverlayView;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +50,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
     private Firebase myFirebaseRef;
     private String nameOfPlace;
     private HashSet<aFavoritePlace> favoriteLocations;
+    protected LocationManager locationManager;
+    private static final long LOCATION_REFRESH_TIME = 30;
+    private static final float LOCATION_REFRESH_DISTANCE = 20;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +69,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
 
         // Debug comment
         Log.d("MyApp",id);
-
 
 
 
@@ -134,6 +143,29 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         mMap.getUiSettings().setZoomControlsEnabled(true);
         showYourFavMap();
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(final Location location) {
+                //your code here
+            }
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras){
+
+            }
+            @Override
+            public void onProviderEnabled(String provider){
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider){
+
+            }
+
+        };
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng point) {
@@ -145,8 +177,24 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
             }
 
         });
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                    LOCATION_REFRESH_DISTANCE, mLocationListener);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            } else {
+                // Show rationale and request permission.
+            }
+        }
+        catch (SecurityException e){
+            Log.d("MyApp", "User not allow us to see our location   ");
+
+        }
+
 
     }
+
     public void showYourFavMap(){
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
