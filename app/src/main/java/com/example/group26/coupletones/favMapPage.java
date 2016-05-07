@@ -2,15 +2,13 @@ package com.example.group26.coupletones;
 
 import android.Manifest;
 import android.bluetooth.le.AdvertiseData;
-<<<<<<< HEAD
 import android.content.pm.PackageManager;
-=======
 import android.content.Intent;
->>>>>>> c2ea581ac4b92286253487b90eabde2e56731c09
 import android.gesture.GestureOverlayView;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +28,18 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,11 +48,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class favMapPage extends FragmentActivity implements OnMapReadyCallback    {
+public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
 
     private GoogleMap mMap;
     private Button addPlaceBtn;
@@ -55,9 +66,13 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
     private Firebase myFirebaseRef;
     private String nameOfPlace;
     private HashSet<aFavoritePlace> favoriteLocations;
+    private GoogleApiClient mGoogleApiClient;
     protected LocationManager locationManager;
+
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
 
 
 
@@ -74,8 +89,16 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         myFirebaseRef = new Firebase(id);
 
         // Debug comment
-        Log.d("MyApp",id);
+        Log.d("MyApp", id);
 
+        // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .addApi(AppIndex.API).build();
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -84,7 +107,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         mapFragment.getMapAsync(this);
 
         // Buttons for adding location or cancelling an add call
-        addPlaceBtn = (Button)findViewById(R.id.addPlaceBtnID);
+        addPlaceBtn = (Button) findViewById(R.id.addPlaceBtnID);
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
         spouseOptionsBtn = (Button) findViewById(R.id.spouseOptions);
@@ -102,12 +125,13 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
                     Log.d("MyApp", "I am here");
                     addingMode = true;
                     addPlaceBtn.setText("Cancel");
-                }
-                else{
+                } else {
                     addingMode = false;
                     addPlaceBtn.setText("Add Favorite Place");
 
                 }
+                addingSearchingPlace();
+
             }
         });
 
@@ -269,9 +293,105 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         }
         double lat = temporaryMarker.getPosition().latitude;
         double longitude = temporaryMarker.getPosition().longitude;
-        aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude,false);
+        aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude, false);
         temp.push().setValue(newPlaceToAdd);
 
         //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
+    }
+
+    void addingSearchingPlace(){
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("haha", "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("haha", "An error occurred: " + status);
+            }
+        });
+
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Log.i("HAHA", "Place: " + place.getName());
+                LatLng position = place.getLatLng();
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,10) );
+
+
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                Log.i("HAHA", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        mGoogleApiClient.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "favMapPage Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.group26.coupletones/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "favMapPage Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.group26.coupletones/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
+        mGoogleApiClient.disconnect();
     }
 }

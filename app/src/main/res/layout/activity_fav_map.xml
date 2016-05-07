@@ -63,6 +63,15 @@
             android:layout_centerVertical="true"
             android:layout_alignStart="@+id/placeName" />
 
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/placeName" />
+
     </RelativeLayout>
 
     <Button
