@@ -1,6 +1,7 @@
 package com.example.group26.coupletones;
 
 import android.bluetooth.le.AdvertiseData;
+import android.content.Intent;
 import android.gesture.GestureOverlayView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -40,10 +41,12 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
     private RelativeLayout addingView;
     private Button confirmAddBtn;
     private Button cancelAddBtn;
+    private Button spouseOptionsBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private String nameOfPlace;
     private HashSet<aFavoritePlace> favoriteLocations;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         addPlaceBtn = (Button)findViewById(R.id.addPlaceBtnID);
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
+        spouseOptionsBtn = (Button) findViewById(R.id.spouseOptions);
 
         // Setup display for adding mode
         addingView = (RelativeLayout) findViewById(R.id.addingPlaceViewID);
@@ -112,8 +116,13 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
             }
         });
 
+        spouseOptionsBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Peform action on click
+                startActivity(new Intent(favMapPage.this, AddSpousePage.class));
+            }
 
-
+        });
     };
 
 
@@ -137,7 +146,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng point) {
-                if (addingMode){
+                if (addingMode) {
                     addingView.setVisibility(View.VISIBLE);
                     //temporaryMarker.position(point);
                     temporaryMarker = mMap.addMarker(new MarkerOptions().position(point).title(""));
@@ -192,14 +201,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
             //... ChildEventListener also defines onChildChanged, onChildRemoved,
             //    onChildMoved and onCanceled, covered in later sections.
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_fav_map, menu);
-
-        return true;
     }
 
     public void addPlaceToServer(){
