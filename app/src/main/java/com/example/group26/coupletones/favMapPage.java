@@ -5,6 +5,9 @@ import android.gesture.GestureOverlayView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -155,11 +158,12 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 String temp = snapshot.getKey();
                 aFavoritePlace tempClass = snapshot.getValue(aFavoritePlace.class);
-                Log.e("Count " ,tempClass.getLatitude()+ "" );
-                Log.e("Count " ,tempClass.getLongitude()+ "" );
-                LatLng favPoint  = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
+                Log.e("Count ", tempClass.getLatitude() + "");
+                Log.e("Count ", tempClass.getLongitude() + "");
+                LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
 
-                mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));;
+                mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                ;
                 //TODO TEST if this is correctly adding
 
                 favoriteLocations.add(tempClass);
@@ -170,8 +174,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
 //                }
             }
 
-                @Override
-                public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
             }
 
             @Override
@@ -188,6 +192,14 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
             //... ChildEventListener also defines onChildChanged, onChildRemoved,
             //    onChildMoved and onCanceled, covered in later sections.
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_fav_map, menu);
+
+        return true;
     }
 
     public void addPlaceToServer(){
