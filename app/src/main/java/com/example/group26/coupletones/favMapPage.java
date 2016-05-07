@@ -2,11 +2,8 @@ package com.example.group26.coupletones;
 
 import android.Manifest;
 import android.bluetooth.le.AdvertiseData;
-<<<<<<< HEAD
 import android.content.pm.PackageManager;
-=======
 import android.content.Intent;
->>>>>>> c2ea581ac4b92286253487b90eabde2e56731c09
 import android.gesture.GestureOverlayView;
 import android.location.Location;
 import android.location.LocationListener;
@@ -58,12 +55,14 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
     protected LocationManager locationManager;
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
+    private PushPullMediator mediator;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         favoriteLocations = new HashSet<aFavoritePlace>();
+        mediator = new PushPullMediator();
 
         // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
@@ -151,6 +150,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Add zoom feature
         mMap.getUiSettings().setZoomControlsEnabled(true);
         showYourFavMap();
@@ -158,7 +158,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
-                //your code here
+                aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
+                        location.getLatitude(), location.getLatitude(), true);
+                mediator.checkToSend(currentLocation, favoriteLocations);
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras){
@@ -252,6 +254,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
             //... ChildEventListener also defines onChildChanged, onChildRemoved,
             //    onChildMoved and onCanceled, covered in later sections.
         });
+        mMap.setPadding(0,96,0,0);
     }
 
     public void addPlaceToServer(){
@@ -273,5 +276,20 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback  
         temp.push().setValue(newPlaceToAdd);
 
         //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
+    }
+
+
+    /** Name: getCurrentLocation()
+     * TODO revamp this
+     * @param location
+     * @return
+     */
+    public aFavoritePlace getCurrentLocation(Location location) {
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+        aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
+                                        currentLatitude, currentLongitude, true);
+        return currentLocation;
+
     }
 }
