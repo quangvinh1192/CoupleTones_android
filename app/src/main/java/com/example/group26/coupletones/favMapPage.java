@@ -71,8 +71,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
+<<<<<<< HEAD
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
+=======
+
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
+
+>>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
     private PushPullMediator mediator;
 
 
@@ -305,6 +312,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
     void addingSearchingPlace(){
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -400,6 +411,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
         mGoogleApiClient.disconnect();
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
     /** Name: getCurrentLocation()
      * TODO revamp this
      * @param location
@@ -412,5 +427,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                                         currentLatitude, currentLongitude, true);
         return currentLocation;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
     }
 }
