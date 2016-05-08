@@ -25,7 +25,7 @@
         android:inputType="text"
         android:hint="Enter Your Spouse Email"
         android:ems="10"
-        android:id="@+id/spouseEmail"
+        android:id="@+id/spouseEditTextID"
         android:layout_marginTop="46dp"
         android:textSize="25dp"
         android:textAlignment="center"
@@ -38,9 +38,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update Spouse"
-        android:id="@+id/updateSpouseButton"
+        android:id="@+id/updateSpouseButtonID"
         android:layout_marginTop="59dp"
-        android:layout_below="@+id/spouseEmail"
+        android:layout_below="@+id/spouseEditTextID"
         android:layout_centerHorizontal="true" />
 
 

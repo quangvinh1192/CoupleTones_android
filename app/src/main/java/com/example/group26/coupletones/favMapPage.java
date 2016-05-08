@@ -1,7 +1,10 @@
 package com.example.group26.coupletones;
 
 import android.Manifest;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.le.AdvertiseData;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.gesture.GestureOverlayView;
@@ -11,7 +14,9 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,19 +72,16 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private String nameOfPlace;
     private HashSet<aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
+    private NotificationCompat.Builder mBuilder;
+
     protected LocationManager locationManager;
 
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
-<<<<<<< HEAD
-    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
-=======
-
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
 
->>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
+
     private PushPullMediator mediator;
 
 
@@ -94,11 +96,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         setContentView(R.layout.activity_fav_map);
 
         // Firebase server location
-        String id = "https://coupletonescse100.firebaseio.com";
-        myFirebaseRef = new Firebase(id);
-
-        // Debug comment
-        Log.d("MyApp", id);
+        myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
 
         // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -168,6 +166,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             }
 
         });
+        mBuilder = new NotificationCompat.Builder(this);
     };
 
 
@@ -256,8 +255,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 aFavoritePlace tempClass = snapshot.getValue(aFavoritePlace.class);
                 Log.e("Count ", tempClass.getLatitude() + "");
                 Log.e("Count ", tempClass.getLongitude() + "");
-                LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
+                Log.e("Count ", "HAHAHA");
 
+                LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
+                createANotification();
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 ;
                 //TODO TEST if this is correctly adding
@@ -288,7 +289,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             //... ChildEventListener also defines onChildChanged, onChildRemoved,
             //    onChildMoved and onCanceled, covered in later sections.
         });
-        mMap.setPadding(0,96,0,0);
+        mMap.setPadding(0, 96, 0, 0);
     }
 
     public void addPlaceToServer(){
@@ -297,7 +298,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
         Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
-
 
         if (nameOfPlace.isEmpty()) {
 
@@ -312,10 +312,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
     }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
     void addingSearchingPlace(){
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -411,10 +408,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
         mGoogleApiClient.disconnect();
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
     /** Name: getCurrentLocation()
      * TODO revamp this
      * @param location
@@ -426,10 +420,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
                                         currentLatitude, currentLongitude, true);
         return currentLocation;
+    }
+    void createANotification(){
+        mBuilder.setSmallIcon(R.drawable.notifications_icon);
+        mBuilder.setContentTitle("Your spouse is cheating on you!");
+        mBuilder.setContentText("Hi, Jeremy just visited Gagan's place and they are having fun");
+        mBuilder.build();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 9276dc865e776a6e1ce678c1365bcba49c87425c
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// notificationID allows you to update the notification later on.
+        mNotificationManager.notify(1, mBuilder.build());
     }
 }

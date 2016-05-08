@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,8 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class loginPage extends AppCompatActivity {
@@ -56,6 +58,15 @@ public class loginPage extends AppCompatActivity {
                         public void onAuthenticated(AuthData authData) {
                             // Authenticated successfully with payload authData
                             //move to maps page
+                            Map<String, Object> yourEmail = new HashMap<String, Object>();
+                            String email =  authData.getProviderData().get("email").toString();
+                            yourEmail.put("yourEmail", email);
+
+
+                            Firebase userRef = ref.child("users").child(authData.getUid());
+                            userRef.updateChildren(yourEmail);
+
+                            Log.d("MyApp", "Update Successful");
                             startActivity(new Intent(loginPage.this, favMapPage.class));
                         }
 
