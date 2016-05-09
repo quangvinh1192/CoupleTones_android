@@ -464,6 +464,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             }
         });
     }
+
     void createAListenerToSpouseFavPlaces(String spouseID){
 
         Log.d("I WANT TO SEE", spouseID);

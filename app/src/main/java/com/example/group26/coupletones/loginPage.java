@@ -53,43 +53,7 @@ public class loginPage extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //check if at least both fields are filled
-                if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
-                    // Create a handler to handle the result of the authentication
-                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-                        @Override
-                        public void onAuthenticated(AuthData authData) {
-                            // Authenticated successfully with payload authData
-                            //move to maps page
-                            Map<String, Object> yourEmail = new HashMap<String, Object>();
-                            String email =  authData.getProviderData().get("email").toString();
-                            yourEmail.put("yourEmail", email);
-
-
-                            Firebase userRef = ref.child("users").child(authData.getUid());
-                            userRef.updateChildren(yourEmail);
-
-                            Log.d("MyApp", "Update Successful");
-                            startActivity(new Intent(loginPage.this, favMapPage.class));
-                        }
-
-                        @Override
-                        public void onAuthenticationError(FirebaseError firebaseError) {
-                            // Authenticated failed with error firebaseError
-                            //figure out what went wrong and return it to the developer
-                            //TODO
-
-                            errorHandler.onLoginError();
-                        }
-                    };
-                    ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
-                }
-                //either the password or the email field is missing
-                //give the user an appropriate error message
-                else {
-
-                    errorHandler.onLoginMissingField();
-                }
+                fieldsFilled (email, password, errorHandler);
             }
         });
 
@@ -168,5 +132,47 @@ public class loginPage extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    public boolean fieldsFilled (TextView email, TextView password, final ErrorMessageHandler errorHandler) {
+        //check if at least both fields are filled
+        if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
+            // Create a handler to handle the result of the authentication
+            Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+                    // Authenticated successfully with payload authData
+                    //move to maps page
+                    Map<String, Object> yourEmail = new HashMap<String, Object>();
+                    String email =  authData.getProviderData().get("email").toString();
+                    yourEmail.put("yourEmail", email);
+
+
+                    Firebase userRef = ref.child("users").child(authData.getUid());
+                    userRef.updateChildren(yourEmail);
+
+                    Log.d("MyApp", "Update Successful");
+                    startActivity(new Intent(loginPage.this, favMapPage.class));
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+                    // Authenticated failed with error firebaseError
+                    //figure out what went wrong and return it to the developer
+                    //TODO
+
+                    errorHandler.onLoginError();
+                }
+            };
+            ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
+            return true;
+        }
+        //either the password or the email field is missing
+        //give the user an appropriate error message
+        else {
+
+            errorHandler.onLoginMissingField();
+            return false;
+        }
     }
 }
