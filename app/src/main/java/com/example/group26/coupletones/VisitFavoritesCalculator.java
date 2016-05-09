@@ -12,7 +12,11 @@ import static android.location.Location.distanceBetween;
  * Created by jkapi on 5/5/2016.
  */
 
-public class VisitFavoritesCalculator {
+/**
+ * Name: VisitFavoritesCalculator
+ * calculates distance between two places
+ */
+public class    VisitFavoritesCalculator {
     float[] results = new float[3];
     private final double MIN_DIST = 160; // 160m = 1/10th mile
 
@@ -44,7 +48,7 @@ public class VisitFavoritesCalculator {
      * Returns: Null if none are visited or aFavoritePlace that has been visited
      * this constantly calculates the distance between current location and favorites location to
      * check if a favorites location has been visited. If the current location is within 1/10th of
-     * a mile, then //TODO S.O. should be notified
+     * a mile, then
      */
     public aFavoritePlace calculateVisited (aFavoritePlace currentLocation,
                                                HashMap<String, aFavoritePlace> favoriteLocations) {
@@ -54,7 +58,7 @@ public class VisitFavoritesCalculator {
         Iterator itr = setOfPlaces.iterator();
         Log.i("MyApp","CHECKING POSITION");
 
-
+        //GO through all hashmap and check every entry
         while (itr.hasNext()) {
             Map.Entry me = (Map.Entry)itr.next();
             temp = (aFavoritePlace) me.getValue();

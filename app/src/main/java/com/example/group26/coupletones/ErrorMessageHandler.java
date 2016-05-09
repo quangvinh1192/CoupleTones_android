@@ -27,24 +27,41 @@ public class ErrorMessageHandler {
 
     }
 
+    /**
+     * Name: onLoginerror
+     * shows an error if email is incorrect email or password
+     */
     void onLoginError () {
 
         alertDialogBuilder.setMessage("Incorrect email or password");
         AlertDialog alertDialog = alertDialogBuilder.show();
     }
 
+    /**
+     * onLoginMissingField
+     * sets error if email or password is missing
+     */
     void onLoginMissingField() {
 
         alertDialogBuilder.setMessage("Email or password is missing");
         AlertDialog alertDialog = alertDialogBuilder.show();
     }
 
+
+    /**
+     * Name: invalidEmail
+     * Creates alert for invalid email
+     */
     void invalidEmail () {
 
         alertDialogBuilder.setMessage("The email you entered is not valid");
         AlertDialog alertDialog = alertDialogBuilder.show();
     }
 
+    /**
+     * Name: existingEmail
+     * Creates alert for email already in use
+     */
     void existingEmail () {
 
         alertDialogBuilder.setMessage("This email is already in use");
@@ -52,6 +69,10 @@ public class ErrorMessageHandler {
 
     }
 
+    /**
+     * Name: passwrodsnotMatching
+     * alerts for if the two passwords don't match
+     */
     void passwordsNotMatching () {
 
         alertDialogBuilder.setMessage("The password and confirm password do not match");

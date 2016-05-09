@@ -29,8 +29,8 @@ public class PushPullMediator {
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
 
     }
-    //FirebaseApp firebase = Firebase.getApp();
 
+    /** checks ot see if need ot send a message by calling calculator*/
     public boolean checkToSend(aFavoritePlace currentLocation, HashMap<String,aFavoritePlace> favoriteLocations) {
         VisitFavoritesCalculator calculator = new VisitFavoritesCalculator();
         aFavoritePlace newlyVisited = calculator.calculateVisited(currentLocation, favoriteLocations);

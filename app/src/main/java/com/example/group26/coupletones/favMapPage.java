@@ -85,7 +85,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private PushPullMediator mediator;
 
 
-
+    /** creates the map and initializes favorite places and buttons
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         favoriteLocations = new HashMap<String, aFavoritePlace>();
@@ -251,6 +254,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
     }
 
+    /** name:showYourFavMap()
+     * shows all your favorite places as pins on the map
+     */
     public void showYourFavMap(){
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
@@ -300,6 +306,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         mMap.setPadding(0, 96, 0, 0);
     }
 
+    /** name: add placeToServer
+     * adds a favoriteplace object ot server and hashmap
+     */
     public void addPlaceToServer(){
 
         nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
@@ -418,7 +427,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     }
 
     /** Name: getCurrentLocation()
-     * TODO revamp this
+     * returns location as a favroiteplace
      * @param location
      * @return
      */
@@ -429,6 +438,11 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                                         currentLatitude, currentLongitude, true);
         return currentLocation;
     }
+
+    /** name: createANotification
+     * sends a notification to you saying that your S.O. visited a page
+     * @param title
+     */
     void createANotification(String title){
         mBuilder.setSmallIcon(R.drawable.notifications_icon);
         mBuilder.setContentTitle("Your spouse just visited a new place");
@@ -440,6 +454,11 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 // notificationID allows you to update the notification later on.
         mNotificationManager.notify(1, mBuilder.build());
     }
+
+    /**
+     * Name: listenToSpouseFavPlaces
+     * initializes listener
+     */
     void listenToSpouseFavPlaces() {
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
@@ -465,6 +484,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         });
     }
 
+    /** Name: createAListenerToSpouseFavPlaces
+     * creates a listener to see if spouse has visited favorite places. Listens to firebase
+     * @param spouseID
+     */
     void createAListenerToSpouseFavPlaces(String spouseID){
 
         Log.d("I WANT TO SEE", spouseID);

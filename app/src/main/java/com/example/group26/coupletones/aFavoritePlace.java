@@ -3,7 +3,7 @@ package com.example.group26.coupletones;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by trungdo on 5/4/16.
+ * Object for each favorite place
  */
 public class aFavoritePlace {
     private String name;
@@ -13,19 +13,50 @@ public class aFavoritePlace {
     public aFavoritePlace(){
 
     }
+
+    /**
+     * constructor
+     * @param inpName
+     * @param inpLatitude
+     * @param inpLongitude
+     * @param inpVisited
+     */
     public aFavoritePlace(String inpName,double inpLatitude, double inpLongitude, boolean inpVisited){
         latitude = inpLatitude;
         longitude = inpLongitude;
         name = inpName;
         visited = inpVisited;
     }
-    public double getLatitude(){ return latitude; }
+
+    /**
+     * Name: getLatitude
+     * @return double
+     * returns latitude
+     */
+    public double getLatitude(){
+        return latitude;
+    }
+
+    /**
+     * Name:getLongitude
+     * @return longitude
+     */
     public double getLongitude(){
         return longitude;
     }
+
+    /**
+     * Name: getName()
+     * returns name of object
+     */
     public String getName(){
         return name;
     }
+
+    /**
+     * isVisited
+     * @return visited boolean
+     */
     public  boolean isVisited(){
         return visited;
     }

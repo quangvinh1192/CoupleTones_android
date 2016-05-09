@@ -29,6 +29,11 @@ public class AddSpousePage extends AppCompatActivity {
     private boolean matchedSpouse;
     private String myEmail;
 
+    /**
+     * Name: onCreate
+     * @param savedInstanceState
+     * create spouse page, add buttons
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +60,10 @@ public class AddSpousePage extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Name: displaySpouseID
+     * displays the spouse email
+     */
     private void displaySpouseID(){
 
         final Firebase tempRef = getUserRef();
@@ -86,16 +94,19 @@ public class AddSpousePage extends AppCompatActivity {
         });
 //
     }
+
+    /**
+     * Name: findSpouseUID
+     * @param spouseEmail
+     * finds the spouse UID
+     */
     private void findSpouseUID(final String spouseEmail){
         Map<String, Object> yourSpouseEMail = new HashMap<String, Object>();
         yourSpouseEMail.put("spouseEmail", spouseEmail);
 
 
         String spouseUID = "";
-
         final Firebase allUsersRef = myFirebaseRef.child("users");
-
-
 
 
         allUsersRef.addChildEventListener(new ChildEventListener() {
@@ -154,6 +165,11 @@ public class AddSpousePage extends AppCompatActivity {
         userRef.updateChildren(yourSpouseEMail);
 
     }
+
+    /** Name:
+     * get the User's Firebase authorization
+     * @return
+     */
     private Firebase getUserRef(){
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();

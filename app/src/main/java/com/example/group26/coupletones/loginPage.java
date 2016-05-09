@@ -29,11 +29,6 @@ public class loginPage extends AppCompatActivity {
     private TextView password;
     private Firebase ref;
     private ErrorMessageHandler errorHandler;
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
 
     @Override
@@ -134,6 +129,13 @@ public class loginPage extends AppCompatActivity {
         client.disconnect();
     }
 
+    /** fieldsFilled
+     * checks to see if email and password are filled and are correct returns true if they're correct
+     * @param email
+     * @param password
+     * @param errorHandler
+     * @return bool indiicating if they are correct
+     */
     public boolean fieldsFilled (TextView email, TextView password, final ErrorMessageHandler errorHandler) {
         //check if at least both fields are filled
         if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {

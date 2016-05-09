@@ -24,6 +24,11 @@ public class signUpPage extends AppCompatActivity {
     private Firebase ref;
     private boolean added;
 
+    /** Name: onCreate
+     * creates the page, adds buttons and fields to allow for signup
+     * @param savedInstanceState
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             added = false;
@@ -49,6 +54,13 @@ public class signUpPage extends AppCompatActivity {
         /*****[END]*****/
     }
 
+    /** Name: createAccount
+     * creates an account, checks to see if allowed, adds to firebase
+     * @param email
+     * @param password
+     * @param errorHandler
+     * @return bool. true if account is created, false otherwise
+     */
     public boolean createAccount (final TextView email,final TextView password, final ErrorMessageHandler errorHandler) {
         //if the passwords match then create an account
         if(password.getText().toString().equals((confirmPassword.getText()).toString())) {
@@ -96,6 +108,11 @@ public class signUpPage extends AppCompatActivity {
         return this.added;
     }
 
+    /** Name: setAddedNewAccount
+     * changes boolean that determines if a new account has been added
+     * @param added
+     * @return boolean
+     */
     boolean setAddedNewAccount(boolean added){
         this.added = added;
         return added;
