@@ -67,12 +67,10 @@ public class signUpPage extends AppCompatActivity {
                             if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL) {
 
                                 errorHandler.invalidEmail();
-                                Log.d("Invalid", "Email triggered");
                             }
                             else if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
 
                                 errorHandler.existingEmail();
-                                Log.d("Existing", "Email triggered");
                             }
                         }
                     });

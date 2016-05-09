@@ -28,6 +28,7 @@ public class loginPage extends AppCompatActivity {
     private TextView email;
     private TextView password;
     private Firebase ref;
+    private ErrorMessageHandler errorHandler;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -43,7 +44,7 @@ public class loginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
-        final ErrorMessageHandler errorHandler = new ErrorMessageHandler (loginPage.this);
+        errorHandler = new ErrorMessageHandler (loginPage.this);
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
@@ -79,7 +80,6 @@ public class loginPage extends AppCompatActivity {
                             //TODO
 
                             errorHandler.onLoginError();
-                            Log.d("Login", "Error triggered");
                         }
                     };
                     ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
@@ -89,7 +89,6 @@ public class loginPage extends AppCompatActivity {
                 else {
 
                     errorHandler.onLoginMissingField();
-                    Log.d("Missing", "Field triggered");
                 }
             }
         });
