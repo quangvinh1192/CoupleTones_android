@@ -32,7 +32,7 @@ public class signUpPage extends AppCompatActivity {
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
         confirmPassword =(TextView) findViewById(R.id.confirmPasswordTV);
-        final ErrorMessageHandler errorHandler = new ErrorMessageHandler(getBaseContext());
+        final ErrorMessageHandler errorHandler = new ErrorMessageHandler(signUpPage.this);
 
         /******[START]******/
         //create sign up button

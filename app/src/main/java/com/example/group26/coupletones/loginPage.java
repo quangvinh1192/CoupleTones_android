@@ -43,7 +43,7 @@ public class loginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
-        final ErrorMessageHandler errorHandler = new ErrorMessageHandler (getBaseContext());
+        final ErrorMessageHandler errorHandler = new ErrorMessageHandler (loginPage.this);
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
