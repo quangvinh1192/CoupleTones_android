@@ -1,5 +1,6 @@
 package com.example.group26.coupletones;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -75,6 +76,8 @@ public class loginPage extends AppCompatActivity {
                             // Authenticated failed with error firebaseError
                             //figure out what went wrong and return it to the developer
                             //TODO
+
+
                         }
                     };
                     ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
