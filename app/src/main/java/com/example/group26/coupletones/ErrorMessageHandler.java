@@ -33,6 +33,13 @@ public class ErrorMessageHandler {
         AlertDialog alertDialog = alertDialogBuilder.show();
     }
 
+    void onLoginMissingField() {
+
+        alertDialogBuilder.setMessage("Email or password is missing");
+
+        AlertDialog alertDialog = alertDialogBuilder.show();
+    }
+
     void invalidEmail () {
 
         alertDialogBuilder.setMessage("The email you entered is not valid");

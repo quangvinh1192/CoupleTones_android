@@ -43,6 +43,7 @@ public class loginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
+        final ErrorMessageHandler errorHandler = new ErrorMessageHandler (this);
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
@@ -77,7 +78,7 @@ public class loginPage extends AppCompatActivity {
                             //figure out what went wrong and return it to the developer
                             //TODO
 
-
+                            errorHandler.onLoginError();
                         }
                     };
                     ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
@@ -85,8 +86,8 @@ public class loginPage extends AppCompatActivity {
                 //either the password or the email field is missing
                 //give the user an appropriate error message
                 else {
-                    //TODO
-                    System.out.println("one of the fields is missing");
+
+                    errorHandler.onLoginMissingField();
                 }
             }
         });

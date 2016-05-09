@@ -32,6 +32,7 @@ public class signUpPage extends AppCompatActivity {
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
         confirmPassword =(TextView) findViewById(R.id.confirmPasswordTV);
+        final ErrorMessageHandler errorHandler = new ErrorMessageHandler(this);
 
         /******[START]******/
         //create sign up button
@@ -61,9 +62,15 @@ public class signUpPage extends AppCompatActivity {
                         //show appropriate error
                         @Override
                         public void onError(FirebaseError firebaseError) {
-                            //TODO
-                            //take care of telling the user they messed up
-                            System.out.println("something went wrong");
+
+                            if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL) {
+
+                                errorHandler.invalidEmail();
+                            }
+                            else if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
+
+                                errorHandler.existingEmail();
+                            }
                         }
                     });
                 }
