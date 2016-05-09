@@ -51,4 +51,10 @@ public class ErrorMessageHandler {
         AlertDialog alertDialog = alertDialogBuilder.show();
 
     }
+
+    void passwordsNotMatching () {
+
+        alertDialogBuilder.setMessage("The password and confirm password do not match");
+        AlertDialog alertDialog = alertDialogBuilder.show();
+    }
 }

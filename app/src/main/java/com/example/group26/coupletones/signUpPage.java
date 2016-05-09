@@ -75,6 +75,12 @@ public class signUpPage extends AppCompatActivity {
                         }
                     });
                 }
+
+                // Password and confirm password do not match
+                else {
+
+                    errorHandler.passwordsNotMatching();
+                }
             }
         });
         /*****[END]*****/
