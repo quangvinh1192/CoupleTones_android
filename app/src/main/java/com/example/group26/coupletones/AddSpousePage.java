@@ -120,7 +120,12 @@ public class AddSpousePage extends AppCompatActivity {
                         if (checkTwoSpouseMatched(UID,myEmail)) {
                             Firebase userRef = getUserRef();
                             userRef.updateChildren(yourSpouseUID);
+                            Log.d("MyApp", "Your spouse did not add you");
+
                         }
+                        else
+                            Log.d("MyApp", "Your spouse added you");
+
 
                     }
                     else{
