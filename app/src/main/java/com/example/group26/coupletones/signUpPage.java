@@ -3,6 +3,7 @@ package com.example.group26.coupletones;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -66,10 +67,12 @@ public class signUpPage extends AppCompatActivity {
                             if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL) {
 
                                 errorHandler.invalidEmail();
+                                Log.d("Invalid", "Email triggered");
                             }
                             else if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
 
                                 errorHandler.existingEmail();
+                                Log.d("Existing", "Email triggered");
                             }
                         }
                     });

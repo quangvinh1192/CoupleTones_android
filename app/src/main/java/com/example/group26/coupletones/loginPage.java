@@ -79,6 +79,7 @@ public class loginPage extends AppCompatActivity {
                             //TODO
 
                             errorHandler.onLoginError();
+                            Log.d("Login", "Error triggered");
                         }
                     };
                     ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
@@ -88,6 +89,7 @@ public class loginPage extends AppCompatActivity {
                 else {
 
                     errorHandler.onLoginMissingField();
+                    Log.d("Missing", "Field triggered");
                 }
             }
         });
