@@ -1,5 +1,6 @@
 package com.example.group26.coupletones;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class loginPage extends AppCompatActivity {
     private TextView email;
     private TextView password;
     private Firebase ref;
+    private ErrorMessageHandler errorHandler;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -42,6 +44,7 @@ public class loginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
+        errorHandler = new ErrorMessageHandler (loginPage.this);
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
@@ -75,6 +78,8 @@ public class loginPage extends AppCompatActivity {
                             // Authenticated failed with error firebaseError
                             //figure out what went wrong and return it to the developer
                             //TODO
+
+                            errorHandler.onLoginError();
                         }
                     };
                     ref.authWithPassword(email.getText().toString(),password.getText().toString(),authResultHandler);
@@ -82,8 +87,8 @@ public class loginPage extends AppCompatActivity {
                 //either the password or the email field is missing
                 //give the user an appropriate error message
                 else {
-                    //TODO
-                    System.out.println("one of the fields is missing");
+
+                    errorHandler.onLoginMissingField();
                 }
             }
         });
