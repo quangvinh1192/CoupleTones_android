@@ -59,8 +59,6 @@ public class AddSpousePage extends AppCompatActivity {
         tempRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println();
-                String spouseID ="";
 
                 Log.d("MyApp",snapshot.toString());
                 if (snapshot.child("spouseEmail").exists()){

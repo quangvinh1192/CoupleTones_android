@@ -70,7 +70,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private String nameOfPlace;
-    private HashSet<aFavoritePlace> favoriteLocations;
+    private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
     private NotificationCompat.Builder mBuilder;
 
@@ -88,7 +88,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        favoriteLocations = new HashSet<aFavoritePlace>();
+        favoriteLocations = new HashMap<String, aFavoritePlace>();
         mediator = new PushPullMediator();
 
         // Create map using existing map instance state from Firebase
@@ -112,7 +112,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         // Buttons for adding location or cancelling an add call
         addPlaceBtn = (Button) findViewById(R.id.addPlaceBtnID);
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
@@ -187,13 +186,23 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         // Add zoom feature
         mMap.getUiSettings().setZoomControlsEnabled(true);
         showYourFavMap();
+        listenToSpouseFavPlaces();
+
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
                 aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
-                        location.getLatitude(), location.getLatitude(), true);
-                mediator.checkToSend(currentLocation, favoriteLocations);
+                        location.getLatitude(), location.getLongitude(), true);
+                if (mediator.checkToSend(currentLocation, favoriteLocations)) {
+                    aFavoritePlace temp = mediator.getVisited();
+                    if (temp != null){
+                        mediator.updateVisitedPlaceFirebase(temp.getName());
+                    }
+                    else{
+                        Log.i("My App","check visited place null");
+                    }
+                };
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras){
@@ -258,12 +267,11 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 Log.e("Count ", "HAHAHA");
 
                 LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
-                createANotification();
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 ;
                 //TODO TEST if this is correctly adding
 
-                favoriteLocations.add(tempClass);
+                favoriteLocations.put(tempClass.getName(), tempClass);
 
 //                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
 //                    <YourClass> post = postSnapshot.getValue(<YourClass>.class);
@@ -421,14 +429,74 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                                         currentLatitude, currentLongitude, true);
         return currentLocation;
     }
-    void createANotification(){
+    void createANotification(String title){
         mBuilder.setSmallIcon(R.drawable.notifications_icon);
-        mBuilder.setContentTitle("Your spouse is cheating on you!");
-        mBuilder.setContentText("Hi, Jeremy just visited Gagan's place and they are having fun");
+        mBuilder.setContentTitle("Your spouse just visited a new place");
+        String welcomeText = "Your S/O just visited " + title;
+        mBuilder.setContentText(welcomeText);
         mBuilder.build();
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // notificationID allows you to update the notification later on.
         mNotificationManager.notify(1, mBuilder.build());
     }
+    void listenToSpouseFavPlaces() {
+        AuthData authData = myFirebaseRef.getAuth();
+        String userId = authData.getUid();
+        final Firebase tempRef = myFirebaseRef.child("users").child(userId);
+        tempRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
+                String temp = snapshot.child("spouseUID").getValue().toString();
+                createAListenerToSpouseFavPlaces(temp);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+    }
+    void createAListenerToSpouseFavPlaces(String spouseID){
+
+        Log.d("I WANT TO SEE", spouseID);
+
+        if (!spouseID.equals("")) {
+            Log.i("HAHA", "CHECK Your SPOUSE FAV Places");
+            final Firebase spouseRef = myFirebaseRef.child("users").child(spouseID).child("favPlaces");
+            spouseRef.addChildEventListener(new ChildEventListener() {
+                // Retrieve new posts as they are added to the database
+                @Override
+                public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+                    String title = (String) snapshot.child("name").getValue();
+                    Log.e("Count ", title);
+
+                    createANotification(title);
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot snapshot) {
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
+                }
+
+                @Override
+                public void onCancelled(FirebaseError e) {
+                }
+                //... ChildEventListener also defines onChildChanged, onChildRemoved,
+                //    onChildMoved and onCanceled, covered in later sections.
+            });
+        }
+
+    }
+
+
 }

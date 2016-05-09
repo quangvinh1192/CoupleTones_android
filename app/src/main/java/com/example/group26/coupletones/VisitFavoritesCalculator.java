@@ -1,5 +1,6 @@
 package com.example.group26.coupletones;
 import android.location.Location;
+import android.util.Log;
 
 import java.util.*; // for HashSet
 
@@ -23,9 +24,15 @@ public class VisitFavoritesCalculator {
      */
     public double distanceBetweenTwoPlaces(aFavoritePlace ourLocation,aFavoritePlace p1){
          double distance = MIN_DIST + 1;
-         distanceBetween(p1.getLatitude(), p1.getLongitude(), ourLocation.getLatitude(),
+        Log.i("Place Lat",String.valueOf(p1.getLatitude()));
+        Log.i("Place Long",String.valueOf(p1.getLongitude()));
+        Log.i("Our Lat",String.valueOf(ourLocation.getLatitude()));
+        Log.i("Our Long",String.valueOf(ourLocation.getLongitude()));
+
+
+        distanceBetween(p1.getLatitude(), p1.getLongitude(), ourLocation.getLatitude(),
                                         ourLocation.getLongitude(), results);
-         distance = results[0];
+        distance = results[0];
         return distance;
     }
 
@@ -40,14 +47,23 @@ public class VisitFavoritesCalculator {
      * a mile, then //TODO S.O. should be notified
      */
     public aFavoritePlace calculateVisited (aFavoritePlace currentLocation,
-                                               HashSet<aFavoritePlace> favoriteLocations) {
+                                               HashMap<String, aFavoritePlace> favoriteLocations) {
         aFavoritePlace visited = null;
         aFavoritePlace temp = null;
-        Iterator itr = favoriteLocations.iterator();
+        Set setOfPlaces = favoriteLocations.entrySet();
+        Iterator itr = setOfPlaces.iterator();
+        Log.i("MyApp","CHECKING POSITION");
+
 
         while (itr.hasNext()) {
-            temp = (aFavoritePlace) itr.next();
+            Map.Entry me = (Map.Entry)itr.next();
+            temp = (aFavoritePlace) me.getValue();
+            double a = distanceBetweenTwoPlaces(temp, currentLocation);
+            Log.i("Distance",String.valueOf(a));
+
+
             if (distanceBetweenTwoPlaces(temp, currentLocation) <= MIN_DIST) {
+                Log.i("MyApp",temp.getName() );
                 visited = temp;
                 break;
             }
