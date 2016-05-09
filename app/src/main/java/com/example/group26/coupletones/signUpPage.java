@@ -22,9 +22,11 @@ public class signUpPage extends AppCompatActivity {
     private TextView password;
     private TextView confirmPassword;
     private Firebase ref;
+    private boolean added;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+            added = false;
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://coupletonescse100.firebaseio.com");
@@ -41,48 +43,61 @@ public class signUpPage extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if the passwords match then create an account
-                if(password.getText().toString().equals((confirmPassword.getText()).toString())) {
-                    ref.createUser(email.getText().toString(),password.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
-                        //user was created successfully
-                        @Override
-                        public void onSuccess(Map<String, Object> result) {
-                            Map<String, Object> userEmail = new HashMap<String, Object>();
-                            Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-                                public void onAuthenticated(AuthData authData) {};
-                                public void onAuthenticationError(FirebaseError firebaseError) {};
-                            };
-
-                            ref.authWithPassword(email.getText().toString(),password.getText().toString(), authResultHandler);
-                            ref = ref.child("users").child(ref.getAuth().getUid());
-                            userEmail.put("email", email.getText().toString());
-                            ref.updateChildren(userEmail);
-                            startActivity(new Intent(signUpPage.this, favMapPage.class));
-                        }
-                        //user was not created successfully
-                        //show appropriate error
-                        @Override
-                        public void onError(FirebaseError firebaseError) {
-
-                            if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL) {
-
-                                errorHandler.invalidEmail();
-                            }
-                            else if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
-
-                                errorHandler.existingEmail();
-                            }
-                        }
-                    });
-                }
-
-                // Password and confirm password do not match
-                else {
-
-                    errorHandler.passwordsNotMatching();
-                }
+                createAccount(email, password, errorHandler);
             }
         });
         /*****[END]*****/
+    }
+
+    public boolean createAccount (final TextView email,final TextView password, final ErrorMessageHandler errorHandler) {
+        //if the passwords match then create an account
+        if(password.getText().toString().equals((confirmPassword.getText()).toString())) {
+            ref.createUser(email.getText().toString(),password.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                //user was created successfully
+                @Override
+                public void onSuccess(Map<String, Object> result) {
+                    Map<String, Object> userEmail = new HashMap<String, Object>();
+                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                        public void onAuthenticated(AuthData authData) {};
+                        public void onAuthenticationError(FirebaseError firebaseError) {};
+                    };
+
+                    ref.authWithPassword(email.getText().toString(),password.getText().toString(), authResultHandler);
+                    ref = ref.child("users").child(ref.getAuth().getUid());
+                    userEmail.put("email", email.getText().toString());
+                    ref.updateChildren(userEmail);
+                    startActivity(new Intent(signUpPage.this, favMapPage.class));
+                    setAddedNewAccount(true);
+                }
+                //user was not created successfully
+                //show appropriate error
+                @Override
+                public void onError(FirebaseError firebaseError) {
+
+                    if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL) {
+
+                        errorHandler.invalidEmail();
+                    }
+                    else if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
+
+                        errorHandler.existingEmail();
+                    }
+                    setAddedNewAccount(false);
+                }
+            });
+        }
+
+        // Password and confirm password do not match
+        else {
+            errorHandler.passwordsNotMatching();
+            setAddedNewAccount(false);
+        }
+
+        return this.added;
+    }
+
+    boolean setAddedNewAccount(boolean added){
+        this.added = added;
+        return added;
     }
 }
