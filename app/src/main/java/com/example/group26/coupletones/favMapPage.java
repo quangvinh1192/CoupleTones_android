@@ -73,7 +73,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
     private NotificationCompat.Builder mBuilder;
-
+    private boolean addSpouseListenerBoolean;
     protected LocationManager locationManager;
 
     private static final long LOCATION_REFRESH_TIME = 30;
@@ -169,6 +169,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
         });
         mBuilder = new NotificationCompat.Builder(this);
+        addSpouseListenerBoolean = false;
     };
 
 
@@ -468,8 +469,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.child("spouseUID").exists()){
                     Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
-                    String temp = snapshot.child("spouseUID").getValue().toString();
-                    createAListenerToSpouseFavPlaces(temp);
+                    String spouseUID = snapshot.child("spouseUID").getValue().toString();
+                    String spouseEmail = snapshot.child("spouseEmail").getValue().toString();
+
+                    createAListenerToSpouseFavPlaces(spouseUID,spouseEmail);
                 }
                 else{
                     Log.d("MyApp", "You have no spouse");
@@ -488,45 +491,70 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
      * creates a listener to see if spouse has visited favorite places. Listens to firebase
      * @param spouseID
      */
-    void createAListenerToSpouseFavPlaces(String spouseID){
+    void createAListenerToSpouseFavPlaces(final String spouseID, final String spouseEmail){
 
         Log.d("I WANT TO SEE", spouseID);
-
-        if (!spouseID.equals("")) {
-            Log.i("HAHA", "CHECK Your SPOUSE FAV Places");
-            final Firebase spouseRef = myFirebaseRef.child("users").child(spouseID).child("favPlaces");
-            spouseRef.addChildEventListener(new ChildEventListener() {
-                // Retrieve new posts as they are added to the database
-                @Override
-                public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-
+        Firebase spouseReff = myFirebaseRef.child("users").child(spouseID);
+        spouseReff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.d("MyApp",snapshot.toString());
+                if (snapshot.child("yourEmail").exists()){
+                    String a = snapshot.child("yourEmail").getValue().toString();
+                    if (a.equals(spouseEmail)) {
+                        Log.d("MyApp", "Do you ever go here?");
+                        check(spouseID);
+                    }
+                }
+                else{
+                    Log.d("MyApp","Your spouse is not using the app yet!");
                 }
 
-                @Override
-                public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-                    String title = (String) snapshot.child("name").getValue();
-                    Log.e("Count ", title);
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
 
-                    createANotification(title);
-                }
+        });
 
-                @Override
-                public void onChildRemoved(DataSnapshot snapshot) {
-                }
 
-                @Override
-                public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-                }
-
-                @Override
-                public void onCancelled(FirebaseError e) {
-                }
-                //... ChildEventListener also defines onChildChanged, onChildRemoved,
-                //    onChildMoved and onCanceled, covered in later sections.
-            });
-        }
 
     }
+    private void check(String spouseID){
+        Log.d("I WANT TO SEE HIM", spouseID);
 
+        final Firebase spouseRef = myFirebaseRef.child("users").child(spouseID).child("favPlaces");
+        spouseRef.addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to the database
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+                String title = (String) snapshot.child("name").getValue();
+                Log.e("Count ", title);
+
+                createANotification(title);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
+            }
+
+            @Override
+            public void onCancelled(FirebaseError e) {
+            }
+            //... ChildEventListener also defines onChildChanged, onChildRemoved,
+            //    onChildMoved and onCanceled, covered in later sections.
+        });
+
+    }
 
 }

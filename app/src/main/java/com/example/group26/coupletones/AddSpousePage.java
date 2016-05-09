@@ -26,8 +26,10 @@ public class AddSpousePage extends AppCompatActivity {
     private Button updateYourSpouseBtn;
     private EditText spouseNameEditText;
     private Firebase myFirebaseRef;
-    private boolean matchedSpouse;
+    private String yourSpouseSpouseEmail;
     private String myEmail;
+    private String yourSpouseEmail;
+    private String yourSpouseUID;
 
     /**
      * Name: onCreate
@@ -38,7 +40,10 @@ public class AddSpousePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_spouse_page);
-
+        myEmail ="";
+        yourSpouseSpouseEmail = "";
+        yourSpouseEmail = "";
+        yourSpouseUID = "";
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
         updateYourSpouseBtn = (Button) findViewById(R.id.updateSpouseButtonID);
         updateYourSpouseBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +57,6 @@ public class AddSpousePage extends AppCompatActivity {
 
             }
         });
-
         spouseNameEditText = (EditText) findViewById(R.id.spouseEditTextID);
 
         displaySpouseID();
@@ -70,23 +74,22 @@ public class AddSpousePage extends AppCompatActivity {
         tempRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("MyApp",snapshot.toString());
+                Log.d("MyApp", snapshot.toString());
 
-                if (snapshot.child("yourEmail").exists()){
+                if (snapshot.child("yourEmail").exists()) {
                     myEmail = snapshot.child("yourEmail").getValue().toString();
+                } else {
+                    Log.d("MyApp", "You dont have Email");
                 }
-                else{
-                    Log.d("MyApp","You dont have Email");
-                }
-                if (snapshot.child("spouseEmail").exists()){
+                if (snapshot.child("spouseEmail").exists()) {
                     spouseNameEditText.setText(snapshot.child("spouseEmail").getValue().toString(), TextView.BufferType.EDITABLE);
                     Log.d("MyApp", snapshot.getValue().toString());
-                }
-                else{
-                    Log.d("MyApp","You dont have spouse");
+                } else {
+                    Log.d("MyApp", "You dont have spouse");
                 }
 
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
@@ -103,18 +106,24 @@ public class AddSpousePage extends AppCompatActivity {
     private void findSpouseUID(final String spouseEmail){
         Map<String, Object> yourSpouseEMail = new HashMap<String, Object>();
         yourSpouseEMail.put("spouseEmail", spouseEmail);
+        updateSpouseUID(spouseEmail);
+        Firebase userRef = getUserRef();
+        userRef.updateChildren(yourSpouseEMail);
 
+
+    }
+
+    private void updateSpouseUID(final String spouseEmail) {
+        Firebase allUsersRef = myFirebaseRef.child("users");
+        Log.d("My Email:", myEmail);
+        Log.d("Your spouse spouse:", yourSpouseSpouseEmail);
 
         String spouseUID = "";
-        final Firebase allUsersRef = myFirebaseRef.child("users");
-
-
         allUsersRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to the database
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 String temp = snapshot.getKey();
-                Firebase aUserRef = allUsersRef.child(temp);
                 if (snapshot.child("yourEmail").exists()) {
                     String email = snapshot.child("yourEmail").getValue().toString();
                     Log.d("MyApp", email);
@@ -124,22 +133,22 @@ public class AddSpousePage extends AppCompatActivity {
                         Map<String, Object> yourSpouseUID = new HashMap<String, Object>();
                         String UID = snapshot.getKey().toString();
                         Log.d("MyApp", UID);
-                        Log.d("MyApp", "HAHA");
-
-                        yourSpouseUID.put("spouseUID",UID);
-
-                        if (checkTwoSpouseMatched(UID,myEmail)) {
+                        Log.d("MyApp", "The spouse you entered is using the app");
+                        yourSpouseUID.put("spouseUID", UID);
+                        findYourSpouseSpouse(UID);
+                        if (yourSpouseSpouseEmail.equals(myEmail)) {
                             Firebase userRef = getUserRef();
+                            yourSpouseUID.put("spouseUID", UID);
                             userRef.updateChildren(yourSpouseUID);
-                            Log.d("MyApp", "Your spouse did not add you");
-
-                        }
-                        else
                             Log.d("MyApp", "Your spouse added you");
 
-
-                    }
-                    else{
+                        } else {
+                            yourSpouseUID.put("spouseUID", "");
+                            Log.d("MyApp", "Your spouse did not add you");
+                            Firebase userRef = getUserRef();
+                            userRef.updateChildren(yourSpouseUID);
+                        }
+                    } else {
                         Log.d("MyApp", "OMG");
                     }
                 }
@@ -161,16 +170,11 @@ public class AddSpousePage extends AppCompatActivity {
             @Override
             public void onCancelled(FirebaseError e) {
             }
+
             //... ChildEventListener also defines onChildChanged, onChildRemoved,
             //    onChildMoved and onCanceled, covered in later sections.
         });
-
-        Firebase userRef = getUserRef();
-
-        userRef.updateChildren(yourSpouseEMail);
-
     }
-
     /** Name:
      * get the User's Firebase authorization
      * @return
@@ -181,22 +185,19 @@ public class AddSpousePage extends AppCompatActivity {
         Firebase userRef = myFirebaseRef.child("users").child(userId);
         return userRef;
     }
-    private boolean checkTwoSpouseMatched(String spouseUID, final String yourEmail){
+    private void findYourSpouseSpouse(String spouseUID){
         final Firebase spouseRef = myFirebaseRef.child("users").child(spouseUID);
         spouseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-
                 Log.d("MyApp",snapshot.toString());
                 if (snapshot.child("spouseEmail").exists()){
-                    String email = snapshot.child("spouseEmail").getValue().toString();
-                    if (email.equals(yourEmail))
-                        matchedSpouse = true;
-                    else
-                        matchedSpouse = false;
+                    yourSpouseSpouseEmail = snapshot.child("spouseEmail").getValue().toString();
+                    Log.d("MyApp","Your spouse's spouse have some data!");
+
                 }
                 else{
-                    Log.d("MyApp","Your dont have email");
+                    Log.d("MyApp","Your spouse is not using the app yet!");
                 }
 
             }
@@ -204,8 +205,10 @@ public class AddSpousePage extends AppCompatActivity {
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
+
         });
-        return matchedSpouse;
+
     }
+
 
 }
