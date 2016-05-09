@@ -30,32 +30,25 @@ public class ErrorMessageHandler {
     void onLoginError () {
 
         alertDialogBuilder.setMessage("Incorrect email or password");
-
         AlertDialog alertDialog = alertDialogBuilder.show();
-        Log.d("Login", "Error working");
     }
 
     void onLoginMissingField() {
 
         alertDialogBuilder.setMessage("Email or password is missing");
-
         AlertDialog alertDialog = alertDialogBuilder.show();
-        Log.d("Missing", "Field working");
     }
 
     void invalidEmail () {
 
         alertDialogBuilder.setMessage("The email you entered is not valid");
-
         AlertDialog alertDialog = alertDialogBuilder.show();
-        Log.d("Invalid", "Email field working");
     }
 
     void existingEmail () {
 
         alertDialogBuilder.setMessage("This email is already in use");
-
         AlertDialog alertDialog = alertDialogBuilder.show();
-        Log.d("Already", "Used email field working");
+
     }
 }
