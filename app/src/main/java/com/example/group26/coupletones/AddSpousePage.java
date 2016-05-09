@@ -26,7 +26,8 @@ public class AddSpousePage extends AppCompatActivity {
     private Button updateYourSpouseBtn;
     private EditText spouseNameEditText;
     private Firebase myFirebaseRef;
-
+    private boolean matchedSpouse;
+    private String myEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +53,23 @@ public class AddSpousePage extends AppCompatActivity {
         displaySpouseID();
 
     }
+
+
+
     private void displaySpouseID(){
-        AuthData authData = myFirebaseRef.getAuth();
-        String userId = authData.getUid();
-        final Firebase tempRef = myFirebaseRef.child("users").child(userId);
+
+        final Firebase tempRef = getUserRef();
         tempRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-
                 Log.d("MyApp",snapshot.toString());
+
+                if (snapshot.child("yourEmail").exists()){
+                    myEmail = snapshot.child("yourEmail").getValue().toString();
+                }
+                else{
+                    Log.d("MyApp","You dont have Email");
+                }
                 if (snapshot.child("spouseEmail").exists()){
                     spouseNameEditText.setText(snapshot.child("spouseEmail").getValue().toString(), TextView.BufferType.EDITABLE);
                     Log.d("MyApp", snapshot.getValue().toString());
@@ -108,9 +117,10 @@ public class AddSpousePage extends AppCompatActivity {
 
                         yourSpouseUID.put("spouseUID",UID);
 
-
-                        Firebase userRef = getUserRef();
-                        userRef.updateChildren(yourSpouseUID);
+                        if (checkTwoSpouseMatched(UID,myEmail)) {
+                            Firebase userRef = getUserRef();
+                            userRef.updateChildren(yourSpouseUID);
+                        }
 
                     }
                     else{
@@ -149,6 +159,32 @@ public class AddSpousePage extends AppCompatActivity {
         String userId = authData.getUid();
         Firebase userRef = myFirebaseRef.child("users").child(userId);
         return userRef;
+    }
+    private boolean checkTwoSpouseMatched(String spouseUID, final String yourEmail){
+        final Firebase spouseRef = myFirebaseRef.child("users").child(spouseUID);
+        spouseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                Log.d("MyApp",snapshot.toString());
+                if (snapshot.child("spouseEmail").exists()){
+                    String email = snapshot.child("spouseEmail").getValue().toString();
+                    if (email.equals(yourEmail))
+                        matchedSpouse = true;
+                    else
+                        matchedSpouse = false;
+                }
+                else{
+                    Log.d("MyApp","Your dont have email");
+                }
+
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+        return matchedSpouse;
     }
 
 }

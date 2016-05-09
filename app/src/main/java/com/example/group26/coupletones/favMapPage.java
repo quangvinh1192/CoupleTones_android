@@ -447,9 +447,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         tempRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
-                String temp = snapshot.child("spouseUID").getValue().toString();
-                createAListenerToSpouseFavPlaces(temp);
+                if (snapshot.child("spouseUID").exists()){
+                    Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
+                    String temp = snapshot.child("spouseUID").getValue().toString();
+                    createAListenerToSpouseFavPlaces(temp);
+                }
+                else{
+                    Log.d("MyApp", "You have no spouse");
+                }
+
             }
 
             @Override
