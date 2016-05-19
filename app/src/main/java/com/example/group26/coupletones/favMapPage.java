@@ -67,6 +67,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Button confirmAddBtn;
     private Button cancelAddBtn;
     private Button spouseOptionsBtn;
+    private Button viewSpouseVisits;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private String nameOfPlace;
@@ -120,6 +121,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
         spouseOptionsBtn = (Button) findViewById(R.id.spouseOptions);
+        viewSpouseVisits = (Button) findViewById(R.id.viewSpouseVisitsBtn);
 
         // Setup display for adding mode
         addingView = (RelativeLayout) findViewById(R.id.addingPlaceViewID);
@@ -167,6 +169,12 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 startActivity(new Intent(favMapPage.this, AddSpousePage.class));
             }
 
+        });
+        viewSpouseVisits.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //Perform action on click
+                startActivity(new Intent(favMapPage.this, SpouseVisitsPage.class));
+            }
         });
         mBuilder = new NotificationCompat.Builder(this);
         addSpouseListenerBoolean = false;

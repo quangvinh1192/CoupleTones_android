@@ -56,7 +56,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".signUpPage" />
-        <activity android:name=".AddSpousePage"></activity>
+        <activity android:name=".AddSpousePage" />
+        <activity android:name=".SpouseVisitsPage"></activity>
     </application>
 
 </manifest>
