@@ -61,11 +61,14 @@ public class PushPullMediator {
                 String temp = snapshot.getKey();
                 aFavoritePlace tempPlace = snapshot.getValue(aFavoritePlace.class);
                 if (tempPlace.getName().equals(nameOfVisitedPlace)){
-                    aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfVisitedPlace, tempPlace.getLatitude(), tempPlace.getLongitude(), true);
-                    Firebase updatePlace = tempRef.child(temp);
-                    updatePlace.setValue(newPlaceToAdd);
+                    Firebase updatePlace = tempRef.child(temp).child("visited");
+                    updatePlace.setValue(true);
                 }
+                else {
 
+                    Firebase updatePlace = tempRef.child(temp).child("visited");
+                    updatePlace.setValue(false);
+                }
             }
 
             @Override
