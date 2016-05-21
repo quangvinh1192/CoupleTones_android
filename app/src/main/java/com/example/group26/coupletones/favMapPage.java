@@ -59,7 +59,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
-
+    private Spouse spouse;
     private GoogleMap mMap;
     private Button addPlaceBtn;
     private boolean addingMode;
@@ -71,15 +71,12 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private String nameOfPlace;
     private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
-    private NotificationCompat.Builder mBuilder;
     private boolean addSpouseListenerBoolean;
     protected LocationManager locationManager;
 
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
-
 
     private PushPullMediator mediator;
 
@@ -90,6 +87,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        spouse = new Spouse(this, mNotificationManager);
         favoriteLocations = new HashMap<String, aFavoritePlace>();
         mediator = new PushPullMediator();
 
@@ -160,7 +160,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         });
 
 
-        mBuilder = new NotificationCompat.Builder(this);
         addSpouseListenerBoolean = false;
     }
 
@@ -432,21 +431,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         return currentLocation;
     }
 
-    /** name: createANotification
-     * sends a notification to you saying that your S.O. visited a page
-     * @param title
-     */
-    void createANotification(String title){
-        mBuilder.setSmallIcon(R.drawable.notifications_icon);
-        mBuilder.setContentTitle("Your spouse just visited a new place");
-        String welcomeText = "Your S/O just visited " + title;
-        mBuilder.setContentText(welcomeText);
-        mBuilder.build();
 
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-// notificationID allows you to update the notification later on.
-        mNotificationManager.notify(1, mBuilder.build());
-    }
 
     /**
      * Name: listenToSpouseFavPlaces
@@ -495,7 +480,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     String a = snapshot.child("yourEmail").getValue().toString();
                     if (a.equals(spouseEmail)) {
                         Log.d("MyApp", "Do you ever go here?");
-                        check(spouseID);
+                        spouse.check(spouseID, myFirebaseRef);
                     }
                 }
                 else{
@@ -513,40 +498,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
 
     }
-    private void check(String spouseID){
-        Log.d("I WANT TO SEE HIM", spouseID);
 
-        final Firebase spouseRef = myFirebaseRef.child("users").child(spouseID).child("favPlaces");
-        spouseRef.addChildEventListener(new ChildEventListener() {
-            // Retrieve new posts as they are added to the database
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-                String title = (String) snapshot.child("name").getValue();
-                Log.e("Count ", title);
-
-                createANotification(title);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-            }
-
-            @Override
-            public void onCancelled(FirebaseError e) {
-            }
-            //... ChildEventListener also defines onChildChanged, onChildRemoved,
-            //    onChildMoved and onCanceled, covered in later sections.
-        });
-
-    }
 
 }
