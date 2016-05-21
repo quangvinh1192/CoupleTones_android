@@ -66,7 +66,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private RelativeLayout addingView;
     private Button confirmAddBtn;
     private Button cancelAddBtn;
-    private Button spouseOptionsBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private String nameOfPlace;
