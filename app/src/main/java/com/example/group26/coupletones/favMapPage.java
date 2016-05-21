@@ -67,7 +67,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Button confirmAddBtn;
     private Button cancelAddBtn;
     private Button spouseOptionsBtn;
-    private Button viewSpouseVisits;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private String nameOfPlace;
@@ -120,8 +119,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         addPlaceBtn = (Button) findViewById(R.id.addPlaceBtnID);
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
-        spouseOptionsBtn = (Button) findViewById(R.id.spouseOptions);
-        viewSpouseVisits = (Button) findViewById(R.id.viewSpouseVisitsBtn);
 
         // Setup display for adding mode
         addingView = (RelativeLayout) findViewById(R.id.addingPlaceViewID);
@@ -163,22 +160,10 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             }
         });
 
-        spouseOptionsBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Peform action on click
-                startActivity(new Intent(favMapPage.this, AddSpousePage.class));
-            }
 
-        });
-        viewSpouseVisits.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //Perform action on click
-                startActivity(new Intent(favMapPage.this, SpouseVisitsPage.class));
-            }
-        });
         mBuilder = new NotificationCompat.Builder(this);
         addSpouseListenerBoolean = false;
-    };
+    }
 
 
     /**
@@ -214,7 +199,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     else{
                         Log.i("My App","check visited place null");
                     }
-                };
+                }
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras){
@@ -283,7 +268,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
                 LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                ;
+
                 //TODO TEST if this is correctly adding
 
                 favoriteLocations.put(tempClass.getName(), tempClass);

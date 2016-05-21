@@ -57,7 +57,11 @@
 
         <activity android:name=".signUpPage" />
         <activity android:name=".AddSpousePage" />
-        <activity android:name=".SpouseVisitsPage"></activity>
+        <activity android:name=".SpouseVisitsPage" />
+        <activity
+            android:name=".MenuPage"
+            android:label="@string/title_activity_menu_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -74,20 +74,4 @@
 
     </RelativeLayout>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Spouse Options"
-        android:id="@+id/spouseOptions"
-        android:layout_gravity="right|top" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Spouse Visits"
-        android:id="@+id/viewSpouseVisitsBtn"
-        android:layout_gravity="left|bottom" />
-
 </FrameLayout>

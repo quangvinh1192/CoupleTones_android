@@ -154,7 +154,7 @@ public class loginPage extends AppCompatActivity {
                     userRef.updateChildren(yourEmail);
 
                     Log.d("MyApp", "Update Successful");
-                    startActivity(new Intent(loginPage.this, favMapPage.class));
+                    startActivity(new Intent(loginPage.this, MenuPage.class));
                 }
 
                 @Override
