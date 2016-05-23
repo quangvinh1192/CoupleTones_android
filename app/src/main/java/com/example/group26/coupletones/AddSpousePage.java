@@ -136,18 +136,18 @@ public class AddSpousePage extends AppCompatActivity {
                         Log.d("MyApp", "The spouse you entered is using the app");
                         yourSpouseUID.put("spouseUID", UID);
                         findYourSpouseSpouse(UID);
-                        if (yourSpouseSpouseEmail.equals(myEmail)) {
-                            Firebase userRef = getUserRef();
-                            yourSpouseUID.put("spouseUID", UID);
-                            userRef.updateChildren(yourSpouseUID);
-                            Log.d("MyApp", "Your spouse added you");
-
-                        } else {
-                            yourSpouseUID.put("spouseUID", "");
-                            Log.d("MyApp", "Your spouse did not add you");
-                            Firebase userRef = getUserRef();
-                            userRef.updateChildren(yourSpouseUID);
-                        }
+//                        if (yourSpouseSpouseEmail.equals(myEmail)) {
+//
+//                            Log.d("MyApp", "Your spouse added you");
+//
+//                        } else {
+//                            Log.d("MyApp", yourSpouseSpouseEmail);
+//
+//                            yourSpouseUID.put("spouseUID", "");
+//                            Log.d("MyApp", "Your spouse did not add you");
+//                            Firebase userRef = getUserRef();
+//                            userRef.updateChildren(yourSpouseUID);
+//                        }
                     } else {
                         Log.d("MyApp", "OMG");
                     }
@@ -185,7 +185,7 @@ public class AddSpousePage extends AppCompatActivity {
         Firebase userRef = myFirebaseRef.child("users").child(userId);
         return userRef;
     }
-    private void findYourSpouseSpouse(String spouseUID){
+    private void findYourSpouseSpouse(final String spouseUID){
         final Firebase spouseRef = myFirebaseRef.child("users").child(spouseUID);
         spouseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -194,6 +194,12 @@ public class AddSpousePage extends AppCompatActivity {
                 if (snapshot.child("spouseEmail").exists()){
                     yourSpouseSpouseEmail = snapshot.child("spouseEmail").getValue().toString();
                     Log.d("MyApp","Your spouse's spouse have some data!");
+                    if (yourSpouseSpouseEmail.equals(myEmail)){
+                        Firebase userRef = getUserRef();
+                        Map<String, Object> yourSpouseUID = new HashMap<String, Object>();
+                        yourSpouseUID.put("spouseUID", spouseUID);
+                        userRef.updateChildren(yourSpouseUID);
+                    }
 
                 }
                 else{
