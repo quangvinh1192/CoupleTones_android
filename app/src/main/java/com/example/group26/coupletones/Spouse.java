@@ -28,7 +28,7 @@ public class Spouse {
     // go to my account -> spouseIDfield
 
 
-    Spouse(Context context, NotificationManager mNotificationManager) {
+    public Spouse(Context context, NotificationManager mNotificationManager) {
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
         mBuilder = new NotificationCompat.Builder(context);
         this. mNotificationManager = mNotificationManager;

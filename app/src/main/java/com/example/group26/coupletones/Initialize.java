@@ -5,16 +5,27 @@ import android.app.Application;
 import com.firebase.client.Firebase; // for myFirebaseRef
 
 /**
- * Created by jkapi on 5/22/2016.
+ * To use this global class/object, do:
+ * ((Initialize) this.getApplication()).whatevermethodyouneed();
  */
 public class Initialize extends android.app.Application{
-    Spouse spouse;
-    public Firebase myFirebaseRef;
+    private Spouse spouse;
+    private Firebase myFirebaseRef;
 
 
 
-    Initialize() {
+    public Initialize() {
+        spouse = new Spouse();
+        myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
+    }
 
+
+    public Spouse getSpouse() {
+        return spouse;
+    }
+
+    public Firebase getFirebase() {
+        return myFirebaseRef;
     }
 
     public void setSpouseForAllClasses() {

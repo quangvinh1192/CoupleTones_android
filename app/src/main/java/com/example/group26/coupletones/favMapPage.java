@@ -99,7 +99,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         setContentView(R.layout.activity_fav_map);
 
         // Firebase server location
-        myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
+        myFirebaseRef = ((Initialize)this.getApplication()).getFirebase();
 
         // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
