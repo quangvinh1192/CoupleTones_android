@@ -184,7 +184,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         showYourFavMap();
 
 
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
