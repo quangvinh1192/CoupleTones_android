@@ -16,22 +16,20 @@ import com.firebase.client.ValueEventListener;
  * Created by Jeremy on 5/6/2016.
  */
 public class Spouse {
-    private NotificationCompat.Builder mBuilder;
     public String spouseName;
     public String spouseUID;
     public String spouseEmail;
     public boolean isOnline;
     private Firebase myFirebaseRef;
-    NotificationManager mNotificationManager;
 
 
     // go to my account -> spouseIDfield
 
 
-    Spouse(Context context, NotificationManager mNotificationManager) {
+    Spouse(String name, String ID) {
+        spouseName = name;
+        spouseUID = ID;
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
-        mBuilder = new NotificationCompat.Builder(context);
-        this. mNotificationManager = mNotificationManager;
     }
 
     // Check firebase to determine if spouse is online
@@ -46,15 +44,7 @@ public class Spouse {
      * @param title
      */
     void createANotification(String title){
-        Log.d("Spouse", "Sent Notification");
-        mBuilder.setSmallIcon(R.drawable.notifications_icon);
-        mBuilder.setContentTitle("Your spouse just visited a new place");
-        String welcomeText = "Your S/O just visited " + title;
-        mBuilder.setContentText(welcomeText);
-        mBuilder.build();
-
-    // notificationID allows you to update the notification later on.
-        mNotificationManager.notify(1, mBuilder.build());
+        //create a notification object and call notify()
     }
 
 
