@@ -16,13 +16,14 @@ import java.util.List;
 public class ListOfPlaces {
 
     private Firebase myFireBaseRef;
+    final List<aFavoritePlace> favoritePlaceList;
     String spouseID;
 
     // Initialization for favorite place list class
     ListOfPlaces (Spouse mySpouse) {
 
         // TODO Initialize list of favorite places
-        final List<aFavoritePlace> favoritePlaceList = new ArrayList<aFavoritePlace>();
+        favoritePlaceList = new ArrayList<aFavoritePlace>();
 
         this.spouseID = mySpouse.spouseID;
 
