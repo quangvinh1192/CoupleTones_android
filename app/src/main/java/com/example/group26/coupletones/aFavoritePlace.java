@@ -21,7 +21,7 @@ public class aFavoritePlace {
      * @param inpLongitude
      * @param inpVisited
      */
-    public aFavoritePlace(String inpName,double inpLatitude, double inpLongitude, boolean inpVisited){
+    public aFavoritePlace(String inpName, double inpLatitude, double inpLongitude, boolean inpVisited){
         latitude = inpLatitude;
         longitude = inpLongitude;
         name = inpName;
