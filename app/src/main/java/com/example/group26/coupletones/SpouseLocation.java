@@ -13,7 +13,7 @@ public class SpouseLocation {
     public String vibrationLevel;
     public String soundType;
 
-    /* Constructor for a FavLocation
+    /* Constructor for a SpouseLocation
      * Parameters: Location and a String which holds the vibration type
      * initializes Notification builder with a vibration pattern and a sound
      * that is passed into the constructor
