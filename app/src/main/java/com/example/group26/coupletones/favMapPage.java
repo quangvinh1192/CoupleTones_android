@@ -194,9 +194,9 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     if (temp != null){
                         mediator.updateVisitedPlaceFirebase(temp.getName());
                     }
-                    else{
-                        Log.i("My App","check visited place null");
-                    }
+                }
+                else{
+                    mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
                 }
             }
             @Override
