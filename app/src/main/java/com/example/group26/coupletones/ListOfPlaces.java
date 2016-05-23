@@ -25,7 +25,7 @@ public class ListOfPlaces {
         // TODO Initialize list of favorite places
         favoritePlaceList = new ArrayList<aFavoritePlace>();
 
-        this.spouseID = mySpouse.spouseID;
+        this.spouseID = mySpouse.spouseUID;
 
         myFireBaseRef = new Firebase ("https://coupletonescse100.firebaseio.com");
 

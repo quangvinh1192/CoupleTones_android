@@ -87,10 +87,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        spouse = new Spouse(this, mNotificationManager);
-        spouse.listenToSpouseFavPlaces();
+
         favoriteLocations = new HashMap<String, aFavoritePlace>();
         mediator = new PushPullMediator();
 
