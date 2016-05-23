@@ -70,7 +70,7 @@ public class    VisitFavoritesCalculator {
                 Log.i("MyApp",temp.getName() );
                 visited = temp;
                 break;
-            }
+            };
             //check locations
         }
 

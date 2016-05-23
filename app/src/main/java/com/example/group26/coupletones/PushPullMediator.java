@@ -36,13 +36,17 @@ public class PushPullMediator {
         aFavoritePlace newlyVisited = calculator.calculateVisited(currentLocation, favoriteLocations);
 
         // if we are visiting a favorited location and we haven't already sent a push notification, send one
-        if (visited != newlyVisited && newlyVisited != null) {
-            visited = newlyVisited;
-            Log.i("My App", "YOU JUST VISITED A NEW PLACE");
-            //TODO check if spouse is online
-            //send push notification
+        if (newlyVisited != null) {
+            if (visited != newlyVisited ) {
+                visited = newlyVisited;
+                Log.i("My App", "YOU JUST VISITED A NEW PLACE");
+                //TODO check if spouse is online
+                //send push notification
+            }
             return true;
+
         }
+        visited = null;
         return false;
     }
     public aFavoritePlace getVisited(){
@@ -60,15 +64,20 @@ public class PushPullMediator {
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 String temp = snapshot.getKey();
                 aFavoritePlace tempPlace = snapshot.getValue(aFavoritePlace.class);
-                if (tempPlace.getName().equals(nameOfVisitedPlace)){
+                if (tempPlace.getName().equals(nameOfVisitedPlace)) {
                     Firebase updatePlace = tempRef.child(temp).child("visited");
                     updatePlace.setValue(true);
-                }
-                else {
-
+                };
+                if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
                     Firebase updatePlace = tempRef.child(temp).child("visited");
                     updatePlace.setValue(false);
                 }
+//                }
+//                else {
+//
+//                    Firebase updatePlace = tempRef.child(temp).child("visited");
+//                    updatePlace.setValue(false);
+//                }
             }
 
             @Override
