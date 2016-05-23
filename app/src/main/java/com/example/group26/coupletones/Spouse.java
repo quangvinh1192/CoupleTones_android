@@ -18,10 +18,15 @@ import com.firebase.client.ValueEventListener;
 public class Spouse {
     private NotificationCompat.Builder mBuilder;
     public String spouseName;
-    public String spouseID;
+    public String spouseUID;
+    public String spouseEmail;
     public boolean isOnline;
     private Firebase myFirebaseRef;
     NotificationManager mNotificationManager;
+
+
+    // go to my account -> spouseIDfield
+
 
     Spouse(Context context, NotificationManager mNotificationManager) {
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
@@ -66,8 +71,8 @@ public class Spouse {
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.child("spouseUID").exists()){
                     Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
-                    String spouseUID = snapshot.child("spouseUID").getValue().toString();
-                    String spouseEmail = snapshot.child("spouseEmail").getValue().toString();
+                    spouseUID = snapshot.child("spouseUID").getValue().toString();
+                    spouseEmail = snapshot.child("spouseEmail").getValue().toString();
 
                     createAListenerToSpouseFavPlaces(spouseUID,spouseEmail);
                 }
@@ -121,9 +126,10 @@ public class Spouse {
 
 
     public void check(String spouseID){
-        Log.d("I WANT TO SEE HIM", spouseID);
+        Log.d("I WANT TO SEE HiM", spouseID);
 
         final Firebase spouseRef = myFirebaseRef.child("users").child(spouseID).child("favPlaces");
+        Log.d("SpouseID", spouseID);
         spouseRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to the database
             @Override
