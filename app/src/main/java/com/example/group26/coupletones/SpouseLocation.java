@@ -7,7 +7,7 @@ import android.support.v7.app.NotificationCompat;
 /**
  * Created by gagan on 5/22/16.
  */
-public class FavLocation {
+public class SpouseLocation {
     public Location location;
     public String name;
     public String vibrationLevel;
@@ -18,7 +18,7 @@ public class FavLocation {
      * initializes Notification builder with a vibration pattern and a sound
      * that is passed into the constructor
      */
-    public FavLocation(String name, Location loc, String vibrationLevel, String soundType){
+    public SpouseLocation(String name, Location loc, String vibrationLevel, String soundType){
         //initialize location
         location = loc;
         //initialize name
