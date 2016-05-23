@@ -90,6 +90,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         spouse = new Spouse(this, mNotificationManager);
+        spouse.listenToSpouseFavPlaces();
         favoriteLocations = new HashMap<String, aFavoritePlace>();
         mediator = new PushPullMediator();
 
@@ -181,7 +182,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         // Add zoom feature
         mMap.getUiSettings().setZoomControlsEnabled(true);
         showYourFavMap();
-        listenToSpouseFavPlaces();
+
 
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         LocationListener mLocationListener = new LocationListener() {
@@ -194,7 +195,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     if (temp != null){
                         mediator.updateVisitedPlaceFirebase(temp.getName());
                     }
-                    else{
+                    else {
                         Log.i("My App","check visited place null");
                     }
                 }
@@ -433,71 +434,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
 
 
-    /**
-     * Name: listenToSpouseFavPlaces
-     * initializes listener
-     */
-    void listenToSpouseFavPlaces() {
-        AuthData authData = myFirebaseRef.getAuth();
-        String userId = authData.getUid();
-        final Firebase tempRef = myFirebaseRef.child("users").child(userId);
-        tempRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.child("spouseUID").exists()){
-                    Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
-                    String spouseUID = snapshot.child("spouseUID").getValue().toString();
-                    String spouseEmail = snapshot.child("spouseEmail").getValue().toString();
-
-                    createAListenerToSpouseFavPlaces(spouseUID,spouseEmail);
-                }
-                else{
-                    Log.d("MyApp", "You have no spouse");
-                }
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
-    }
-
-    /** Name: createAListenerToSpouseFavPlaces
-     * creates a listener to see if spouse has visited favorite places. Listens to firebase
-     * @param spouseID
-     */
-    void createAListenerToSpouseFavPlaces(final String spouseID, final String spouseEmail){
-
-        Log.d("I WANT TO SEE", spouseID);
-        Firebase spouseReff = myFirebaseRef.child("users").child(spouseID);
-        spouseReff.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Log.d("MyApp",snapshot.toString());
-                if (snapshot.child("yourEmail").exists()){
-                    String a = snapshot.child("yourEmail").getValue().toString();
-                    if (a.equals(spouseEmail)) {
-                        Log.d("MyApp", "Do you ever go here?");
-                        spouse.check(spouseID, myFirebaseRef);
-                    }
-                }
-                else{
-                    Log.d("MyApp","Your spouse is not using the app yet!");
-                }
-
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-
-        });
-
-
-
-    }
 
 
 }
