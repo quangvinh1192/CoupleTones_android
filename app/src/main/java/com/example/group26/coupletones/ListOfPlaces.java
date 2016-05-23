@@ -65,4 +65,8 @@ public class ListOfPlaces {
             }
         });
     }
+
+    public List<aFavoritePlace> getFavoritesList(){
+        return this.favoritePlaceList;
+    }
 }
