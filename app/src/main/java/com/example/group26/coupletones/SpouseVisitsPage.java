@@ -18,7 +18,7 @@ public class SpouseVisitsPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spouse_visits_page);
 
-        ref = new Firebase("https://coupletonescse100.firebaseio.com");
+        ref = ((Initialize)this.getApplication()).getFirebase();
 
         //TODO still in progress
         //TODO Need to create a scroll view with a LinearLaylout inside

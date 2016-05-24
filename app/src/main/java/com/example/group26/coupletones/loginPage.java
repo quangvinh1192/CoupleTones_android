@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class loginPage extends AppCompatActivity {
 
+    public Initialize globalAppVariables; // THIS WILL BE USED BY ALL OTHER CLASSES
     private TextView email;
     private TextView password;
     private Firebase ref;
@@ -52,6 +53,7 @@ public class loginPage extends AppCompatActivity {
             }
         });
 
+        //listen to see if user wants to sign up
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +156,7 @@ public class loginPage extends AppCompatActivity {
                     userRef.updateChildren(yourEmail);
 
                     Log.d("MyApp", "Update Successful");
+                    globalAppVariables = ((Initialize) getApplicationContext());
                     startActivity(new Intent(loginPage.this, MenuPage.class));
                 }
 
