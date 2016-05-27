@@ -21,7 +21,11 @@ public class SpouseVisitsPage extends AppCompatActivity {
         ref = ((Initialize)this.getApplication()).getFirebase();
 
         //TODO still in progress
-        //TODO Need to create a scroll view with a LinearLaylout inside
+        //TODO Idea is to get a list of all the places your spouse visited and pass them on the
+        //for loop
+        String num_array_name[] = {"Hello", "World", "Hola", "Mundo","World", "Hola", "Mundo","World", "Hola", "Mundo"
+                ,"Hello", "World", "Hola", "Mundo","World", "Hola", "Mundo","World", "Hola", "Mundo"};
+
         LinearLayout linear = (LinearLayout) findViewById(R.id.linear);
 
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -39,8 +43,9 @@ public class SpouseVisitsPage extends AppCompatActivity {
             linear.addView(btn[i]);
 
             btn[i].setOnClickListener(handleOnClick(btn[i]));
-
         }
+
+
     }
 
     View.OnClickListener handleOnClick(final Button button) {
@@ -48,5 +53,5 @@ public class SpouseVisitsPage extends AppCompatActivity {
             public void onClick(View v) {
             }
         };
-    }*/
+    };*/
 }
