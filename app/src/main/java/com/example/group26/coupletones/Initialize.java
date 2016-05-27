@@ -17,6 +17,7 @@ public class Initialize extends android.app.Application{
     public Initialize() {
         spouse = new Spouse(); // automatically starts to listen
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
+
     }
 
 

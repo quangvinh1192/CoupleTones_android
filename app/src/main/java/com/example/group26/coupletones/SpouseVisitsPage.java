@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.firebase.client.Firebase;
 
 public class SpouseVisitsPage extends AppCompatActivity {
-
+/*
     Firebase ref;
 
     @Override
@@ -48,5 +48,5 @@ public class SpouseVisitsPage extends AppCompatActivity {
             public void onClick(View v) {
             }
         };
-    }
+    }*/
 }
