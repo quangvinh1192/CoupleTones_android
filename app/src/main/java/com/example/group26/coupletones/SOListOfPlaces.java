@@ -20,14 +20,14 @@ public class SOListOfPlaces {
     String spouseID;
 
     // Initialization for favorite place list class
-    SOListOfPlaces(Spouse mySpouse) {
+    SOListOfPlaces(Spouse mySpouse, Firebase thisFirebaseRef) {
 
         // TODO Initialize list of favorite places
         favoritePlaceList = new ArrayList<aFavoritePlace>();
 
         this.spouseID = mySpouse.spouseUID;
 
-        myFireBaseRef = new Firebase ("https://coupletonescse100.firebaseio.com");
+        myFireBaseRef = thisFirebaseRef;
 
         myFireBaseRef = myFireBaseRef.child("users").child(spouseID).child("favPlaces");
 
@@ -39,7 +39,7 @@ public class SOListOfPlaces {
                 aFavoritePlace temp = new aFavoritePlace(dataSnapshot.child("name").getValue().toString(),
                                                          (double) dataSnapshot.child("latitude").getValue(),
                                                          (double) dataSnapshot.child("longitude").getValue(),
-                                                         (boolean) dataSnapshot.child("visted").getValue());
+                                                         (boolean) dataSnapshot.child("visited").getValue());
 
                 favoritePlaceList.add(temp);
             }

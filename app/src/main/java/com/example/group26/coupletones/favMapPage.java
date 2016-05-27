@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
@@ -68,7 +69,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Button cancelAddBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
-    private String nameOfPlace;
     private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
     private boolean addSpouseListenerBoolean;
@@ -145,8 +145,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onClick(View v) {
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
-                temporaryMarker.setTitle(nameOfPlace);
-                addPlaceToServer();
+                String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
+                if (nameOfPlace.isEmpty()) {
+                    Toast.makeText(favMapPage.this, "Please enter a name for this place.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    temporaryMarker.setTitle(nameOfPlace);
+                    aFavoritePlace newPlace = new aFavoritePlace ();
+                    newPlace.addPlaceToServer(nameOfPlace, myFirebaseRef, temporaryMarker);
+                }
             }
         });
         cancelAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -295,29 +302,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         mMap.setPadding(0, 96, 0, 0);
     }
 
-    /** name: add placeToServer
-     * adds a favoriteplace object ot server and hashmap
-     */
-    public void addPlaceToServer(){
-
-        nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
-        AuthData authData = myFirebaseRef.getAuth();
-        String userId = authData.getUid();
-        Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
-
-        if (nameOfPlace.isEmpty()) {
-
-            //TODO Create popup so user doesn't forget to put in name
-            nameOfPlace = "Haha no string given";
-        }
-        double lat = temporaryMarker.getPosition().latitude;
-        double longitude = temporaryMarker.getPosition().longitude;
-        aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude, false);
-        temp.push().setValue(newPlaceToAdd);
-
-        //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
-    }
-
 
     void addingSearchingPlace(){
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -414,20 +398,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
         mGoogleApiClient.disconnect();
     }
-
-    /** Name: getCurrentLocation()
-     * returns location as a favroiteplace
-     * @param location
-     * @return
-     */
-    public aFavoritePlace getCurrentLocation(Location location) {
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
-                                        currentLatitude, currentLongitude, true);
-        return currentLocation;
-    }
-
 
 
 

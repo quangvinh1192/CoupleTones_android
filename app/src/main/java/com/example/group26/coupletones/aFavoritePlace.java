@@ -1,6 +1,11 @@
 package com.example.group26.coupletones;
 
+import android.widget.EditText;
+
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 /**
  * Object for each favorite place
@@ -10,6 +15,7 @@ public class aFavoritePlace {
     private double latitude;
     private double longitude;
     private boolean visited;
+    private String nameOfPlace;
     public aFavoritePlace(){
 
     }
@@ -61,6 +67,24 @@ public class aFavoritePlace {
      */
     public  boolean isVisited(){
         return visited;
+    }
+
+
+    /** name: add placeToServer
+     * adds a favoriteplace object ot server and hashmap
+     * PRECONDITION: NAME EXISTS
+     */
+    public void addPlaceToServer(String nameOfPlace, Firebase myFirebaseRef, Marker temporaryMarker) {
+
+        AuthData authData = myFirebaseRef.getAuth();
+        String userId = authData.getUid();
+        Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
+
+        double lat = temporaryMarker.getPosition().latitude;
+        double longitude = temporaryMarker.getPosition().longitude;
+        aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude, false);
+        temp.push().setValue(newPlaceToAdd);
+
     }
 
 
