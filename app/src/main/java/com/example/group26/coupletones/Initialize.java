@@ -20,7 +20,9 @@ public class Initialize extends android.app.Application{
 
     }
 
+    public void startListeningToMyself() {
 
+    }
     public Spouse getSpouse() {
         return spouse;
     }
