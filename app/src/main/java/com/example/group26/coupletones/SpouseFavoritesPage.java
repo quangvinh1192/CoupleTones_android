@@ -7,23 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.firebase.client.Firebase;
-
-public class SpouseVisitsPage extends AppCompatActivity {
-/*
-    Firebase ref;
+public class SpouseFavoritesPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spouse_visits_page);
-
-        ref = ((Initialize)this.getApplication()).getFirebase();
-
-        //TODO still in progress
-        //TODO Idea is to get a list of all the places your spouse visited and pass them on the
-        //for loop
-        String num_array_name[] = {"Hello", "World", "Hola", "Mundo","World", "Hola", "Mundo","World", "Hola", "Mundo"
+        setContentView(R.layout.activity_spouse_favorites_page);
+        //TODO need to access Firebase to get the Spouses favorite locations then pass into list
+       /* String num_array_name[] = {"Hello", "World", "Hola", "Mundo","World", "Hola", "Mundo","World", "Hola", "Mundo"
                 ,"Hello", "World", "Hola", "Mundo","World", "Hola", "Mundo","World", "Hola", "Mundo"};
 
         LinearLayout linear = (LinearLayout) findViewById(R.id.linear);
@@ -43,7 +34,7 @@ public class SpouseVisitsPage extends AppCompatActivity {
             linear.addView(btn[i]);
 
             btn[i].setOnClickListener(handleOnClick(btn[i]));
-        }
+        }*/
 
 
     }
@@ -53,5 +44,5 @@ public class SpouseVisitsPage extends AppCompatActivity {
             public void onClick(View v) {
             }
         };
-    };*/
+    };
 }

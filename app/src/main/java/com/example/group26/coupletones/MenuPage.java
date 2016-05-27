@@ -55,6 +55,13 @@ public class MenuPage extends AppCompatActivity {
             }
         });
 
+        viewSpousesVisitsBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //Perform action on click
+                startActivity(new Intent(MenuPage.this, SpouseFavoritesPage.class));
+            }
+        });
+
         /*          TODO uncomment once the settings page is created
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
