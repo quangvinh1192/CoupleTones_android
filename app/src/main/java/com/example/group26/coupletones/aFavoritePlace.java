@@ -14,6 +14,8 @@ public class aFavoritePlace {
 
     }
 
+
+
     /**
      * constructor
      * @param inpName

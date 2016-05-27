@@ -13,14 +13,14 @@ import java.util.List;
 /**
  * Created by Jeremy on 5/22/2016.
  */
-public class ListOfPlaces {
+public class SOListOfPlaces {
 
     private Firebase myFireBaseRef;
     final List<aFavoritePlace> favoritePlaceList;
     String spouseID;
 
     // Initialization for favorite place list class
-    ListOfPlaces (Spouse mySpouse) {
+    SOListOfPlaces(Spouse mySpouse) {
 
         // TODO Initialize list of favorite places
         favoritePlaceList = new ArrayList<aFavoritePlace>();
