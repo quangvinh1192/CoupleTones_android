@@ -16,6 +16,7 @@ public class aFavoritePlace {
     private double longitude;
     private boolean visited;
     private String nameOfPlace;
+
     public aFavoritePlace(){
 
     }

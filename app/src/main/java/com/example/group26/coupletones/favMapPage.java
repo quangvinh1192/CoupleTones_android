@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
-    private Spouse spouse;
     private GoogleMap mMap;
     private Button addPlaceBtn;
     private boolean addingMode;
@@ -71,7 +70,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Firebase myFirebaseRef;
     private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
-    private boolean addSpouseListenerBoolean;
     protected LocationManager locationManager;
 
     private static final long LOCATION_REFRESH_TIME = 30;
@@ -164,8 +162,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             }
         });
 
-
-        addSpouseListenerBoolean = false;
     }
 
 

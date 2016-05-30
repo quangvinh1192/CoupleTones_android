@@ -15,30 +15,34 @@ public class Initialize extends android.app.Application{
     private static Initialize application;
     private Spouse spouse;
     private Firebase myFirebaseRef;
+    private Context context;
 
 
 
     public Initialize () {
         application = this;
+        startListeningToMyself();
     }
 
 
-    public boolean initBoth(Context context) {
-        boolean firebaseSet = setFirebase(context);
-        boolean spouseSet = setSpouse();
-        return firebaseSet || spouseSet;
-    }
+
     public boolean setFirebase (Context appcontext) {
+        context = appcontext;
         Firebase.setAndroidContext(appcontext);
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
         return true;
     }
 
+    /**Name:
+     * This method initializes spouse and sets its listeners if firebase is running
+     * @return
+     */
     public boolean setSpouse() {
         spouse = new Spouse(); // automatically starts to listen
         if (myFirebaseRef != null) {
+            Log.d("Initialize", "setSpouse");
             spouse.setMyFirebaseRef(myFirebaseRef);
-            spouse.listenToSpouseFavPlaces(myFirebaseRef);
+            spouse.listenToSpouseFavPlaces();
             return true;
         } else {
             //throw error
@@ -55,14 +59,15 @@ public class Initialize extends android.app.Application{
         Firebase.setAndroidContext(appcontext);
         spouse = new Spouse(); // automatically starts to listen
         spouse.setMyFirebaseRef(myFirebaseRef);
-        spouse.listenToSpouseFavPlaces(myFirebaseRef);
-
-
+        spouse.listenToSpouseFavPlaces();
     }
+
 
     public void startListeningToMyself() {
 
+
     }
+
     public Spouse getSpouse() {
         return spouse;
     }
@@ -71,12 +76,7 @@ public class Initialize extends android.app.Application{
         return myFirebaseRef;
     }
 
-    public void setSpouseForAllClasses() {
 
-    }
 
-    public void setFirebaseForAllClass() {
-
-    }
 
 }

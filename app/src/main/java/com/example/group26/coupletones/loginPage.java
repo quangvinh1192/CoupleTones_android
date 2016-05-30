@@ -52,6 +52,10 @@ public class loginPage extends AppCompatActivity {
         globalAppVariables.setFirebase(context);
         ref = globalAppVariables.getFirebase();
 
+        if(ref == null) {
+            Log.d ("LoginPage", "OnCreate: could not initialize Firebase");
+        }
+
         Log.d("LoginPage","OnCreate, initialized firebase");
 
         /******[START]******/
@@ -167,8 +171,6 @@ public class loginPage extends AppCompatActivity {
 
                     //initialize spouse
                     globalAppVariables.setSpouse();
-
-
 
                     Firebase userRef = ref.child("users").child(authData.getUid());
                     userRef.updateChildren(yourEmail);

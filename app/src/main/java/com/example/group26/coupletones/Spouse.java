@@ -19,16 +19,13 @@ public class Spouse {
     public String spouseName;
     public String spouseUID;
     public String spouseEmail;
-    private Firebase myFirebaseRef;
-
-
-    // go to my account -> spouseIDfield
+    public Firebase myFirebaseRef;
 
     Spouse () {
     }
 
-    public void setMyFirebaseRef(Firebase myFirebaseRef) {
-        myFirebaseRef = myFirebaseRef;
+    public void setMyFirebaseRef(Firebase FirebaseRef) {
+        myFirebaseRef = FirebaseRef;
     }
 
     Spouse(String name, String ID) {
@@ -42,6 +39,7 @@ public class Spouse {
      * @param title
      */
     void createANotification(String title){
+        Log.d("Spouse", "create a notification");
         //create a notification object and call notify()
     }
 
@@ -49,9 +47,9 @@ public class Spouse {
      * Name: listenToSpouseFavPlaces
      * initializes listener
      */
-    public void listenToSpouseFavPlaces(Firebase myFirebaseRef) {
+    public void listenToSpouseFavPlaces() {
         if (myFirebaseRef == null) {
-            Log.d ("SPOUSE", "Could not listen to Firebase");
+            Log.d ("SPOUSE", "listentoSpouseFavPlacesCould not listen to Firebase");
             return;
         }
         AuthData authData = myFirebaseRef.getAuth();
@@ -89,7 +87,7 @@ public class Spouse {
         Log.d("LoginPage","OnCreate, initialized firebase");
 
         if (myFirebaseRef == null) {
-            Log.d ("SPOUSE", "Could not listen to Firebase");
+            Log.d ("SPOUSE", "createAListener: Could not listen to Firebase");
             return;
         }
         Firebase spouseReff = myFirebaseRef.child("users").child(spouseID);
