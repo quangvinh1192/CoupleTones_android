@@ -32,6 +32,7 @@ public class MenuPage extends AppCompatActivity {
         Button goToMapBtn = (Button) findViewById(R.id.goToMapBtn);
         Button spouseOptionsBtn = (Button) findViewById(R.id.spouseOptionsBtn);
         Button viewSpousesVisitsBtn = (Button) findViewById(R.id.viewSpousesVisitsBtn);
+        Button viewSpousesFavsBtn = (Button) findViewById(R.id.viewSOFavsBtn);
         Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
 
         goToMapBtn.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +56,7 @@ public class MenuPage extends AppCompatActivity {
             }
         });
 
-        viewSpousesVisitsBtn.setOnClickListener(new View.OnClickListener(){
+        viewSpousesFavsBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //Perform action on click
                 startActivity(new Intent(MenuPage.this, SpouseFavoritesPage.class));

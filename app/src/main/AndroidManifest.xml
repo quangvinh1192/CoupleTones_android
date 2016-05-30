@@ -63,7 +63,8 @@
             android:name=".MenuPage"
             android:label="@string/title_activity_menu_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SpouseFavoritesPage"></activity>
+        <activity android:name=".SpouseFavoritesPage" />
+        <activity android:name=".LocationSettings"></activity>
     </application>
 
 </manifest>
