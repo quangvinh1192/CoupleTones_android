@@ -64,7 +64,7 @@ public class SpouseFavoritesPage extends AppCompatActivity {
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent( SpouseFavoritesPage.this, LocationSettings.class );
+                Intent intent = new Intent( SpouseFavoritesPage.this, LocationSettingsPage.class );
                 intent.putExtra( "Location Name", button.getText() );
                 startActivity(intent);
             }
