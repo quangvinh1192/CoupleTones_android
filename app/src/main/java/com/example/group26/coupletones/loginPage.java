@@ -36,14 +36,24 @@ public class loginPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Firebase.setAndroidContext(this);
-        ref = new Firebase("https://coupletonescse100.firebaseio.com");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
         errorHandler = new ErrorMessageHandler (loginPage.this);
         context = this;
+
+        Log.d("LoginPage", "onCreate initialized email, password, etc");
+
+        //initialize global variables this way
+        globalAppVariables = ((Initialize) getApplicationContext());
+        globalAppVariables.setFirebase(context);
+        ref = globalAppVariables.getFirebase();
+
+        Log.d("LoginPage","OnCreate, initialized firebase");
+
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
         Button submitButton = (Button) findViewById(R.id.submitButton);
@@ -155,13 +165,18 @@ public class loginPage extends AppCompatActivity {
                     String email =  authData.getProviderData().get("email").toString();
                     yourEmail.put("yourEmail", email);
 
+                    //initialize spouse
+                    globalAppVariables.setSpouse();
+
+
 
                     Firebase userRef = ref.child("users").child(authData.getUid());
                     userRef.updateChildren(yourEmail);
 
                     Log.d("MyApp", "Update Successful");
-                    //globalAppVariables = new Initialize(context);
-                    globalAppVariables = ((Initialize) getApplicationContext());
+
+
+                    //go to menupage
                     startActivity(new Intent(loginPage.this, MenuPage.class));
                 }
 

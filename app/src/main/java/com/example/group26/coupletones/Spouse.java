@@ -19,28 +19,23 @@ public class Spouse {
     public String spouseName;
     public String spouseUID;
     public String spouseEmail;
-    public boolean isOnline;
     private Firebase myFirebaseRef;
 
 
     // go to my account -> spouseIDfield
-    Spouse (Firebase myFirebaseRef) {
+
+    Spouse () {
+    }
+
+    public void setMyFirebaseRef(Firebase myFirebaseRef) {
         myFirebaseRef = myFirebaseRef;
-        listenToSpouseFavPlaces();
     }
 
     Spouse(String name, String ID) {
         spouseName = name;
         spouseUID = ID;
-        listenToSpouseFavPlaces();
     }
 
-    // Check firebase to determine if spouse is online
-    public boolean spouseIsOnline() {
-
-        //TODO figure out how to check if spouse's phone is connected to firebase
-        return true;
-    }
 
     /** name: createANotification
      * sends a notification to you saying that your S.O. visited a page
@@ -50,12 +45,15 @@ public class Spouse {
         //create a notification object and call notify()
     }
 
-
     /**
      * Name: listenToSpouseFavPlaces
      * initializes listener
      */
-    void listenToSpouseFavPlaces() {
+    public void listenToSpouseFavPlaces(Firebase myFirebaseRef) {
+        if (myFirebaseRef == null) {
+            Log.d ("SPOUSE", "Could not listen to Firebase");
+            return;
+        }
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
         final Firebase tempRef = myFirebaseRef.child("users").child(userId);
@@ -86,9 +84,14 @@ public class Spouse {
      * creates a listener to see if spouse has visited favorite places. Listens to firebase
      * @param spouseID
      */
-    void createAListenerToSpouseFavPlaces(final String spouseID, final String spouseEmail){
+    private void createAListenerToSpouseFavPlaces(final String spouseID, final String spouseEmail){
 
-        Log.d("I WANT TO SEE", spouseID);
+        Log.d("LoginPage","OnCreate, initialized firebase");
+
+        if (myFirebaseRef == null) {
+            Log.d ("SPOUSE", "Could not listen to Firebase");
+            return;
+        }
         Firebase spouseReff = myFirebaseRef.child("users").child(spouseID);
         spouseReff.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,7 +115,6 @@ public class Spouse {
             }
 
         });
-
 
 
     }
