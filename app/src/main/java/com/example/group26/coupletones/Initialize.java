@@ -42,16 +42,24 @@ public class Initialize extends android.app.Application {
 
     public Initialize() {
         application = this;
-        mediator = new PushPullMediator();
+        mediator = new PushPullMediator(); //checks to see if anything needs to be pushed
         favoriteLocations = new HashMap<String, aFavoritePlace>();
     }
 
-
+    /** Name: setFirebase
+     * sets up Firebase variable so that it is no longer null
+     * @param appcontext
+     * @return boolean that is true if firebase was set
+     */
     public boolean setFirebase(Context appcontext) {
         context = appcontext;
         Firebase.setAndroidContext(appcontext);
         myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
         mediator.setMyFirebaseRef(myFirebaseRef);
+        //null check
+        if (myFirebaseRef == null) {
+            return false;
+        }
         return true;
     }
 
@@ -75,17 +83,18 @@ public class Initialize extends android.app.Application {
 
 
     public void startListeningToMyself() {
+        //null check
         Log.d("Initialize", "startListeningToMyself");
         if (myFirebaseRef == null) {
             Log.d ("Initialize", "startListening: cannot update firebase");
         }
-
+        // null check
         if(mediator.getMyFirebaseRef() == null) {
             Log.d("Initialize", "startlistening: mediator Firebase was null");
             setFirebase(context);
             mediator.setMyFirebaseRef(myFirebaseRef);
         }
-
+        //calls on the hashmap that holds the favorites
         updateHashMap();
 
         // Acquire a reference to the system Location Manager
@@ -96,15 +105,18 @@ public class Initialize extends android.app.Application {
             @Override
             public void onLocationChanged(Location location) {
                 Log.d("Initialize", "Location changed");
+                //listens to the current location to see if there is a change. Calls mediator to
+                //check if Firebase needs to be updated, saying that we visited a page
                 aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
                         location.getLatitude(), location.getLongitude(), true);
                 if (mediator.checkToSend(currentLocation, favoriteLocations)) {
                     aFavoritePlace temp = mediator.getVisited();
+                    // if we visited a place, update that place in firebase
                     if (temp != null){
                         mediator.updateVisitedPlaceFirebase(temp.getName());
                     }
 
-                }else{
+                } else {
                     mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
                 }
             }
@@ -135,11 +147,18 @@ public class Initialize extends android.app.Application {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
     }
 
-
+    /** Name: getSpouse()
+     *  returns the spouse that was initialized
+     * @return Spouse
+     */
     public Spouse getSpouse() {
         return spouse;
     }
 
+    /** Name: getFirebase
+     * returns the firebase that was initialized
+     * @return Firebase
+     */
     public Firebase getFirebase() {
         return myFirebaseRef;
     }

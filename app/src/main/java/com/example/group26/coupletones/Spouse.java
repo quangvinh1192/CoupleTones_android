@@ -21,9 +21,11 @@ public class Spouse {
     public String spouseEmail;
     public Firebase myFirebaseRef;
 
+    /** empty constructor */
     Spouse () {
     }
 
+    /** sets up my firebase */
     public void setMyFirebaseRef(Firebase FirebaseRef) {
         this.myFirebaseRef = FirebaseRef;
     }
@@ -117,7 +119,7 @@ public class Spouse {
 
     }
 
-
+    // checks to see if a notification can be sent
     public void check(String spouseID){
         Log.d("I WANT TO SEE HiM", spouseID);
 
