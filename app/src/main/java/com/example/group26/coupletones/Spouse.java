@@ -24,7 +24,8 @@ public class Spouse {
 
 
     // go to my account -> spouseIDfield
-    Spouse () {
+    Spouse (Firebase myFirebaseRef) {
+        myFirebaseRef = myFirebaseRef;
         listenToSpouseFavPlaces();
     }
 

@@ -1,6 +1,7 @@
 package com.example.group26.coupletones;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class loginPage extends AppCompatActivity {
     private Firebase ref;
     private ErrorMessageHandler errorHandler;
     private GoogleApiClient client;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class loginPage extends AppCompatActivity {
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
         errorHandler = new ErrorMessageHandler (loginPage.this);
-
+        context = this;
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
         Button submitButton = (Button) findViewById(R.id.submitButton);
@@ -139,12 +141,14 @@ public class loginPage extends AppCompatActivity {
      * @return bool indiicating if they are correct
      */
     public boolean fieldsFilled (TextView email, TextView password, final ErrorMessageHandler errorHandler) {
+        Log.d("LOGIN PAGE", "fields filled method");
         //check if at least both fields are filled
         if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
             // Create a handler to handle the result of the authentication
             Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
+                    Log.d("LOGIN PAGE", "fieldsFilled: onAuthenticated");
                     // Authenticated successfully with payload authData
                     //move to maps page
                     Map<String, Object> yourEmail = new HashMap<String, Object>();
@@ -156,6 +160,7 @@ public class loginPage extends AppCompatActivity {
                     userRef.updateChildren(yourEmail);
 
                     Log.d("MyApp", "Update Successful");
+                    //globalAppVariables = new Initialize(context);
                     globalAppVariables = ((Initialize) getApplicationContext());
                     startActivity(new Intent(loginPage.this, MenuPage.class));
                 }
