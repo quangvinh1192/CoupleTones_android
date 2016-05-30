@@ -1,6 +1,7 @@
 package com.example.group26.coupletones;
 
 import android.Manifest;
+import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.le.AdvertiseData;
@@ -68,15 +69,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Button cancelAddBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
-    private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
     protected LocationManager locationManager;
+    private Application app;
 
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    private PushPullMediator mediator;
+
 
 
     /** creates the map and initializes favorite places and buttons
@@ -85,9 +86,11 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        app = this.getApplication();
+        if (app == null) {
+            Log.d("favMapPage", "favMap cannot get app instance");
+        }
 
-        favoriteLocations = new HashMap<String, aFavoritePlace>();
-        mediator = new PushPullMediator();
 
         // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
@@ -187,17 +190,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
-                aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
-                        location.getLatitude(), location.getLongitude(), true);
-                if (mediator.checkToSend(currentLocation, favoriteLocations)) {
-                    aFavoritePlace temp = mediator.getVisited();
-                    if (temp != null){
-                        mediator.updateVisitedPlaceFirebase(temp.getName());
-                    }
 
-                }else{
-                    mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
-                }
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras){
@@ -267,14 +260,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-                //TODO TEST if this is correctly adding
-
-                favoriteLocations.put(tempClass.getName(), tempClass);
-
-//                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-//                    <YourClass> post = postSnapshot.getValue(<YourClass>.class);
-//                    Log.e("Get Data", post.<YourMethod>());
-//                }
             }
 
             @Override

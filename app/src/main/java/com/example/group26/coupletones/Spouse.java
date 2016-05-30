@@ -25,7 +25,7 @@ public class Spouse {
     }
 
     public void setMyFirebaseRef(Firebase FirebaseRef) {
-        myFirebaseRef = FirebaseRef;
+        this.myFirebaseRef = FirebaseRef;
     }
 
     Spouse(String name, String ID) {

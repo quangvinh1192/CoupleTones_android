@@ -171,6 +171,7 @@ public class loginPage extends AppCompatActivity {
 
                     //initialize spouse
                     globalAppVariables.setSpouse();
+                    globalAppVariables.startListeningToMyself();
 
                     Firebase userRef = ref.child("users").child(authData.getUid());
                     userRef.updateChildren(yourEmail);
