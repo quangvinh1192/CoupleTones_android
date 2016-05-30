@@ -3,4 +3,14 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_fav_map">Map</string>
     <string name="title_activity_menu_page">MenuPage</string>
+    <string-array name="vibrations">
+        <item>2 short vibrations</item>
+        <item>1 short vibration</item>
+        <item>1 long vibration</item>
+    </string-array>
+    <string-array name="sounds">
+        <item>sound 1</item>
+        <item>sound 2</item>
+        <item>sound 3</item>
+    </string-array>
 </resources>
