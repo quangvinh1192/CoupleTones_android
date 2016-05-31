@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 public class VibrationService extends Service {
 
@@ -43,6 +44,7 @@ public class VibrationService extends Service {
         String vibration_selected = (String) intent.getExtras().get("vibration selected");
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        //TODO remove Toasts
         if(vibrator.hasVibrator()) {
             Log.v("Can Vibrate", "YES");
 

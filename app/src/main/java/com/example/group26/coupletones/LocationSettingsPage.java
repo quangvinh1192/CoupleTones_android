@@ -37,7 +37,12 @@ public class LocationSettingsPage extends AppCompatActivity {
 
     //TODO
     public void onClickTestSound(View view){
+        Intent intent = new Intent(LocationSettingsPage.this, SoundService.class);
+        Spinner sound_spinner = (Spinner) findViewById( R.id.soundSpinner );
+        String sound_selected = String.valueOf( sound_spinner.getSelectedItem() );
+        intent.putExtra( "sound selected", sound_selected );
 
+        this.startService(intent);
     }
 
     //TODO
