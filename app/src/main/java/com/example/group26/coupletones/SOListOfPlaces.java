@@ -1,5 +1,7 @@
 package com.example.group26.coupletones;
 
+import android.util.Log;
+
 import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -16,7 +18,7 @@ import java.util.List;
 public class SOListOfPlaces {
 
     private Firebase myFireBaseRef;
-    final List<aFavoritePlace> favoritePlaceList;
+    public List<aFavoritePlace> favoritePlaceList;
     String spouseID;
 
     // Initialization for favorite place list class
@@ -27,21 +29,34 @@ public class SOListOfPlaces {
 
         this.spouseID = mySpouse.spouseUID;
 
-        myFireBaseRef = thisFirebaseRef;
+        myFireBaseRef = thisFirebaseRef.child("users").child(spouseID).child("favPlaces");
+        Log.d("SOLISTOFPLACES", "constructor");
+        updateList();
+    }
 
-        myFireBaseRef = myFireBaseRef.child("users").child(spouseID).child("favPlaces");
+    public List<aFavoritePlace> getFavoritesList(){
 
+        Log.d("aFavoritePlace", "Size of list: " + favoritePlaceList.size());
+        return this.favoritePlaceList;
+    }
+
+    void addToList(aFavoritePlace temp) {
+        favoritePlaceList.add(temp);
+    }
+
+    private void updateList () {
+
+        Log.d("SOLISTOFPLACES", "updateLIST");
         myFireBaseRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                aFavoritePlace temp = new aFavoritePlace(dataSnapshot.child("name").getValue().toString(),
-                                                         (double) dataSnapshot.child("latitude").getValue(),
-                                                         (double) dataSnapshot.child("longitude").getValue(),
-                                                         (boolean) dataSnapshot.child("visited").getValue());
+                Log.d("aFavoritePlace", "Favorite place is being added to list" + dataSnapshot.child("name").getValue());
 
-                favoritePlaceList.add(temp);
+                aFavoritePlace temp = dataSnapshot.getValue(aFavoritePlace.class);
+
+                addToList(temp);
             }
 
             @Override
@@ -64,9 +79,5 @@ public class SOListOfPlaces {
 
             }
         });
-    }
-
-    public List<aFavoritePlace> getFavoritesList(){
-        return this.favoritePlaceList;
     }
 }

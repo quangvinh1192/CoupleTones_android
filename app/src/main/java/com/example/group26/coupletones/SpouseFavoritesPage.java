@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,16 +27,18 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         Spouse spouse = ((Initialize)this.getApplication()).getSpouse();
         Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
         SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
-
+        Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
         List<aFavoritePlace> listOfPlaces = soListOfPlaces.getFavoritesList();
         LinearLayout linear = (LinearLayout) findViewById(R.id.linear);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
 
-        Button[] btnEdit = new Button[array.length];
-        for (int i = 0; i < array.length; i++) {
+        Button[] btnEdit = new Button[listOfPlaces.size()];
+        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
+        for (int i = 0; i < listOfPlaces.size(); i++) {
+            Log.d("creatingButton", "Button is being created");
             btnEdit[i] = new Button(getApplicationContext());
-            btnEdit[i].setText(array[i].toString());
+            btnEdit[i].setText(listOfPlaces.get(i).getName().toString());
             btnEdit[i].setTextColor(Color.parseColor("#000000"));
             btnEdit[i].setTextSize(20);
             btnEdit[i].setHeight(100);

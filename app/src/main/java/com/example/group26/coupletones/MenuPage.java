@@ -61,7 +61,7 @@ public class MenuPage extends AppCompatActivity {
             public void onClick(View v){
                 //Perform action on click
 
-                if (((Initialize) app).getSpouse() == null ) {
+                if (((Initialize) app).getSpouse().spouseEmail == null) { // Don't attempt to open visited places without spouse
 
                     Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
                 }
@@ -76,7 +76,7 @@ public class MenuPage extends AppCompatActivity {
             public void onClick(View v){
                 //Perform action on click
 
-                if (((Initialize) app).getSpouse() == null) { // Don't attempt to open spouse favs place without spouse
+                if (((Initialize) app).getSpouse().spouseEmail == null) { // Don't attempt to open spouse favs place without spouse
 
                     Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
                 }
