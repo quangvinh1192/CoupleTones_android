@@ -19,14 +19,12 @@ public class VibrationHandler {
 
     // Constructor for handling vibrations NON-UNIQUE
     VibrationHandler (String typeOfVibration, Context thisContext) {
-
         this.typeOfVibration = typeOfVibration;
         vibratorObject = (Vibrator) thisContext.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     // Constructor for handling vibrations UNIQUE
     VibrationHandler (String typeOfVibration, Context thisContext, long[] uniquePattern) {
-
         this.typeOfVibration = typeOfVibration;
         vibratorObject = (Vibrator) thisContext.getSystemService(Context.VIBRATOR_SERVICE);
         this.uniquePattern = uniquePattern;

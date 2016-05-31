@@ -18,14 +18,32 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/vibrations"
+        android:id="@+id/vibrationSpinner"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/title"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="54dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test Vibration"
         android:id="@+id/testVibrationBtn"
         android:onClick="onClickTestVibration"
-        android:layout_below="@+id/vibrationSpinner"
-        android:layout_toEndOf="@+id/title" />
+        android:layout_below="@+id/vibrationSpinner" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Vibration"
+        android:id="@+id/setVibrationBtn"
+        android:onClick="onClickSetVibration"
+        android:layout_alignTop="@+id/testVibrationBtn"
+        android:layout_toEndOf="@+id/testVibrationBtn" />
 
     <Button
         android:layout_width="wrap_content"
@@ -36,16 +54,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="120dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Vibration"
-        android:id="@+id/setVibrationBtn"
-        android:layout_toEndOf="@+id/testVibrationBtn"
-        android:layout_alignTop="@+id/testVibrationBtn"
-        android:layout_alignBottom="@+id/testVibrationBtn"
-        android:onClick="onClickSetVibration" />
 
     <Button
         android:layout_width="wrap_content"
@@ -66,14 +74,5 @@
         android:layout_above="@+id/TestSoundBtn"
         android:layout_alignParentStart="true" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/vibrations"
-        android:id="@+id/vibrationSpinner"
-        android:spinnerMode="dropdown"
-        android:layout_below="@+id/title"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="54dp" />
 
 </RelativeLayout>

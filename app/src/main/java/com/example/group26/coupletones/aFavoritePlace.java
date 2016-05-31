@@ -16,6 +16,8 @@ public class aFavoritePlace {
     private double longitude;
     private boolean visited;
     private String nameOfPlace;
+    private String uniqueVibration;
+    private String uniqueSound;
 
     public aFavoritePlace(){
 
@@ -70,6 +72,15 @@ public class aFavoritePlace {
         return visited;
     }
 
+    //TODO
+    public void playUniqueVibration(){
+
+    }
+
+    //TODO
+    public void playUniqueSound(){
+
+    }
 
     /** name: add placeToServer
      * adds a favoriteplace object ot server and hashmap

@@ -35,33 +35,28 @@ public class SoundService extends Service {
                     e.printStackTrace();
                 }
 
+                mp.stop();
                 stopSelf(startId);
             }
         }
     }
 
-    //TODO Remove the toast and actually play the sounds
     public void playSound(){
         String sound_selected = (String) intent.getExtras().get("sound selected");
 
         switch (sound_selected) {
-            case "sound 1":
-                /*TODO will uncomment once the sounds are downloaded
-                mp = MediaPlayer.create(this, R.raw.sound1);
+            case "classic":
+                mp = MediaPlayer.create(this, R.raw.classic);
                 mp.start();
-                 */
+
                 break;
-            case "sound 2":
-                /*TODO will uncomment once the sounds are downloaded
-                mp = MediaPlayer.create(this, R.raw.sound1);
+            case "electribe":
+                mp = MediaPlayer.create(this, R.raw.electribe);
                 mp.start();
-                 */
                 break;
-            case "sound 3":
-                /*TODO will uncomment once the sounds are downloaded
-                mp = MediaPlayer.create(this, R.raw.sound1);
+            case "music box":
+                mp = MediaPlayer.create(this, R.raw.musicbox);
                 mp.start();
-                 */
                 break;
         }
 

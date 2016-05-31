@@ -9,8 +9,8 @@
         <item>1 long vibration</item>
     </string-array>
     <string-array name="sounds">
-        <item>sound 1</item>
-        <item>sound 2</item>
-        <item>sound 3</item>
+        <item>classic</item>
+        <item>electribe</item>
+        <item>music box</item>
     </string-array>
 </resources>
