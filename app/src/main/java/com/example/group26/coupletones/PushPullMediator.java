@@ -61,18 +61,21 @@ public class PushPullMediator {
         // Departure
         else if (lastPlace != null && currentLocation == null) {
 
-            //TODO
+            departed (lastPlace.getName());
         }
 
         // Departure + Arrival
 
         else if (lastPlace != null && currentLocation != null) {
 
-            //TODO
+            arrived (currentLocation.getName());
+            departed(lastPlace.getName());
         }
 
     }
 
+
+    // Helper function to update Firebase when we arrive at a place
     private void arrived (final String nameOfPlace) {
 
         AuthData authData = myFirebaseRef.getAuth();
@@ -118,61 +121,111 @@ public class PushPullMediator {
         //TODO IF THERE'S A PROBLEM IT'S PROBABLY HERE
         tempRef.addChildEventListener(addListener);
 
-        tempRef.removeEventListener(addListener);
+        //tempRef.removeEventListener(addListener);
     }
 
-    public void updateVisitedPlaceFirebase(final String nameOfVisitedPlace) {
+    // Helper function for when we depart from a place
+    private void departed (final String nameOfPlace) {
+
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
         final Firebase tempRef = myFirebaseRef.child("users").child(userId).child("favPlaces");
 
-        tempRef.addChildEventListener(new ChildEventListener() {
-            // Retrieve new posts as they are added to the database
+        ChildEventListener addListener = new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                String temp = snapshot.getKey();
-                aFavoritePlace tempPlace = snapshot.getValue(aFavoritePlace.class);
-                if (tempPlace.getName().equals(nameOfVisitedPlace)) {
-                    Firebase updatePlace = tempRef.child(temp).child("visited");
-                    updatePlace.setValue(true);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                    Firebase updateTime = tempRef.getParent().child("history").child(tempPlace.getName().toString()).child("arrive");
+                String temp = dataSnapshot.getKey();
+                aFavoritePlace tempPlace = dataSnapshot.getValue(aFavoritePlace.class);
+
+                if (tempPlace.getName().equals(nameOfPlace)) {
+                    Firebase updatePlace = tempRef.child(temp).child("visited");
+                    updatePlace.setValue(false);
+
+                    Firebase updateTime = tempRef.getParent().child("history").child(tempPlace.getName().toString()).child("depart");
                     updateTime.push().setValue(System.currentTimeMillis());
                 }
-                else if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
+            }
 
-                    Log.d("PUSHPULL", "not visiting a place");
-
-                    Firebase updatePlace = tempRef.child(temp).child("visited");
-
-                    if (tempPlace.isVisited() == true) {
-
-                          Firebase updateTime = tempRef.getParent().child("history").child(tempPlace.getName().toString()).child("depart");
-                          updateTime.push().setValue(System.currentTimeMillis());
-                    }
-
-                    updatePlace.setValue(false);
-                }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
 
             @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-            }
+            public void onCancelled(FirebaseError firebaseError) {
 
-            @Override
-            public void onCancelled(FirebaseError e) {
             }
-            //... ChildEventListener also defines onChildChanged, onChildRemoved,
-            //    onChildMoved and onCanceled, covered in later sections.
-        });
+        };
+
+        //TODO IF THERE'S A PROBLEM IT'S PROBABLY HERE
+        tempRef.addChildEventListener(addListener);
+
+        //tempRef.removeEventListener(addListener);
     }
+
+//    public void updateVisitedPlaceFirebase(final String nameOfVisitedPlace) {
+//        AuthData authData = myFirebaseRef.getAuth();
+//        String userId = authData.getUid();
+//        final Firebase tempRef = myFirebaseRef.child("users").child(userId).child("favPlaces");
+//
+//        tempRef.addChildEventListener(new ChildEventListener() {
+//            // Retrieve new posts as they are added to the database
+//            @Override
+//            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+//                String temp = snapshot.getKey();
+//                aFavoritePlace tempPlace = snapshot.getValue(aFavoritePlace.class);
+//                if (tempPlace.getName().equals(nameOfVisitedPlace)) {
+//                    Firebase updatePlace = tempRef.child(temp).child("visited");
+//                    updatePlace.setValue(true);
+//
+//                    Firebase updateTime = tempRef.getParent().child("history").child(tempPlace.getName().toString()).child("arrive");
+//                    updateTime.push().setValue(System.currentTimeMillis());
+//                }
+//                else if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
+//
+//                    Log.d("PUSHPULL", "not visiting a place");
+//
+//                    Firebase updatePlace = tempRef.child(temp).child("visited");
+//
+//                    if (tempPlace.isVisited() == true) {
+//
+//                          Firebase updateTime = tempRef.getParent().child("history").child(tempPlace.getName().toString()).child("depart");
+//                          updateTime.push().setValue(System.currentTimeMillis());
+//                    }
+//
+//                    updatePlace.setValue(false);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot snapshot) {
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError e) {
+//            }
+//            //... ChildEventListener also defines onChildChanged, onChildRemoved,
+//            //    onChildMoved and onCanceled, covered in later sections.
+//        });
+//    }
 }
