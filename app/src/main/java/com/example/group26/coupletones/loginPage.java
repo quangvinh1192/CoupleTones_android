@@ -182,6 +182,9 @@ public class loginPage extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+//                            Spouse spouse = globalAppVariables.getSpouse();
+//                            Firebase firebaseRef = globalAppVariables.getFirebase();
+//                            SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
 
                             Intent i=new Intent(loginPage.this, MenuPage.class);
                             startActivity(i);
