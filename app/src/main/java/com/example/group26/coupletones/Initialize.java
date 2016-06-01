@@ -37,6 +37,7 @@ public class Initialize extends android.app.Application {
     private PushPullMediator mediator;
     private long minTime = 0; //5 minutes  = 5 * 60 * 1000;
     private long minDistance = 20;
+    SOListOfPlaces solistofplaces;
 
 
 
@@ -44,6 +45,7 @@ public class Initialize extends android.app.Application {
         application = this;
         mediator = new PushPullMediator(); //checks to see if anything needs to be pushed
         favoriteLocations = new HashMap<String, aFavoritePlace>();
+        solistofplaces = new SOListOfPlaces();
     }
 
     /** Name: setFirebase
@@ -79,6 +81,24 @@ public class Initialize extends android.app.Application {
             Log.d("Initialize", "No Firebase for spouse to come from. use setFirebase");
             return false;
         }
+    }
+
+    public void setSolistofplaces() {
+        if (spouse.spouseUID == null) {
+            Log.d("Initialize", "NoSpouse");
+        } else {
+            Log.d("INITIALIZE", "initializing SOListofPlaces");
+            solistofplaces = new SOListOfPlaces(spouse, myFirebaseRef);
+            solistofplaces.updateList();
+        }
+    }
+
+    SOListOfPlaces getSOListOfFavoritePlaces() {
+        return solistofplaces;
+    }
+
+    void updateSOListOfPlaces() {
+        solistofplaces.updateList();
     }
 
 

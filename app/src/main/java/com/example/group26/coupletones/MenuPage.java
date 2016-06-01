@@ -37,6 +37,7 @@ public class MenuPage extends AppCompatActivity {
         if (app == null) {
             Log.d("menuPage", "menuPage cannot get app instance");
         }
+        ((Initialize) app).setSolistofplaces();
         setContentView(R.layout.activity_menu_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
