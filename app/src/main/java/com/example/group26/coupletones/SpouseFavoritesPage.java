@@ -29,41 +29,17 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         //TODO For now, the Vibration and Sound settings will be created
         String array[] = {"Hello", "World", "Hola", "Mundo", "Goodbye", "World"};
 
-<<<<<<< HEAD
         Bundle extras = getIntent().getExtras();
         Bundle extra = getIntent().getBundleExtra("extra");
         ArrayList<aFavoritePlace> listOfPlaces = (ArrayList<aFavoritePlace>) extra.getSerializable("SOList");
-=======
-        Spouse spouse = ((Initialize)this.getApplication()).getSpouse();
-        Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
-        SOListOfPlaces soListOfPlaces = ((Initialize)this.getApplication()).getSOListOfFavoritePlaces();
-        Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
-        List<aFavoritePlace> listOfPlaces = soListOfPlaces.getFavoritesList();
->>>>>>> 5bb6804537bde8d30f298ab704c64128f6b5ba0c
+
         LinearLayout linear = (LinearLayout) findViewById(R.id.linear);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
 
-<<<<<<< HEAD
         loadButtons(linear, listOfPlaces);
 
-//        //TODO remove once SOListOfPlaces is working
-//        Button[] btn = new Button[array.length];
-//        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
-//        for (int i = 0; i < array.length; i++) {
-//            Log.d("creatingButton", "Button is being created");
-//            btn[i] = new Button(getApplicationContext());
-//            btn[i].setText( array[i] );
-//            btn[i].setTextColor(Color.parseColor("#000000"));
-//            btn[i].setTextSize(20);
-//            btn[i].setHeight(100);
-//            btn[i].setLayoutParams(param);
-//            btn[i].setPadding(15, 5, 15, 5);
-//            linear.addView(btn[i]);
-//
-//            btn[i].setOnClickListener(handleOnClick(btn[i]));
-//        }
-=======
+
         Button[] btnEdit = new Button[listOfPlaces.size()];
         Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
         for (int i = 0; i < listOfPlaces.size(); i++) {
@@ -96,7 +72,6 @@ public class SpouseFavoritesPage extends AppCompatActivity {
 
             btn[i].setOnClickListener(handleOnClick(btn[i]));
         }*/
->>>>>>> 5bb6804537bde8d30f298ab704c64128f6b5ba0c
 
         //DEBUG
        /* if(listOfPlaces.size() == 0){
