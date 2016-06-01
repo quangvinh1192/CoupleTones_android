@@ -75,13 +75,21 @@ public class aFavoritePlace implements Serializable {
     }
 
     //TODO
-    public void playUniqueVibration(){
+    public void setUniqueVibration( String newUniqueVibration ){
+        this.uniqueVibration = newUniqueVibration;
+    }
 
+    public String getUniqueVibration(){
+        return this.uniqueVibration;
     }
 
     //TODO
-    public void playUniqueSound(){
+    public void setUniqueSound( String newUniqueSound ){
+        this.uniqueSound = newUniqueSound;
+    }
 
+    public String getUniqueSound(){
+        return this.uniqueSound;
     }
 
     /** name: add placeToServer

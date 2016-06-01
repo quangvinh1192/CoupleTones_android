@@ -230,5 +230,8 @@ public class Initialize extends android.app.Application {
 
    }
 
+    public HashMap<String, aFavoritePlace> getFavoriteLocations(){
+        return favoriteLocations;
+    }
 
 }
