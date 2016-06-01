@@ -56,26 +56,30 @@ public class NotificationControl {
     // 3 unique vibrates: "2 short vibrations", "1 short vibration", "1 long vibration"
     // To choose the vibration, pass in any of the above vibration Strings
     public boolean vibrate(  String vibration_type ){
-        Intent intent = new Intent(initialize, VibrationService.class);
-        intent.putExtra("vibration selected", vibration_type );
-        initialize.startActivity(intent);
-        //if the phone vibrated return true
-        return true;
+
+        if(should_vibrate) {
+            Intent intent = new Intent(initialize, VibrationService.class);
+            intent.putExtra("vibration selected", vibration_type);
+            initialize.startActivity(intent);
+            //if the phone vibrated return true
+            return true;
+        }
+        return false;
     }
 
-    private void shouldVibrate(){
+    public void shouldVibrate(){
         this.should_vibrate = true;
     }
 
-    private void shouldNotVibrate(){
+    public void shouldNotVibrate(){
         this.should_vibrate = false;
     }
 
-    private void shouldSound(){
+    public void shouldSound(){
         this.should_sound = true;
     }
 
-    private void shouldNotSound(){
+    public void shouldNotSound(){
         this.should_sound = false;
     }
 
@@ -83,10 +87,15 @@ public class NotificationControl {
     // "classic", "electribe", "music box"
     // To choose the sound, just pass in any of the above Strings
     public boolean playSound( String sound_type ){
-        Intent intent = new Intent(initialize, SoundService.class);
-        intent.putExtra("sound selected", sound_type);
-        initialize.startActivity(intent);
-        //if the sound was played pressed return true
-        return true;
+
+        if( should_sound ) {
+
+            Intent intent = new Intent(initialize, SoundService.class);
+            intent.putExtra("sound selected", sound_type);
+            initialize.startActivity(intent);
+            //if the sound was played pressed return true
+            return true;
+        }
+        return false;
     }
 }

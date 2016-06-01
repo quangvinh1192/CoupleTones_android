@@ -38,7 +38,7 @@ public class Initialize extends android.app.Application {
     private long minTime = 0; //5 minutes  = 5 * 60 * 1000;
     private long minDistance = 20;
     SOListOfPlaces solistofplaces;
-
+    private NotificationControl notificationControl;        //TODO tell Julia
 
 
     public Initialize() {
@@ -232,6 +232,10 @@ public class Initialize extends android.app.Application {
 
     public HashMap<String, aFavoritePlace> getFavoriteLocations(){
         return favoriteLocations;
+    }
+
+    public NotificationControl getNotificationControl(){
+        return this.notificationControl;
     }
 
 }
