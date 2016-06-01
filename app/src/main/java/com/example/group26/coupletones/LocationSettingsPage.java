@@ -1,6 +1,7 @@
 package com.example.group26.coupletones;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,16 +34,18 @@ public class LocationSettingsPage extends AppCompatActivity {
         this.startService(intent);
     }
 
-    //
+    //sets the vibration locally for the specific location
+    //Check SharedPreferences Lab to see how to access it
+    //TODO possible bug will be when another vibration is set is might just append to the old vibration_selected
     public void onClickSetVibration(View view){
         Spinner vibration_spinner = (Spinner)findViewById(R.id.vibrationSpinner);
         String vibration_selected = String.valueOf(vibration_spinner.getSelectedItem());
 
-        //gets aFavoritePlace object
-        aFavoritePlace favoritePlace = ((Initialize) this.getApplication()).getFavoriteLocations().get( location_name );
+        SharedPreferences sharedPreference = getSharedPreferences("location_info", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreference.edit();
 
-        //sets the unique vibration of the favorite place to what is chosen
-        favoritePlace.setUniqueVibration( vibration_selected );
+        editor.putString( location_name + "_vibration" , vibration_selected );
+        editor.apply();
     }
 
     //
@@ -55,15 +58,17 @@ public class LocationSettingsPage extends AppCompatActivity {
         this.startService(intent);
     }
 
-    //sets the sound on initilize's FavoriteLocations HashMap
+    //sets the Sound locally for the location
+    //To get the sound for the certain location check SharedPreferences lab
+    //TODO possible bug will be when another sound is selected, it might append to the old sound selected
     public void onClickSetSound(View view){
         Spinner sound_spinner = (Spinner)findViewById(R.id.soundSpinner);
         String sound_selected = String.valueOf( sound_spinner.getSelectedItem() );
 
-        //gets aFavoritePlace object
-        aFavoritePlace favoritePlace = ((Initialize) this.getApplication()).getFavoriteLocations().get( location_name );
+        SharedPreferences sharedPreference = getSharedPreferences("location_info", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreference.edit();
 
-        //sets the unique sound of the favorite place to what is chosen
-        favoritePlace.setUniqueSound( sound_selected );
+        editor.putString( location_name + "_sound" , sound_selected );
+        editor.apply();
     }
 }
