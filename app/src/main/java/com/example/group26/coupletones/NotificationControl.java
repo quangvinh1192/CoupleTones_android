@@ -10,6 +10,10 @@ import android.support.v7.app.NotificationCompat;
  */
 public class NotificationControl {
 
+    //Using this when the user wants to set whether the app should vibrate or sound
+    private boolean should_vibrate;
+    private boolean should_sound;
+
     private Initialize initialize;
     NotificationCompat.Builder mBuilder;
 
@@ -57,6 +61,22 @@ public class NotificationControl {
         initialize.startActivity(intent);
         //if the phone vibrated return true
         return true;
+    }
+
+    private void shouldVibrate(){
+        this.should_vibrate = true;
+    }
+
+    private void shouldNotVibrate(){
+        this.should_vibrate = false;
+    }
+
+    private void shouldSound(){
+        this.should_sound = true;
+    }
+
+    private void shouldNotSound(){
+        this.should_sound = false;
     }
 
     //3 types of sounds
