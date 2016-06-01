@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
 public class SpouseVisitsPage extends AppCompatActivity {
-/*
+
     Firebase ref;
 
     @Override
@@ -31,27 +32,25 @@ public class SpouseVisitsPage extends AppCompatActivity {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
 
-        Button[] btn = new Button[num_array_name.length];
-        for (int i = 0; i < num_array_name.length; i++) {
-            btn[i] = new Button(getApplicationContext());
-            btn[i].setText(num_array_name[i].toString());
-            btn[i].setTextColor(Color.parseColor("#000000"));
-            btn[i].setTextSize(20);
-            btn[i].setHeight(100);
-            btn[i].setLayoutParams(param);
-            btn[i].setPadding(15, 5, 15, 5);
-            linear.addView(btn[i]);
+        TextView[] visitedList = new TextView[num_array_name.length];
 
-            btn[i].setOnClickListener(handleOnClick(btn[i]));
+        // TODO: fill 2-d array with corresponding arrival, name, and departure TIMESTAMPS/data
+        //       this will be populated with all the locations, sometimes multiple times if they go to a place multiple times
+        //       sort by arrival time and MAKE SURE TO KEEP IT WITH THE CORRECT NAME AND DEPARTURE TIME
+
+        for (int i = 0; i < num_array_name.length; i++) { // NAME OF PLACE -- ARRIVED: [TIME] -- DEPARTED: [TIME]
+                                                          // If not departed, then fill [TIME] with "has not left"
+
+            // TODO: loop through the 2-d array and create TextViews as needed
+
+            visitedList[i] = new TextView(getApplicationContext());
+            visitedList[i].setText(num_array_name[i].toString());
+            visitedList[i].setTextColor(Color.parseColor("#000000"));
+            visitedList[i].setTextSize(20);
+            visitedList[i].setHeight(75);
+            visitedList[i].setLayoutParams(param);
+            visitedList[i].setPadding(10, 5, 10, 5);
+            linear.addView(visitedList[i]);
         }
-
-
     }
-
-    View.OnClickListener handleOnClick(final Button button) {
-        return new View.OnClickListener() {
-            public void onClick(View v) {
-            }
-        };
-    };*/
 }
