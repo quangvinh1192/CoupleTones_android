@@ -7,6 +7,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -20,9 +21,8 @@ import java.util.HashSet;
  * passed in should cause a notification.
  */
 public class PushPullMediator {
-    boolean imOnline;
-    boolean spouseOnline;
     aFavoritePlace visited;
+    aFavoritePlace lastPlace;
     private Firebase myFirebaseRef;
 
     PushPullMediator(){
@@ -76,12 +76,12 @@ public class PushPullMediator {
 
                     Firebase updateTime = tempRef.getParent().child("arrivalTime");
                     updateTime.push().setValue(System.currentTimeMillis());
-                };
-                if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
+                }
+                else if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
 
                     Firebase updatePlace = tempRef.child(temp).child("visited");
 
-                    if (updatePlace.equals(true)) {
+                    if (snapshot.child("visited").equals(true)) {
 
                         Firebase updateTime = tempRef.getParent().child("departureTime");
                         updateTime.push().setValue(System.currentTimeMillis());
