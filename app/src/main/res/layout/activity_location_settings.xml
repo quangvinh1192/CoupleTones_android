@@ -74,5 +74,24 @@
         android:layout_above="@+id/TestSoundBtn"
         android:layout_alignParentStart="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Vibrations"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/title"
+        android:layout_marginTop = "25dp"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Sounds"
+        android:id="@+id/textView4"
+        android:layout_above="@+id/soundSpinner"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
