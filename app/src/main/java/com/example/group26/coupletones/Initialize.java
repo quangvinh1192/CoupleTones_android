@@ -35,7 +35,7 @@ public class Initialize extends android.app.Application {
     private LocationManager locationManager;
     private HashMap<String, aFavoritePlace> favoriteLocations;
     private PushPullMediator mediator;
-    private long minTime = 0; //5 minutes  = 5 * 60 * 1000;
+    private long minTime = 10 * 1000; //5 minutes  = 5 * 60 * 1000;
     private long minDistance = 20;
     SOListOfPlaces solistofplaces;
 
