@@ -83,7 +83,7 @@ public class PushPullMediator {
 
                     Firebase updatePlace = tempRef.child(temp).child("visited");
 
-                    if (snapshot.child("visited").getValue().equals(true)) {
+                    if (snapshot.child("visited").getValue().toString().equals("false")) {
 
                         Firebase updateTime = tempRef.child(temp).child("departureTime");
                         updateTime.push().setValue(System.currentTimeMillis());
