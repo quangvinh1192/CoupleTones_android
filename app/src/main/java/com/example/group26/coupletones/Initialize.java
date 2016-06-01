@@ -130,16 +130,17 @@ public class Initialize extends android.app.Application {
                 //check if Firebase needs to be updated, saying that we visited a page
                 aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
                         location.getLatitude(), location.getLongitude(), true);
-                if (mediator.checkToSend(currentLocation, favoriteLocations)) {
-                    aFavoritePlace temp = mediator.getVisited();
-                    // if we visited a place, update that place in firebase
-                    if (temp != null){
-                        mediator.updateVisitedPlaceFirebase(temp.getName());
-                    }
-
-                } else {
-                    mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
-                }
+                mediator.updateCurrentLocation(currentLocation, favoriteLocations);
+                mediator.sendInfoToFirebase();
+//                    aFavoritePlace temp = mediator.getVisited();
+//                    // if we visited a place, update that place in firebase
+//                    if (temp != null){
+//                        mediator.updateVisitedPlaceFirebase(temp.getName());
+//                    }
+//
+//                } else {
+//                    mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
+//                }
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
