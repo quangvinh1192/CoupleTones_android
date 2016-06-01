@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -178,9 +179,16 @@ public class loginPage extends AppCompatActivity {
 
                     Log.d("MyApp", "Update Successful");
 
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
+                            Intent i=new Intent(loginPage.this, MenuPage.class);
+                            startActivity(i);
+                        }
+                    }, 3000);
                     //go to menupage
-                    startActivity(new Intent(loginPage.this, MenuPage.class));
+                    //startActivity(new Intent(loginPage.this, MenuPage.class));
                 }
 
                 @Override

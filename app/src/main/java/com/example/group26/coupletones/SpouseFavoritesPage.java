@@ -11,10 +11,15 @@ import android.widget.LinearLayout;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SpouseFavoritesPage extends AppCompatActivity {
-
+    private static final ScheduledExecutorService worker =
+            Executors.newSingleThreadScheduledExecutor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,47 +29,31 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         //TODO For now, the Vibration and Sound settings will be created
         String array[] = {"Hello", "World", "Hola", "Mundo", "Goodbye", "World"};
 
-        Spouse spouse = ((Initialize)this.getApplication()).getSpouse();
-        Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
-        SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
-        Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
-        List<aFavoritePlace> listOfPlaces = soListOfPlaces.getFavoritesList();
+        Bundle extras = getIntent().getExtras();
+        Bundle extra = getIntent().getBundleExtra("extra");
+        ArrayList<aFavoritePlace> listOfPlaces = (ArrayList<aFavoritePlace>) extra.getSerializable("SOList");
         LinearLayout linear = (LinearLayout) findViewById(R.id.linear);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
 
-        Button[] btnEdit = new Button[listOfPlaces.size()];
-        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
-        for (int i = 0; i < listOfPlaces.size(); i++) {
-            Log.d("creatingButton", "Button is being created");
-            btnEdit[i] = new Button(getApplicationContext());
-            btnEdit[i].setText(listOfPlaces.get(i).getName().toString());
-            btnEdit[i].setTextColor(Color.parseColor("#000000"));
-            btnEdit[i].setTextSize(20);
-            btnEdit[i].setHeight(100);
-            btnEdit[i].setLayoutParams(param);
-            btnEdit[i].setPadding(15, 5, 15, 5);
-            linear.addView(btnEdit[i]);
+        loadButtons(linear, listOfPlaces);
 
-            btnEdit[i].setOnClickListener(handleOnClick(btnEdit[i]));
-        }
-
-        //TODO remove once SOListOfPlaces is working
-        Button[] btn = new Button[array.length];
-        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
-        for (int i = 0; i < array.length; i++) {
-            Log.d("creatingButton", "Button is being created");
-            btn[i] = new Button(getApplicationContext());
-            btn[i].setText( array[i] );
-            btn[i].setTextColor(Color.parseColor("#000000"));
-            btn[i].setTextSize(20);
-            btn[i].setHeight(100);
-            btn[i].setLayoutParams(param);
-            btn[i].setPadding(15, 5, 15, 5);
-            linear.addView(btn[i]);
-
-            btn[i].setOnClickListener(handleOnClick(btn[i]));
-        }
+//        //TODO remove once SOListOfPlaces is working
+//        Button[] btn = new Button[array.length];
+//        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
+//        for (int i = 0; i < array.length; i++) {
+//            Log.d("creatingButton", "Button is being created");
+//            btn[i] = new Button(getApplicationContext());
+//            btn[i].setText( array[i] );
+//            btn[i].setTextColor(Color.parseColor("#000000"));
+//            btn[i].setTextSize(20);
+//            btn[i].setHeight(100);
+//            btn[i].setLayoutParams(param);
+//            btn[i].setPadding(15, 5, 15, 5);
+//            linear.addView(btn[i]);
+//
+//            btn[i].setOnClickListener(handleOnClick(btn[i]));
+//        }
 
         //DEBUG
        /* if(listOfPlaces.size() == 0){
@@ -80,7 +69,26 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         } */
 
     }
+    void loadButtons(final LinearLayout linear, final List<aFavoritePlace> listOfPlaces) {
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+                Button[] btnEdit = new Button[listOfPlaces.size()];
+                Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
+                for (int i = 0; i < listOfPlaces.size(); i++) {
+                    Log.d("creatingButton", "Button is being created");
+                    btnEdit[i] = new Button(getApplicationContext());
+                    btnEdit[i].setText(listOfPlaces.get(i).getName().toString());
+                    btnEdit[i].setTextColor(Color.parseColor("#000000"));
+                    btnEdit[i].setTextSize(20);
+                    btnEdit[i].setHeight(100);
+                    btnEdit[i].setLayoutParams(param);
+                    btnEdit[i].setPadding(15, 5, 15, 5);
+                    linear.addView(btnEdit[i]);
 
+                    btnEdit[i].setOnClickListener(handleOnClick(btnEdit[i]));
+                }
+
+        };
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {

@@ -7,10 +7,12 @@ import com.firebase.client.Firebase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+import java.io.Serializable;
+
 /**
  * Object for each favorite place
  */
-public class aFavoritePlace {
+public class aFavoritePlace implements Serializable {
     private String name;
     private double latitude;
     private double longitude;

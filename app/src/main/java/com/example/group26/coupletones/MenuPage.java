@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuPage extends AppCompatActivity {
 
@@ -36,6 +40,14 @@ public class MenuPage extends AppCompatActivity {
         setContentView(R.layout.activity_menu_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        Spouse spouse = ((Initialize)this.getApplication()).getSpouse();
+        Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
+        SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
+        Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
+        final List<aFavoritePlace> listOfPlaces = soListOfPlaces.getFavoritesList();
+
 
         Button goToMapBtn = (Button) findViewById(R.id.goToMapBtn);
         Button spouseOptionsBtn = (Button) findViewById(R.id.spouseOptionsBtn);
@@ -81,8 +93,14 @@ public class MenuPage extends AppCompatActivity {
                     Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    Bundle extra = new Bundle();
+                    extra.putSerializable("SOList", (ArrayList<aFavoritePlace>) listOfPlaces);
 
-                    startActivity(new Intent(MenuPage.this, SpouseFavoritesPage.class));
+                    Intent intent = new Intent(MenuPage.this, SpouseFavoritesPage.class);
+                    intent.putExtra("extra", extra);
+
+                    startActivity(intent);
+                   // startActivity(new Intent(MenuPage.this, SpouseFavoritesPage.class));
                 }
             }
         });
