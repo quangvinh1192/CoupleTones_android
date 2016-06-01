@@ -75,6 +75,7 @@ public class Initialize extends android.app.Application {
             Log.d("Initialize", "setSpouse");
             spouse.setMyFirebaseRef(myFirebaseRef);
             spouse.listenToSpouseFavPlaces();
+            spouse.notify = new NotificationControl(application);
             return true;
         } else {
             //throw error
