@@ -21,7 +21,7 @@ import java.util.HashSet;
  * passed in should cause a notification.
  */
 public class PushPullMediator {
-    aFavoritePlace visited;
+    aFavoritePlace currentLocation;
     aFavoritePlace lastPlace;
     private Firebase myFirebaseRef;
 
@@ -36,27 +36,89 @@ public class PushPullMediator {
     Firebase getMyFirebaseRef() {
         return myFirebaseRef;
     }
+
     /** checks ot see if need ot send a message by calling calculator*/
-    public boolean checkToSend(aFavoritePlace currentLocation, HashMap<String,aFavoritePlace> favoriteLocations) {
+    public void updateCurrentLocation(aFavoritePlace currentLocation, HashMap<String,aFavoritePlace> favoriteLocations) {
         VisitFavoritesCalculator calculator = new VisitFavoritesCalculator();
         aFavoritePlace newlyVisited = calculator.calculateVisited(currentLocation, favoriteLocations);
 
-        // if we are visiting a favorited location and we haven't already sent a push notification, send one
-        if (newlyVisited != null) {
-            if (visited != newlyVisited ) {
-                visited = newlyVisited;
-                Log.i("My App", "YOU JUST VISITED A NEW PLACE");
-                //TODO check if spouse is online
-                //send push notification
-            }
-            return true;
+        lastPlace = this.currentLocation;
+        this.currentLocation = newlyVisited;
 
-        }
-        visited = null;
-        return false;
     }
     public aFavoritePlace getVisited(){
-        return visited;
+        return currentLocation;
+    }
+
+    public void sendInfoToFirebase() {
+
+        // Arrival
+        if (lastPlace == null && currentLocation != null) {
+
+            arrived (currentLocation.getName());
+        }
+
+        // Departure
+        else if (lastPlace != null && currentLocation == null) {
+
+            //TODO
+        }
+
+        // Departure + Arrival
+
+        else if (lastPlace != null && currentLocation != null) {
+
+            //TODO
+        }
+
+    }
+
+    private void arrived (final String nameOfPlace) {
+
+        AuthData authData = myFirebaseRef.getAuth();
+        String userId = authData.getUid();
+        final Firebase tempRef = myFirebaseRef.child("users").child(userId).child("favPlaces");
+
+        ChildEventListener addListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                String temp = dataSnapshot.getKey();
+                aFavoritePlace tempPlace = dataSnapshot.getValue(aFavoritePlace.class);
+                if (tempPlace.getName().equals(nameOfPlace)) {
+                    Firebase updatePlace = tempRef.child(temp).child("visited");
+                    updatePlace.setValue(true);
+
+                    Firebase updateTime = tempRef.getParent().child("history").child(tempPlace.getName().toString()).child("arrive");
+                    updateTime.push().setValue(System.currentTimeMillis());
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        };
+
+        //TODO IF THERE'S A PROBLEM IT'S PROBABLY HERE
+        tempRef.addChildEventListener(addListener);
+
+        tempRef.removeEventListener(addListener);
     }
 
     public void updateVisitedPlaceFirebase(final String nameOfVisitedPlace) {
