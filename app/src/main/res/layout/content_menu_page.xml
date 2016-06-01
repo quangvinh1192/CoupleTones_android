@@ -19,7 +19,7 @@
         android:id="@+id/goToMapBtn"
         android:layout_above="@+id/spouseOptionsBtn"
         android:layout_alignStart="@+id/spouseOptionsBtn"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="35dp"
         android:layout_alignEnd="@+id/spouseOptionsBtn" />
 
     <Button
@@ -28,7 +28,7 @@
         android:text="Spouse Options"
         android:id="@+id/spouseOptionsBtn"
         android:layout_above="@+id/viewSpousesVisitsBtn"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="35dp"
         android:layout_alignStart="@+id/viewSpousesVisitsBtn"
         android:layout_alignEnd="@+id/viewSpousesVisitsBtn" />
 
@@ -38,6 +38,16 @@
         android:text="View your Spouse&apos;s Visits"
         android:id="@+id/viewSpousesVisitsBtn"
         android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/viewSOFavsBtn"
+        android:layout_alignStart="@+id/viewSOFavsBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View your Spouse&apos;s Favorites"
+        android:id="@+id/viewSOFavsBtn"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/viewSpousesVisitsBtn"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -45,10 +55,10 @@
         android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/settingsBtn"
-        android:layout_marginTop="45dp"
-        android:layout_below="@+id/viewSpousesVisitsBtn"
-        android:layout_alignEnd="@+id/viewSpousesVisitsBtn"
-        android:layout_alignStart="@+id/viewSpousesVisitsBtn" />
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/viewSOFavsBtn"
+        android:layout_alignStart="@+id/viewSpousesVisitsBtn"
+        android:layout_alignEnd="@+id/viewSOFavsBtn" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,4 +68,6 @@
         android:id="@+id/title"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

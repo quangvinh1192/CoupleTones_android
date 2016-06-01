@@ -1,5 +1,6 @@
 package com.example.group26.coupletones;
 
+import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,8 +8,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -21,10 +24,15 @@ public class MenuPage extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private Application app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        app = this.getApplication();
+        if (app == null) {
+            Log.d("menuPage", "menuPage cannot get app instance");
+        }
         setContentView(R.layout.activity_menu_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -32,6 +40,7 @@ public class MenuPage extends AppCompatActivity {
         Button goToMapBtn = (Button) findViewById(R.id.goToMapBtn);
         Button spouseOptionsBtn = (Button) findViewById(R.id.spouseOptionsBtn);
         Button viewSpousesVisitsBtn = (Button) findViewById(R.id.viewSpousesVisitsBtn);
+        Button viewSpousesFavsBtn = (Button) findViewById(R.id.viewSOFavsBtn);
         Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
 
         goToMapBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +60,30 @@ public class MenuPage extends AppCompatActivity {
         viewSpousesVisitsBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //Perform action on click
-                startActivity(new Intent(MenuPage.this, SpouseVisitsPage.class));
+
+                if (((Initialize) app).getSpouse().spouseEmail == null) { // Don't attempt to open visited places without spouse
+
+                    Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
+                }
+                else {
+
+                    startActivity(new Intent(MenuPage.this, SpouseVisitsPage.class));
+                }
+            }
+        });
+
+        viewSpousesFavsBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //Perform action on click
+
+                if (((Initialize) app).getSpouse().spouseEmail == null) { // Don't attempt to open spouse favs place without spouse
+
+                    Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
+                }
+                else {
+
+                    startActivity(new Intent(MenuPage.this, SpouseFavoritesPage.class));
+                }
             }
         });
 

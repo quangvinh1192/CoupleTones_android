@@ -44,7 +44,7 @@ public class AddSpousePage extends AppCompatActivity {
         yourSpouseSpouseEmail = "";
         yourSpouseEmail = "";
         yourSpouseUID = "";
-        myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
+        myFirebaseRef = ((Initialize) this.getApplication()).getFirebase();
         updateYourSpouseBtn = (Button) findViewById(R.id.updateSpouseButtonID);
         updateYourSpouseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

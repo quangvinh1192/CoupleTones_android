@@ -1,6 +1,7 @@
 package com.example.group26.coupletones;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,21 +26,37 @@ import java.util.Map;
 
 public class loginPage extends AppCompatActivity {
 
+    public Initialize globalAppVariables; // THIS WILL BE USED BY ALL OTHER CLASSES
     private TextView email;
     private TextView password;
     private Firebase ref;
     private ErrorMessageHandler errorHandler;
     private GoogleApiClient client;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Firebase.setAndroidContext(this);
-        ref = new Firebase("https://coupletonescse100.firebaseio.com");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV);
         password = (TextView) findViewById(R.id.passwordTV);
         errorHandler = new ErrorMessageHandler (loginPage.this);
+        context = this;
+
+        Log.d("LoginPage", "onCreate initialized email, password, etc");
+
+        //initialize global variables this way
+        globalAppVariables = ((Initialize) getApplicationContext());
+        globalAppVariables.setFirebase(context);
+        ref = globalAppVariables.getFirebase();
+
+        if(ref == null) {
+            Log.d ("LoginPage", "OnCreate: could not initialize Firebase");
+        }
+
+        Log.d("LoginPage","OnCreate, initialized firebase");
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
@@ -52,6 +69,7 @@ public class loginPage extends AppCompatActivity {
             }
         });
 
+        //listen to see if user wants to sign up
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,23 +155,31 @@ public class loginPage extends AppCompatActivity {
      * @return bool indiicating if they are correct
      */
     public boolean fieldsFilled (TextView email, TextView password, final ErrorMessageHandler errorHandler) {
+        Log.d("LOGIN PAGE", "fields filled method");
         //check if at least both fields are filled
         if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
             // Create a handler to handle the result of the authentication
             Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
+                    Log.d("LOGIN PAGE", "fieldsFilled: onAuthenticated");
                     // Authenticated successfully with payload authData
                     //move to maps page
                     Map<String, Object> yourEmail = new HashMap<String, Object>();
                     String email =  authData.getProviderData().get("email").toString();
                     yourEmail.put("yourEmail", email);
 
+                    //initialize spouse
+                    globalAppVariables.setSpouse();
+                    globalAppVariables.startListeningToMyself();
 
                     Firebase userRef = ref.child("users").child(authData.getUid());
                     userRef.updateChildren(yourEmail);
 
                     Log.d("MyApp", "Update Successful");
+
+
+                    //go to menupage
                     startActivity(new Intent(loginPage.this, MenuPage.class));
                 }
 

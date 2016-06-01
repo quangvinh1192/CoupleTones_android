@@ -26,10 +26,16 @@ public class PushPullMediator {
     private Firebase myFirebaseRef;
 
     PushPullMediator(){
-        myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
 
     }
 
+    void setMyFirebaseRef(Firebase myFirebaseRef) {
+        this.myFirebaseRef = myFirebaseRef;
+    }
+
+    Firebase getMyFirebaseRef() {
+        return myFirebaseRef;
+    }
     /** checks ot see if need ot send a message by calling calculator*/
     public boolean checkToSend(aFavoritePlace currentLocation, HashMap<String,aFavoritePlace> favoriteLocations) {
         VisitFavoritesCalculator calculator = new VisitFavoritesCalculator();
@@ -72,12 +78,7 @@ public class PushPullMediator {
                     Firebase updatePlace = tempRef.child(temp).child("visited");
                     updatePlace.setValue(false);
                 }
-//                }
-//                else {
-//
-//                    Firebase updatePlace = tempRef.child(temp).child("visited");
-//                    updatePlace.setValue(false);
-//                }
+
             }
 
             @Override

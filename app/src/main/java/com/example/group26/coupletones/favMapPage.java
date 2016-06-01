@@ -1,6 +1,7 @@
 package com.example.group26.coupletones;
 
 import android.Manifest;
+import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.le.AdvertiseData;
@@ -26,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
@@ -59,7 +61,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
-    private Spouse spouse;
     private GoogleMap mMap;
     private Button addPlaceBtn;
     private boolean addingMode;
@@ -68,17 +69,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Button cancelAddBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
-    private String nameOfPlace;
-    private HashMap<String, aFavoritePlace> favoriteLocations;
     private GoogleApiClient mGoogleApiClient;
-    private boolean addSpouseListenerBoolean;
     protected LocationManager locationManager;
+    private Application app;
 
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    private PushPullMediator mediator;
+
 
 
     /** creates the map and initializes favorite places and buttons
@@ -87,18 +86,18 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        spouse = new Spouse(this, mNotificationManager);
-        favoriteLocations = new HashMap<String, aFavoritePlace>();
-        mediator = new PushPullMediator();
+        app = this.getApplication();
+        if (app == null) {
+            Log.d("favMapPage", "favMap cannot get app instance");
+        }
+
 
         // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav_map);
 
         // Firebase server location
-        myFirebaseRef = new Firebase("https://coupletonescse100.firebaseio.com");
+        myFirebaseRef = ((Initialize)this.getApplication()).getFirebase();
 
         // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -147,8 +146,15 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onClick(View v) {
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
-                temporaryMarker.setTitle(nameOfPlace);
-                addPlaceToServer();
+                String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
+                if (nameOfPlace.isEmpty()) {
+                    Toast.makeText(favMapPage.this, "Please enter a name for this place.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    temporaryMarker.setTitle(nameOfPlace);
+                    aFavoritePlace newPlace = new aFavoritePlace ();
+                    newPlace.addPlaceToServer(nameOfPlace, myFirebaseRef, temporaryMarker);
+                }
             }
         });
         cancelAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -159,8 +165,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             }
         });
 
-
-        addSpouseListenerBoolean = false;
     }
 
 
@@ -181,23 +185,12 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         // Add zoom feature
         mMap.getUiSettings().setZoomControlsEnabled(true);
         showYourFavMap();
-        listenToSpouseFavPlaces();
 
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
         LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
-                aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
-                        location.getLatitude(), location.getLongitude(), true);
-                if (mediator.checkToSend(currentLocation, favoriteLocations)) {
-                    aFavoritePlace temp = mediator.getVisited();
-                    if (temp != null){
-                        mediator.updateVisitedPlaceFirebase(temp.getName());
-                    }
-                }
-                else{
-                    mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
-                }
+
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras){
@@ -267,14 +260,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-                //TODO TEST if this is correctly adding
-
-                favoriteLocations.put(tempClass.getName(), tempClass);
-
-//                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-//                    <YourClass> post = postSnapshot.getValue(<YourClass>.class);
-//                    Log.e("Get Data", post.<YourMethod>());
-//                }
             }
 
             @Override
@@ -296,29 +281,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             //    onChildMoved and onCanceled, covered in later sections.
         });
         mMap.setPadding(0, 96, 0, 0);
-    }
-
-    /** name: add placeToServer
-     * adds a favoriteplace object ot server and hashmap
-     */
-    public void addPlaceToServer(){
-
-        nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
-        AuthData authData = myFirebaseRef.getAuth();
-        String userId = authData.getUid();
-        Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
-
-        if (nameOfPlace.isEmpty()) {
-
-            //TODO Create popup so user doesn't forget to put in name
-            nameOfPlace = "Haha no string given";
-        }
-        double lat = temporaryMarker.getPosition().latitude;
-        double longitude = temporaryMarker.getPosition().longitude;
-        aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude, false);
-        temp.push().setValue(newPlaceToAdd);
-
-        //TODO IF TRACK WHILE OFFLINE, ADD PLACE TO HASHSET
     }
 
 
@@ -418,86 +380,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         mGoogleApiClient.disconnect();
     }
 
-    /** Name: getCurrentLocation()
-     * returns location as a favroiteplace
-     * @param location
-     * @return
-     */
-    public aFavoritePlace getCurrentLocation(Location location) {
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        aFavoritePlace currentLocation = new aFavoritePlace("Current Location",
-                                        currentLatitude, currentLongitude, true);
-        return currentLocation;
-    }
 
-
-
-    /**
-     * Name: listenToSpouseFavPlaces
-     * initializes listener
-     */
-    void listenToSpouseFavPlaces() {
-        AuthData authData = myFirebaseRef.getAuth();
-        String userId = authData.getUid();
-        final Firebase tempRef = myFirebaseRef.child("users").child(userId);
-        tempRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.child("spouseUID").exists()){
-                    Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
-                    String spouseUID = snapshot.child("spouseUID").getValue().toString();
-                    String spouseEmail = snapshot.child("spouseEmail").getValue().toString();
-
-                    createAListenerToSpouseFavPlaces(spouseUID,spouseEmail);
-                }
-                else{
-                    Log.d("MyApp", "You have no spouse");
-                }
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
-    }
-
-    /** Name: createAListenerToSpouseFavPlaces
-     * creates a listener to see if spouse has visited favorite places. Listens to firebase
-     * @param spouseID
-     */
-    void createAListenerToSpouseFavPlaces(final String spouseID, final String spouseEmail){
-
-        Log.d("I WANT TO SEE", spouseID);
-        Firebase spouseReff = myFirebaseRef.child("users").child(spouseID);
-        spouseReff.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Log.d("MyApp",snapshot.toString());
-                if (snapshot.child("yourEmail").exists()){
-                    String a = snapshot.child("yourEmail").getValue().toString();
-                    if (a.equals(spouseEmail)) {
-                        Log.d("MyApp", "Do you ever go here?");
-                        spouse.check(spouseID, myFirebaseRef);
-                    }
-                }
-                else{
-                    Log.d("MyApp","Your spouse is not using the app yet!");
-                }
-
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-
-        });
-
-
-
-    }
 
 
 }
