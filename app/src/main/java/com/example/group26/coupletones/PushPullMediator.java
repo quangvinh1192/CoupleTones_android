@@ -79,6 +79,9 @@ public class PushPullMediator {
                 }
                 else if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
 
+                    Log.d("PUSHPULL", "not visiting a place");
+
+
                     Firebase updatePlace = tempRef.child(temp).child("visited");
 
                     if (snapshot.child("visited").equals(true)) {
