@@ -40,10 +40,13 @@ public class SOListOfPlaces {
         Log.d("SOLISTOFPLACES", "constructor");
     }
 
-    public List<aFavoritePlace> getFavoritesList() {
+    public void getFavoritesList(ArrayList<aFavoritePlace> a) {
 
         Log.d("aFavoritePlace", "Size of list: " + favoritePlaceList.size());
-        return this.favoritePlaceList;
+        for (aFavoritePlace temp : this.favoritePlaceList){
+            a.add(temp);
+        }
+       // return this.favoritePlaceList;
     }
 
     void addToList(aFavoritePlace temp) {

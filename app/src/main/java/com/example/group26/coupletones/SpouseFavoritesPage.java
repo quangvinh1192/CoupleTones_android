@@ -29,7 +29,6 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         //TODO For now, the Vibration and Sound settings will be created
         String array[] = {"Hello", "World", "Hola", "Mundo", "Goodbye", "World"};
 
-        Bundle extras = getIntent().getExtras();
         Bundle extra = getIntent().getBundleExtra("extra");
         ArrayList<aFavoritePlace> listOfPlaces = (ArrayList<aFavoritePlace>) extra.getSerializable("SOList");
 
@@ -37,24 +36,25 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
 
+
         loadButtons(linear, listOfPlaces);
 
 
-        Button[] btnEdit = new Button[listOfPlaces.size()];
-        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
-        for (int i = 0; i < listOfPlaces.size(); i++) {
-            Log.d("creatingButton", "Button is being created");
-            btnEdit[i] = new Button(getApplicationContext());
-            btnEdit[i].setText(listOfPlaces.get(i).getName().toString());
-            btnEdit[i].setTextColor(Color.parseColor("#000000"));
-            btnEdit[i].setTextSize(20);
-            btnEdit[i].setHeight(100);
-            btnEdit[i].setLayoutParams(param);
-            btnEdit[i].setPadding(15, 5, 15, 5);
-            linear.addView(btnEdit[i]);
-
-            btnEdit[i].setOnClickListener(handleOnClick(btnEdit[i]));
-        }
+//        Button[] btnEdit = new Button[listOfPlaces.size()];
+//        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
+//        for (int i = 0; i < listOfPlaces.size(); i++) {
+//            Log.d("creatingButton", "Button is being created");
+//            btnEdit[i] = new Button(getApplicationContext());
+//            btnEdit[i].setText(listOfPlaces.get(i).getName().toString());
+//            btnEdit[i].setTextColor(Color.parseColor("#000000"));
+//            btnEdit[i].setTextSize(20);
+//            btnEdit[i].setHeight(100);
+//            btnEdit[i].setLayoutParams(param);
+//            btnEdit[i].setPadding(15, 5, 15, 5);
+//            linear.addView(btnEdit[i]);
+//
+//            btnEdit[i].setOnClickListener(handleOnClick(btnEdit[i]));
+//        }
 
         /*//TODO remove once SOListOfPlaces is working
         Button[] btn = new Button[array.length];

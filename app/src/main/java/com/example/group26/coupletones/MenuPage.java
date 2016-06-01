@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +47,11 @@ public class MenuPage extends AppCompatActivity {
 
         Spouse spouse = ((Initialize)this.getApplication()).getSpouse();
         Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
-        SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
+        final SOListOfPlaces soListOfPlaces = ((Initialize)this.getApplication()).getSOListOfFavoritePlaces();
+
+
+
         Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
-        final List<aFavoritePlace> listOfPlaces = soListOfPlaces.getFavoritesList();
 
 
         Button goToMapBtn = (Button) findViewById(R.id.goToMapBtn);
@@ -94,13 +98,23 @@ public class MenuPage extends AppCompatActivity {
                     Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Bundle extra = new Bundle();
-                    extra.putSerializable("SOList", (ArrayList<aFavoritePlace>) listOfPlaces);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ArrayList<aFavoritePlace> listOfPlaces = new ArrayList<aFavoritePlace>();
+                            soListOfPlaces.getFavoritesList(listOfPlaces);
+                            Bundle extra = new Bundle();
 
-                    Intent intent = new Intent(MenuPage.this, SpouseFavoritesPage.class);
-                    intent.putExtra("extra", extra);
+                            Log.i("#number", Integer.toString(listOfPlaces.size()));
+                            extra.putSerializable("SOList", (ArrayList<aFavoritePlace>) listOfPlaces);
 
-                    startActivity(intent);
+                            Intent intent = new Intent(MenuPage.this, SpouseFavoritesPage.class);
+                            intent.putExtra("extra", extra);
+
+                            startActivity(intent);
+                        }
+                    }, 1000);
+
                    // startActivity(new Intent(MenuPage.this, SpouseFavoritesPage.class));
                 }
             }
