@@ -76,9 +76,9 @@ public class PushPullMediator {
 
                     Firebase updateTime = tempRef.getParent().child("arrivalTime");
                     updateTime.push().setValue(System.currentTimeMillis());
-                };
-                if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
-
+                }
+                else if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
+                    Log.d("PUSHPULL", "not visiting a place");
                     Firebase updatePlace = tempRef.child(temp).child("visited");
 
                     if (updatePlace.equals(true)) {
