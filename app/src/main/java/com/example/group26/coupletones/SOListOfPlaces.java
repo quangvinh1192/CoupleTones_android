@@ -21,6 +21,10 @@ public class SOListOfPlaces {
     public List<aFavoritePlace> favoritePlaceList;
     String spouseID;
 
+
+    SOListOfPlaces() {
+    }
+
     // Initialization for favorite place list class
     SOListOfPlaces(Spouse mySpouse, Firebase thisFirebaseRef) {
 
@@ -28,13 +32,15 @@ public class SOListOfPlaces {
         favoritePlaceList = new ArrayList<aFavoritePlace>();
 
         this.spouseID = mySpouse.spouseUID;
+        if(spouseID == null) {
+            Log.d ("SOListOfPlaces", "NO SPOUSE UID");
+        }
+        this.myFireBaseRef = thisFirebaseRef;
 
-        myFireBaseRef = thisFirebaseRef.child("users").child(spouseID).child("favPlaces");
         Log.d("SOLISTOFPLACES", "constructor");
-        updateList();
     }
 
-    public List<aFavoritePlace> getFavoritesList(){
+    public List<aFavoritePlace> getFavoritesList() {
 
         Log.d("aFavoritePlace", "Size of list: " + favoritePlaceList.size());
         return this.favoritePlaceList;
@@ -44,10 +50,12 @@ public class SOListOfPlaces {
         favoritePlaceList.add(temp);
     }
 
-    private void updateList () {
+
+    public void updateList () {
 
         Log.d("SOLISTOFPLACES", "updateLIST");
-        myFireBaseRef.addChildEventListener(new ChildEventListener() {
+        Firebase tempFirebaseRef = myFireBaseRef.child("users").child(spouseID).child("favPlaces");
+        tempFirebaseRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

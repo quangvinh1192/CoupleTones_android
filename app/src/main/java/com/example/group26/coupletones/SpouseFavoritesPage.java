@@ -26,7 +26,7 @@ public class SpouseFavoritesPage extends AppCompatActivity {
 
         Spouse spouse = ((Initialize)this.getApplication()).getSpouse();
         Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
-        SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
+        SOListOfPlaces soListOfPlaces = ((Initialize)this.getApplication()).getSOListOfFavoritePlaces();
         Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
         List<aFavoritePlace> listOfPlaces = soListOfPlaces.getFavoritesList();
         LinearLayout linear = (LinearLayout) findViewById(R.id.linear);
@@ -49,7 +49,7 @@ public class SpouseFavoritesPage extends AppCompatActivity {
             btnEdit[i].setOnClickListener(handleOnClick(btnEdit[i]));
         }
 
-        //TODO remove once SOListOfPlaces is working
+        /*//TODO remove once SOListOfPlaces is working
         Button[] btn = new Button[array.length];
         Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
         for (int i = 0; i < array.length; i++) {
@@ -64,7 +64,7 @@ public class SpouseFavoritesPage extends AppCompatActivity {
             linear.addView(btn[i]);
 
             btn[i].setOnClickListener(handleOnClick(btn[i]));
-        }
+        }*/
 
         //DEBUG
        /* if(listOfPlaces.size() == 0){
