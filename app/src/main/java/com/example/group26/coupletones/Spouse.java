@@ -20,6 +20,7 @@ public class Spouse {
     public String spouseUID;
     public String spouseEmail;
     public Firebase myFirebaseRef;
+    public NotificationControl notify;
 
     /** empty constructor */
     Spouse () {
@@ -30,19 +31,13 @@ public class Spouse {
         this.myFirebaseRef = FirebaseRef;
     }
 
-    Spouse(String name, String ID) {
-        spouseName = name;
-        spouseUID = ID;
-    }
-
 
     /** name: createANotification
      * sends a notification to you saying that your S.O. visited a page
      * @param title
      */
     void createANotification(String title){
-        Log.d("Spouse", "create a notification");
-        //create a notification object and call notify()
+
     }
 
     /**
@@ -135,9 +130,17 @@ public class Spouse {
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
                 String title = (String) snapshot.child("name").getValue();
-                Log.e("Count ", title);
+                boolean arrived = false;
+                if ((String) snapshot.child("visited").getValue() == "true") {
+                    arrived = true;
+                } else {
+                    arrived = false;
+                }
 
-                createANotification(title);
+                aFavoritePlace temp = snapshot.getValue(aFavoritePlace.class);
+                Log.e("SPOUSE:check", title);
+
+                notify.notify(arrived, temp);
             }
 
             @Override

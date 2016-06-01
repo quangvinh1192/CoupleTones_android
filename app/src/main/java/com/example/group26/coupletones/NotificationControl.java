@@ -13,7 +13,7 @@ public class NotificationControl {
     private Initialize initialize;
     NotificationCompat.Builder mBuilder;
 
-    public void NotificationControl(Initialize initialize){
+    public NotificationControl(Initialize initialize){
         this.initialize = initialize;
         mBuilder = new NotificationCompat.Builder(initialize);
 
