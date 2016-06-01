@@ -74,8 +74,8 @@ public class PushPullMediator {
                     Firebase updatePlace = tempRef.child(temp).child("visited");
                     updatePlace.setValue(true);
 
-                    Firebase updateTime = tempRef.child(temp).child("arrivalTime");
-                    updateTime.push().setValue(System.currentTimeMillis());
+                    //Firebase updateTime = tempRef.child(temp).child("arrivalTime");
+                    //updateTime.push().setValue(System.currentTimeMillis());
                 }
                 else if (nameOfVisitedPlace.equals("YOU-ARE-NOT-VISITING-ANY-PLACE")){
 
@@ -86,8 +86,8 @@ public class PushPullMediator {
                     //if (tempPlace.isVisited() == true) {
 
 //                        Firebase updateTime = tempRef.child(temp).child("departureTime");
-  //                      updateTime.push().setValue(System.currentTimeMillis());
-    //                }
+                    //                      updateTime.push().setValue(System.currentTimeMillis());
+                    //                }
 
                     updatePlace.setValue(false);
                 }
