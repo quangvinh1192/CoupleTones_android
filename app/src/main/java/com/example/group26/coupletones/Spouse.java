@@ -125,6 +125,11 @@ public class Spouse {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
 
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+
                 String title = (String) snapshot.child("name").getValue();
                 boolean arrived = false;
                 if ((String) snapshot.child("visited").getValue().toString() == "true") {
@@ -137,11 +142,6 @@ public class Spouse {
                 Log.e("SPOUSE:check", title);
 
                 notify.notify(arrived, temp);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-
             }
 
             @Override

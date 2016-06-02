@@ -68,15 +68,11 @@ public class signUpPage extends AppCompatActivity {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     Map<String, Object> userEmail = new HashMap<String, Object>();
-                    Firebase.AuthResu/ltHandler authResultHandler = new Firebase.AuthResultHandler() {
+                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                         public void onAuthenticated(AuthData authData) {};
                         public void onAuthenticationError(FirebaseError firebaseError) {};
                     };
 
-                    ref.authWithPassword(email.getText().toString(),password.getText().toString(), authResultHandler);
-                    ref = ref.child("users").child(ref.getAuth().getUid());
-                    userEmail.put("email", email.getText().toString());
-                    ref.updateChildren(userEmail);
                     startActivity(new Intent(signUpPage.this, favMapPage.class));
                     setAddedNewAccount(true);
                 }
