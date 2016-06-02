@@ -129,9 +129,10 @@ public class Spouse {
 
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+
                 String title = (String) snapshot.child("name").getValue();
                 boolean arrived = false;
-                if ((String) snapshot.child("visited").getValue() == "true") {
+                if ((String) snapshot.child("visited").getValue().toString() == "true") {
                     arrived = true;
                 } else {
                     arrived = false;

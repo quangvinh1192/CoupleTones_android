@@ -1,6 +1,5 @@
 package com.example.group26.coupletones.tests;
 
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -13,10 +12,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.test.MoreAsserts.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by admin_me on 5/31/16.
@@ -28,11 +32,30 @@ public class testLoginpage {
     public ActivityTestRule<loginPage> testloginPage= new ActivityTestRule<>(loginPage.class);
 
     @Test
-    public void sayHello(){
-        //onView(withId(R.id.editText)).perform(typeText("vinh"), ViewActions.closeSoftKeyboard());
-        //onView(withId(R.id.button)).perform(click());
-        //String expectedText= "vinh";
-        //onView(withId(R.id.textView)).check(matches(withText(expectedText)));
-        //onView(withId(R.id.editText)).check(matches(withText(expectedText)));
+    public void testnopass(){
+        onView(withId(R.id.emailTVSignUp)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText(""), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
+        onView(withText("Email or password is missing")).check(matches(isDisplayed()));
+    }
+    @Test
+    public void testnomail(){
+        onView(withId(R.id.emailTVSignUp)).perform(typeText(""), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText("1234"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
+        onView(withText("Email or password is missing")).check(matches(isDisplayed()));
+    }
+    @Test
+    public void incorrect(){
+        onView(withId(R.id.emailTVSignUp)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
+        onView(withText("Incorrect email or password")).check(matches(isDisplayed()));
+    }
+    @Test
+    public void correct(){
+        onView(withId(R.id.emailTVSignUp)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton)).perform(click());
     }
 }

@@ -69,8 +69,8 @@ public class    VisitFavoritesCalculator {
             if (distanceBetweenTwoPlaces(temp, currentLocation) <= MIN_DIST) {
                 Log.i("MyApp",temp.getName() );
                 visited = temp;
-                break;
-            };
+                return visited;
+            }
             //check locations
         }
 
