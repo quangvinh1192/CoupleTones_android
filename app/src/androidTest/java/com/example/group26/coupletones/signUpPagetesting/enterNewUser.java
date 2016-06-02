@@ -1,5 +1,6 @@
 package com.example.group26.coupletones.tests;
 
+import android.os.SystemClock;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -42,6 +43,8 @@ public class enterNewUser {
         onView(withId(R.id.passwordSignUp)).perform(typeText("123"),closeSoftKeyboard());
         onView(withId(R.id.confirmPasswordTV)).perform(typeText("123"),closeSoftKeyboard());
         onView(withId(R.id.signUpButton_SignUp)).perform(click());
+        //delay to see the message
+        SystemClock.sleep(1000);
         onView(withText("")).check(doesNotExist());
 
     }

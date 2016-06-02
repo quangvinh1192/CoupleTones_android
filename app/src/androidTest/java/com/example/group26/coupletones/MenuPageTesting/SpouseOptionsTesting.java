@@ -1,5 +1,6 @@
-package com.example.group26.coupletones.tests;
+package com.example.group26.coupletones.MenuPageTesting;
 
+import android.os.SystemClock;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -21,11 +22,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by admin_me on 5/31/16.
+ * Created by vinh_tran on 5/31/16.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class signUpfromLogIntest {
+public class SpouseOptionsTesting {
     @Rule
     public ActivityTestRule<loginPage> testloginPage= new ActivityTestRule<>(loginPage.class);
     /*
@@ -34,8 +35,16 @@ public class signUpfromLogIntest {
      users can register a new account
      */
     @Test
-    public void gotoSignUppage() {
-        onView(withId(R.id.signUpButton_Login)).perform(click());
-        onView(withId(R.id.textView_SignUp)).check(matches(withText("Register")));
+    public void gotoMainPage() {
+        onView(withId(R.id.emailTV_Login)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.password_Login)).perform(typeText("123456"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton_Login)).perform(click());
+        //delay-waiting for app loading the information from firebase
+        SystemClock.sleep(4000);
+        onView(withId(R.id.title_main_menu)).check(matches(withText("Main Menu")));
+        onView(withId(R.id.spouseOptionsBtn)).perform(click());
+        //delay to see what happens when we click spouse options button
+        SystemClock.sleep(1000);
+        onView(withId(R.id.addSpouseTitle)).check(matches(withText("Add Your Spouse")));
     }
 }

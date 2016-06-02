@@ -1,4 +1,4 @@
-package com.example.group26.coupletones.tests;
+package com.example.group26.coupletones.loginpageTesting;
 
 import android.os.SystemClock;
 import android.support.test.filters.LargeTest;
@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.example.group26.coupletones.R;
 import com.example.group26.coupletones.loginPage;
-import com.example.group26.coupletones.signUpPage;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +16,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -28,22 +26,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class notenterEmail {
+public class signUpfromLogIntest {
     @Rule
-    public ActivityTestRule<signUpPage> testloginPage= new ActivityTestRule<>(signUpPage.class);
-
+    public ActivityTestRule<loginPage> testloginPage= new ActivityTestRule<>(loginPage.class);
     /*
-     * This is a testing function for sign up class
-     * If user does not enter email, then it will display the message
+     This test tests Sign Up button from log in page
+     Input: When users choose sign up option, app will open a new layout and
+     users can register a new account
      */
     @Test
-    public void notenterEmail(){
-        onView(withId(R.id.passwordSignUp)).perform(typeText("123"),closeSoftKeyboard());
-        onView(withId(R.id.confirmPasswordTV)).perform(typeText("123"),closeSoftKeyboard());
-        onView(withId(R.id.signUpButton_SignUp)).perform(click());
-        //delay
+    public void gotoSignUppage() {
+        onView(withId(R.id.signUpButton_Login)).perform(click());
+        //delay-waiting to see what happens
         SystemClock.sleep(1000);
-        onView(withText("The email you entered is not valid")).check(matches(isDisplayed()));
+        onView(withId(R.id.textView_SignUp)).check(matches(withText("Register")));
     }
-
 }
