@@ -17,8 +17,6 @@ public class aFavoritePlace implements Serializable {
     private double latitude;
     private double longitude;
     private boolean visited;
-    private String uniqueVibration;
-    private String uniqueSound;
     private long arrived;
     private long departure;
 
@@ -79,15 +77,6 @@ public class aFavoritePlace implements Serializable {
         return visited;
     }
 
-    //TODO
-    public void playUniqueVibration(){
-
-    }
-
-    //TODO
-    public void playUniqueSound(){
-
-    }
 
     /** name: add placeToServer
      * adds a favoriteplace object ot server and hashmap
