@@ -66,7 +66,8 @@ public class PushPullMediator {
 
         // Departure + Arrival
 
-        else if (lastPlace != null && currentLocation != null) {
+        else if (lastPlace != null && currentLocation != null
+                && (lastPlace.getLatitude() !=currentLocation.getLatitude() && lastPlace.getLongitude() != currentLocation.getLongitude())) {
 
             arrived (currentLocation.getName());
             departed(lastPlace.getName());
