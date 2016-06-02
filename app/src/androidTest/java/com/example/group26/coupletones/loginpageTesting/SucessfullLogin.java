@@ -1,5 +1,6 @@
-package com.example.group26.coupletones.tests;
+package com.example.group26.coupletones.loginpageTesting;
 
+import android.os.SystemClock;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -25,7 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class signUpfromLogIntest {
+public class SucessfullLogin {
     @Rule
     public ActivityTestRule<loginPage> testloginPage= new ActivityTestRule<>(loginPage.class);
     /*
@@ -34,8 +35,11 @@ public class signUpfromLogIntest {
      users can register a new account
      */
     @Test
-    public void gotoSignUppage() {
-        onView(withId(R.id.signUpButton_Login)).perform(click());
-        onView(withId(R.id.textView_SignUp)).check(matches(withText("Register")));
+    public void gotoMainPage() {
+        onView(withId(R.id.emailTV_Login)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.password_Login)).perform(typeText("123456"), closeSoftKeyboard());
+        onView(withId(R.id.submitButton_Login)).perform(click());
+        SystemClock.sleep(4000);
+        onView(withId(R.id.title_main_menu)).check(matches(withText("Main Menu")));
     }
 }

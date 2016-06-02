@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Main Menu"
-        android:id="@+id/title"
+        android:id="@+id/title_main_menu"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

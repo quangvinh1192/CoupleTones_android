@@ -1,5 +1,6 @@
 package com.example.group26.coupletones.tests;
 
+import android.os.SystemClock;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -41,6 +42,8 @@ public class notEnterconfirmationPass {
         onView(withId(R.id.emailTVSignUp)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.passwordSignUp)).perform(typeText("123"),closeSoftKeyboard());
         onView(withId(R.id.signUpButton_SignUp)).perform(click());
+        //delay
+        SystemClock.sleep(1000);
         onView(withText("The password and confirm password do not match")).check(matches(isDisplayed()));
     }
 

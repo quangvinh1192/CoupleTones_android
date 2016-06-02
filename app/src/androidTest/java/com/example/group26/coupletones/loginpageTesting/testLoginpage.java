@@ -1,5 +1,6 @@
-package com.example.group26.coupletones.tests;
+package com.example.group26.coupletones.loginpageTesting;
 
+import android.os.SystemClock;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -40,6 +41,8 @@ public class testLoginpage {
         onView(withId(R.id.emailTV_Login)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.password_Login)).perform(typeText(""), closeSoftKeyboard());
         onView(withId(R.id.submitButton_Login)).perform(click());
+        //delay
+        SystemClock.sleep(1000);
         onView(withText("Email or password is missing")).check(matches(isDisplayed()));
     }
     /*
@@ -51,15 +54,19 @@ public class testLoginpage {
         onView(withId(R.id.emailTV_Login)).perform(typeText(""), closeSoftKeyboard());
         onView(withId(R.id.password_Login)).perform(typeText("1234"), closeSoftKeyboard());
         onView(withId(R.id.submitButton_Login)).perform(click());
+        //delay
+        SystemClock.sleep(1000);
         onView(withText("Email or password is missing")).check(matches(isDisplayed()));
     }
-    /*@Test
+    @Test
     public void incorrect(){
         onView(withId(R.id.emailTV_Login)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.password_Login)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
         onView(withId(R.id.submitButton_Login)).perform(click());
+        //delay
+        SystemClock.sleep(1000);
         onView(withText("Incorrect email or password")).check(matches(isDisplayed()));
-    }*/
+    }
     /*
      * Third test:
      * Enter correct email and pass and no message are displayed
@@ -69,6 +76,8 @@ public class testLoginpage {
         onView(withId(R.id.emailTV_Login)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.password_Login)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.submitButton_Login)).perform(click());
+        //delay
+        SystemClock.sleep(1000);
         onView(withText("")).check(doesNotExist());
     }
 }
