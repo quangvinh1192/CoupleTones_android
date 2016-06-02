@@ -17,16 +17,21 @@ public class aFavoritePlace implements Serializable {
     private double latitude;
     private double longitude;
     private boolean visited;
-    private String nameOfPlace;
     private String uniqueVibration;
     private String uniqueSound;
+    private long arrived;
+    private long departure;
 
     public aFavoritePlace(){
 
     }
 
-
-
+    /** constructor for the visited list */
+    public aFavoritePlace(String nameOfPlace, long arrivalTime, long departureTime ) {
+        this.name = nameOfPlace;
+        this.arrived = arrivalTime;
+        this.departure = departureTime;
+    }
     /**
      * constructor
      * @param inpName
