@@ -67,9 +67,6 @@ public class SOListOfPlaces {
 
                 aFavoritePlace temp = dataSnapshot.getValue(aFavoritePlace.class);
 
-                //sets the aFavoritePlace's unique sound and vibration
-                temp.retrieveUniqueSound();
-                temp.retrieveUniqueVibration();
                 addToList(temp);
             }
 

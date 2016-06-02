@@ -89,17 +89,5 @@ public class aFavoritePlace implements Serializable {
 
     }
 
-    /** name: retrieves the location's unique sound
-     *
-     */
-    public void retrieveUniqueSound(){
 
-    }
-
-    /** name: retrieveUniqueVibration()
-     *
-     */
-    public void retrieveUniqueVibration(){
-
-    }
 }

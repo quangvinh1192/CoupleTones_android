@@ -84,6 +84,7 @@ public class NotificationControl {
         this.should_sound = false;
     }
 
+
     public String getUniqueSound( String location_name ){
         SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE);
         String sound_type = sharedPreferences.getString( location_name + "_sound", "");
@@ -94,7 +95,6 @@ public class NotificationControl {
     public String getUniqueVibration( String location_name ){
         SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE );
         String vibration_type = sharedPreferences.getString( location_name + "_vibration", "" );
-
         return vibration_type;
     }
 
@@ -111,6 +111,7 @@ public class NotificationControl {
             //if the sound was played pressed return true
             return true;
         }
+
         return false;
     }
 

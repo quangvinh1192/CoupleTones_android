@@ -38,7 +38,7 @@ public class Initialize extends android.app.Application {
     private long minTime = 10 * 1000; //5 minutes  = 5 * 60 * 1000;
     private long minDistance = 20;
     SOListOfPlaces solistofplaces;
-    private NotificationControl notificationControl;        //TODO tell Julia
+    private NotificationControl notificationControl;
 
 
     public Initialize() {
@@ -76,6 +76,7 @@ public class Initialize extends android.app.Application {
             spouse.setMyFirebaseRef(myFirebaseRef);
             spouse.listenToSpouseFavPlaces();
             spouse.notify = new NotificationControl(application);
+            notificationControl = spouse.notify;
             return true;
         } else {
             //throw error
