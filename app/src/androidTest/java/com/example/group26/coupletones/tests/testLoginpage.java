@@ -1,6 +1,5 @@
 package com.example.group26.coupletones.tests;
 
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -12,7 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -35,29 +33,29 @@ public class testLoginpage {
 
     @Test
     public void testnopass(){
-        onView(withId(R.id.emailTV)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.passwordTV)).perform(typeText(""), closeSoftKeyboard());
+        onView(withId(R.id.emailTVSignUp)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText(""), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
         onView(withText("Email or password is missing")).check(matches(isDisplayed()));
     }
     @Test
     public void testnomail(){
-        onView(withId(R.id.emailTV)).perform(typeText(""), closeSoftKeyboard());
-        onView(withId(R.id.passwordTV)).perform(typeText("1234"), closeSoftKeyboard());
+        onView(withId(R.id.emailTVSignUp)).perform(typeText(""), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText("1234"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
         onView(withText("Email or password is missing")).check(matches(isDisplayed()));
     }
     @Test
     public void incorrect(){
-        onView(withId(R.id.emailTV)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.passwordTV)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
+        onView(withId(R.id.emailTVSignUp)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
         onView(withText("Incorrect email or password")).check(matches(isDisplayed()));
     }
     @Test
     public void correct(){
-        onView(withId(R.id.emailTV)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.passwordTV)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
+        onView(withId(R.id.emailTVSignUp)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.passwordSignUp)).perform(typeText("1234dasdsa56"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
     }
 }

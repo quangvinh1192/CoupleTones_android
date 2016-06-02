@@ -1,6 +1,5 @@
 package com.example.group26.coupletones;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,8 +40,8 @@ public class loginPage extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-        email = (TextView) findViewById(R.id.emailTV);
-        password = (TextView) findViewById(R.id.passwordTV);
+        email = (TextView) findViewById(R.id.emailTVSignUp);
+        password = (TextView) findViewById(R.id.passwordSignUp);
         errorHandler = new ErrorMessageHandler (loginPage.this);
         context = this;
 
