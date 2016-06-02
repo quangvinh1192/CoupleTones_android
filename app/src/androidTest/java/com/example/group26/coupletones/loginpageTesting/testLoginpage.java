@@ -25,7 +25,7 @@ import static android.test.MoreAsserts.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Created by admin_me on 5/31/16.
+ * Created by vinh_tran on 5/31/16.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -34,7 +34,8 @@ public class testLoginpage {
     public ActivityTestRule<loginPage> testloginPage= new ActivityTestRule<>(loginPage.class);
     /*
      * First test:
-     * Input: correct email but no password
+     * Input: correct email but no password. Check there is any error message
+     * which shows to the screen
      */
     @Test
     public void testnopass(){
@@ -45,9 +46,11 @@ public class testLoginpage {
         SystemClock.sleep(1000);
         onView(withText("Email or password is missing")).check(matches(isDisplayed()));
     }
+
     /*
      * Second test:
-     * Input: no email but enter password
+     * Input: no email but enter password. Check there is any error message
+     * which shows to the screen
      */
     @Test
     public void testnomail(){
@@ -58,6 +61,12 @@ public class testLoginpage {
         SystemClock.sleep(1000);
         onView(withText("Email or password is missing")).check(matches(isDisplayed()));
     }
+
+    /*
+     Next test:
+     Incorrect email and incorrect password. Check there is any error message
+     which shows to the screen
+     */
     @Test
     public void incorrect(){
         onView(withId(R.id.emailTV_Login)).perform(typeText("dasdas@gmail.com"), closeSoftKeyboard());
@@ -67,17 +76,21 @@ public class testLoginpage {
         SystemClock.sleep(1000);
         onView(withText("Incorrect email or password")).check(matches(isDisplayed()));
     }
-    /*
-     * Third test:
-     * Enter correct email and pass and no message are displayed
-     */
+
     @Test
-    public void correct(){
+        /*
+     * Third test:
+     * Enter correct email and and wrong password
+     */
+    public void incorrectPass(){
         onView(withId(R.id.emailTV_Login)).perform(typeText("quangvinh1192@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.password_Login)).perform(typeText("123456"), closeSoftKeyboard());
+        onView(withId(R.id.password_Login)).perform(typeText("dsdsds"), closeSoftKeyboard());
         onView(withId(R.id.submitButton_Login)).perform(click());
         //delay
         SystemClock.sleep(1000);
-        onView(withText("")).check(doesNotExist());
+        onView(withText("Incorrect email or password")).check(matches(isDisplayed()));
     }
+
+
+
 }

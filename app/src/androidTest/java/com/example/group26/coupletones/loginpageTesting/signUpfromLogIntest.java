@@ -22,7 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by admin_me on 5/31/16.
+ * Created by vinh_tran on 5/31/16.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -37,7 +37,7 @@ public class signUpfromLogIntest {
     @Test
     public void gotoSignUppage() {
         onView(withId(R.id.signUpButton_Login)).perform(click());
-        //delay
+        //delay-waiting to see what happens
         SystemClock.sleep(1000);
         onView(withId(R.id.textView_SignUp)).check(matches(withText("Register")));
     }

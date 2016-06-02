@@ -43,7 +43,7 @@ public class enterNewUser {
         onView(withId(R.id.passwordSignUp)).perform(typeText("123"),closeSoftKeyboard());
         onView(withId(R.id.confirmPasswordTV)).perform(typeText("123"),closeSoftKeyboard());
         onView(withId(R.id.signUpButton_SignUp)).perform(click());
-        //delay
+        //delay to see the message
         SystemClock.sleep(1000);
         onView(withText("")).check(doesNotExist());
 

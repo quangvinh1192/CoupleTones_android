@@ -15,7 +15,7 @@
         android:text="Turn Vibrate Off"
         android:id="@+id/vibrateOffBtn"
         android:layout_marginTop="57dp"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/title_MainSetting"
         android:layout_alignParentEnd="true"
         android:onClick="onClickVibrateOff" />
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Main Settings"
-        android:id="@+id/title"
+        android:id="@+id/title_MainSetting"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/vibrateOnBtn" />
 
@@ -43,7 +43,7 @@
         android:text="Turn Sound On"
         android:id="@+id/soundOnBtn"
         android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/title"
+        android:layout_alignStart="@+id/title_MainSetting"
         android:layout_alignEnd="@+id/vibrateOnBtn"
         android:onClick="onClickSoundOn" />
 
