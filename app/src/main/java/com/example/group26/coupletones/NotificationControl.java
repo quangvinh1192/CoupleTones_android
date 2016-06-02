@@ -84,14 +84,18 @@ public class NotificationControl {
         this.should_sound = false;
     }
 
-    public void getUniqueSound(){
+    public String getUniqueSound( String location_name ){
+        SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE);
+        String sound_type = sharedPreferences.getString( location_name + "_sound", "");
 
+        return sound_type;
     }
 
-    public void getUniqueVibration( String location_name ){
+    public String getUniqueVibration( String location_name ){
         SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE );
+        String vibration_type = sharedPreferences.getString( location_name + "_vibration", "" );
 
-
+        return vibration_type;
     }
 
     //3 types of sounds
