@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.NotificationCompat;
+import android.widget.Toast;
+
+import java.util.Random;
 
 /**
  * Created by gagan on 5/22/16.
@@ -48,8 +51,11 @@ public class NotificationControl {
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) initialize.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        Random random = new Random();
+        int ID = random.nextInt(9999 - 1000) + 1000;
 //      notificationID allows you to update the notification later on.
-        mNotificationManager.notify(1, mBuilder.build());
+        mNotificationManager.notify(ID, mBuilder.build());
+        Toast.makeText(initialize, message, Toast.LENGTH_LONG).show();
         return true;
     }
 
