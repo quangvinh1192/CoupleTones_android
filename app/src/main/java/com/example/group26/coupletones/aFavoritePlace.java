@@ -17,7 +17,6 @@ public class aFavoritePlace implements Serializable {
     private double latitude;
     private double longitude;
     private boolean visited;
-    private String nameOfPlace;
 
     public aFavoritePlace(){
 
@@ -90,5 +89,17 @@ public class aFavoritePlace implements Serializable {
 
     }
 
+    /** name: retrieves the location's unique sound
+     *
+     */
+    public void retrieveUniqueSound(){
 
+    }
+
+    /** name: retrieveUniqueVibration()
+     *
+     */
+    public void retrieveUniqueVibration(){
+
+    }
 }

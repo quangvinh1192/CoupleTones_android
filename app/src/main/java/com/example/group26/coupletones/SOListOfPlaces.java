@@ -46,7 +46,7 @@ public class SOListOfPlaces {
         for (aFavoritePlace temp : this.favoritePlaceList){
             a.add(temp);
         }
-       // return this.favoritePlaceList;
+        //return this.favoritePlaceList;
     }
 
     void addToList(aFavoritePlace temp) {
@@ -67,6 +67,9 @@ public class SOListOfPlaces {
 
                 aFavoritePlace temp = dataSnapshot.getValue(aFavoritePlace.class);
 
+                //sets the aFavoritePlace's unique sound and vibration
+                temp.retrieveUniqueSound();
+                temp.retrieveUniqueVibration();
                 addToList(temp);
             }
 

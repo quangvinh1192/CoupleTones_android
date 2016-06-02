@@ -3,6 +3,7 @@ package com.example.group26.coupletones;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.NotificationCompat;
 
 /**
@@ -83,6 +84,16 @@ public class NotificationControl {
         this.should_sound = false;
     }
 
+    public void getUniqueSound(){
+
+    }
+
+    public void getUniqueVibration( String location_name ){
+        SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE );
+
+
+    }
+
     //3 types of sounds
     // "classic", "electribe", "music box"
     // To choose the sound, just pass in any of the above Strings
@@ -98,4 +109,5 @@ public class NotificationControl {
         }
         return false;
     }
+
 }

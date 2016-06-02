@@ -33,7 +33,7 @@ public class Initialize extends android.app.Application {
     private Firebase myFirebaseRef;
     private Context context;
     private LocationManager locationManager;
-    private HashMap<String, aFavoritePlace> favoriteLocations;
+    private HashMap<String, aFavoritePlace> favoriteLocations; //It's your favoriteLocations
     private PushPullMediator mediator;
     private long minTime = 0; //5 minutes  = 5 * 60 * 1000;
     private long minDistance = 20;
