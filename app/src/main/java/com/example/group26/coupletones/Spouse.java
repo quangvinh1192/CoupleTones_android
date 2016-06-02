@@ -21,6 +21,7 @@ public class Spouse {
     public String spouseEmail;
     public Firebase myFirebaseRef;
     public NotificationControl notify;
+    private boolean addedListeners;
 
     /** empty constructor */
     Spouse () {
@@ -59,7 +60,6 @@ public class Spouse {
                     Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
                     spouseUID = snapshot.child("spouseUID").getValue().toString();
                     spouseEmail = snapshot.child("spouseEmail").getValue().toString();
-
                     createAListenerToSpouseFavPlaces(spouseUID,spouseEmail);
                 }
                 else{
@@ -96,7 +96,10 @@ public class Spouse {
                     String a = snapshot.child("yourEmail").getValue().toString();
                     if (a.equals(spouseEmail)) {
                         Log.d("MyApp", "Do you ever go here?");
-                        check(spouseID);
+                        if(!addedListeners) {
+                            check(spouseID);
+                            addedListeners = true;
+                        }
                     }
                 }
                 else{
