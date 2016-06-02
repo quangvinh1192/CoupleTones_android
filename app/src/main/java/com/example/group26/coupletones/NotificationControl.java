@@ -38,15 +38,15 @@ public class NotificationControl {
         //if the spouse is arriving at a location then set the tittle to "Arriving"
         String message;
         if(arriveOrDepart){
-            vibrate( getUniqueVibration( place.getName() ) );
-            playSound( getUniqueSound( place.getName() ) );
+            //vibrate( getUniqueVibration( place.getName() ) );
+            //playSound( getUniqueSound( place.getName() ) );
             mBuilder.setContentTitle("Arriving");
             message = "Spouse is arriving at " + place.getName();
         }
 
         else{
-            vibrate( getUniqueVibration( place.getName() ) );
-            playSound( getUniqueSound( place.getName() ) );
+            //vibrate( getUniqueVibration( place.getName() ) );
+            //playSound( getUniqueSound( place.getName() ) );
             mBuilder.setContentTitle("Departing");
             message = "Spouse is departing from " + place.getName();
         }
