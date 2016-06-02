@@ -73,10 +73,6 @@ public class signUpPage extends AppCompatActivity {
                         public void onAuthenticationError(FirebaseError firebaseError) {};
                     };
 
-                    ref.authWithPassword(email.getText().toString(),password.getText().toString(), authResultHandler);
-                    ref = ref.child("users").child(ref.getAuth().getUid());
-                    userEmail.put("email", email.getText().toString());
-                    ref.updateChildren(userEmail);
                     startActivity(new Intent(signUpPage.this, favMapPage.class));
                     setAddedNewAccount(true);
                 }
