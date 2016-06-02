@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -49,6 +50,7 @@ public class NotificationControl {
         int ID = random.nextInt(9999 - 1000) + 1000;
 //      notificationID allows you to update the notification later on.
         mNotificationManager.notify(ID, mBuilder.build());
+        Toast.makeText(initialize, message, Toast.LENGTH_LONG).show();
         return true;
     }
 
