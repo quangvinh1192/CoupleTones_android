@@ -120,14 +120,13 @@ public class MenuPage extends AppCompatActivity {
             }
         });
 
-        /*          TODO uncomment once the settings page is created
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Perform action on click
-                startActivity(new Intent(MenuPage.this, settingsPage));
+                startActivity(new Intent(MenuPage.this, SettingsPage.class));
             }
-        });*/
+        });
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

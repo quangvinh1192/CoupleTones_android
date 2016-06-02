@@ -33,12 +33,12 @@ public class Initialize extends android.app.Application {
     private Firebase myFirebaseRef;
     private Context context;
     private LocationManager locationManager;
-    private HashMap<String, aFavoritePlace> favoriteLocations;
+    private HashMap<String, aFavoritePlace> favoriteLocations; //It's your favoriteLocations
     private PushPullMediator mediator;
     private long minTime = 10 * 1000; //5 minutes  = 5 * 60 * 1000;
     private long minDistance = 20;
     SOListOfPlaces solistofplaces;
-
+    private NotificationControl notificationControl;
 
 
     public Initialize() {
@@ -76,6 +76,7 @@ public class Initialize extends android.app.Application {
             spouse.setMyFirebaseRef(myFirebaseRef);
             spouse.listenToSpouseFavPlaces();
             spouse.notify = new NotificationControl(application);
+            notificationControl = spouse.notify;
             return true;
         } else {
             //throw error
@@ -231,5 +232,12 @@ public class Initialize extends android.app.Application {
 
    }
 
+    public HashMap<String, aFavoritePlace> getFavoriteLocations(){
+        return favoriteLocations;
+    }
+
+    public NotificationControl getNotificationControl(){
+        return this.notificationControl;
+    }
 
 }

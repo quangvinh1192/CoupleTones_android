@@ -46,7 +46,7 @@ public class SOListOfPlaces {
         for (aFavoritePlace temp : this.favoritePlaceList){
             a.add(temp);
         }
-       // return this.favoritePlaceList;
+        //return this.favoritePlaceList;
     }
 
     void addToList(aFavoritePlace temp) {
