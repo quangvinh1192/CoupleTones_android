@@ -40,8 +40,8 @@ public class loginPage extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-        email = (TextView) findViewById(R.id.emailTVSignUp);
-        password = (TextView) findViewById(R.id.passwordSignUp);
+        email = (TextView) findViewById(R.id.emailTV_Login);
+        password = (TextView) findViewById(R.id.password_Login);
         errorHandler = new ErrorMessageHandler (loginPage.this);
         context = this;
 
@@ -60,8 +60,8 @@ public class loginPage extends AppCompatActivity {
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
-        Button submitButton = (Button) findViewById(R.id.submitButton);
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
+        Button submitButton = (Button) findViewById(R.id.submitButton_Login);
+        Button signUpButton = (Button) findViewById(R.id.signUpButton_Login);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

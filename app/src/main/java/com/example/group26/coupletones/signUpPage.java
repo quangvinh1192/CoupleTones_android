@@ -43,7 +43,7 @@ public class signUpPage extends AppCompatActivity {
 
         /******[START]******/
         //create sign up button
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
+        Button signUpButton = (Button) findViewById(R.id.signUpButton_SignUp);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class signUpPage extends AppCompatActivity {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     Map<String, Object> userEmail = new HashMap<String, Object>();
-                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                    Firebase.AuthResu/ltHandler authResultHandler = new Firebase.AuthResultHandler() {
                         public void onAuthenticated(AuthData authData) {};
                         public void onAuthenticationError(FirebaseError firebaseError) {};
                     };
