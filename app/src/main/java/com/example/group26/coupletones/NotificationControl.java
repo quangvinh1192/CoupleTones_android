@@ -4,7 +4,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -17,6 +20,8 @@ public class NotificationControl {
     //Using this when the user wants to set whether the app should vibrate or sound
     private boolean should_vibrate;
     private boolean should_sound;
+
+    MediaPlayer mp;
 
     private Initialize initialize;
     NotificationCompat.Builder mBuilder;
@@ -38,15 +43,15 @@ public class NotificationControl {
         //if the spouse is arriving at a location then set the tittle to "Arriving"
         String message;
         if(arriveOrDepart){
-            //vibrate( getUniqueVibration( place.getName() ) );
-            //playSound( getUniqueSound( place.getName() ) );
+            vibrate( getUniqueVibration( place.getName() ) );
+            playSound( getUniqueSound( place.getName() ) );
             mBuilder.setContentTitle("Arriving");
             message = "Spouse is arriving at " + place.getName();
         }
 
         else{
-            //vibrate( getUniqueVibration( place.getName() ) );
-            //playSound( getUniqueSound( place.getName() ) );
+            vibrate( getUniqueVibration( place.getName() ) );
+            playSound( getUniqueSound( place.getName() ) );
             mBuilder.setContentTitle("Departing");
             message = "Spouse is departing from " + place.getName();
         }
@@ -69,9 +74,30 @@ public class NotificationControl {
     public boolean vibrate(  String vibration_type ){
 
         if(should_vibrate) {
-            Intent intent = new Intent(initialize, VibrationService.class);
-            intent.putExtra("vibration selected", vibration_type);
-            initialize.startActivity(intent);
+
+            Vibrator vibrator = (Vibrator) initialize.getSystemService(Context.VIBRATOR_SERVICE);
+
+            if(vibrator.hasVibrator()) {
+                Log.v("Can Vibrate", "YES");
+
+                switch (vibration_type) {
+                    case "2 short vibrations":
+                        long[] pattern = {0, 300, 200, 300};
+                        vibrator.vibrate(pattern, -1);
+                        break;
+                    case "1 short vibration":
+                        long[] pattern2 = {0, 1000};
+                        vibrator.vibrate(pattern2, -1);
+                        break;
+                    case "1 long vibration":
+                        long[] pattern3 = {0, 2000};
+                        vibrator.vibrate(pattern3, -1);
+                        break;
+                }
+            }else{
+                Log.v("Can Vibrate", "NO");
+            }
+
             //if the phone vibrated return true
             return true;
         }
@@ -115,9 +141,21 @@ public class NotificationControl {
 
         if( should_sound ) {
 
-            Intent intent = new Intent(initialize, SoundService.class);
-            intent.putExtra("sound selected", sound_type);
-            initialize.startActivity(intent);
+            switch (sound_type) {
+                case "classic":
+                    mp = MediaPlayer.create( initialize , R.raw.classic);
+                    mp.start();
+
+                    break;
+                case "electribe":
+                    mp = MediaPlayer.create( initialize, R.raw.electribe);
+                    mp.start();
+                    break;
+                case "music box":
+                    mp = MediaPlayer.create( initialize, R.raw.musicbox);
+                    mp.start();
+                    break;
+            }
             //if the sound was played pressed return true
             return true;
         }
