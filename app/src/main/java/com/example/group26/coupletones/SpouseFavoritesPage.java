@@ -49,51 +49,6 @@ public class SpouseFavoritesPage extends AppCompatActivity {
         });
 
 
-//        Button[] btnEdit = new Button[listOfPlaces.size()];
-//        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
-//        for (int i = 0; i < listOfPlaces.size(); i++) {
-//            Log.d("creatingButton", "Button is being created");
-//            btnEdit[i] = new Button(getApplicationContext());
-//            btnEdit[i].setText(listOfPlaces.get(i).getName().toString());
-//            btnEdit[i].setTextColor(Color.parseColor("#000000"));
-//            btnEdit[i].setTextSize(20);
-//            btnEdit[i].setHeight(100);
-//            btnEdit[i].setLayoutParams(param);
-//            btnEdit[i].setPadding(15, 5, 15, 5);
-//            linear.addView(btnEdit[i]);
-//
-//            btnEdit[i].setOnClickListener(handleOnClick(btnEdit[i]));
-//        }
-
-        /*//TODO remove once SOListOfPlaces is working
-        Button[] btn = new Button[array.length];
-        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());
-        for (int i = 0; i < array.length; i++) {
-            Log.d("creatingButton", "Button is being created");
-            btn[i] = new Button(getApplicationContext());
-            btn[i].setText( array[i] );
-            btn[i].setTextColor(Color.parseColor("#000000"));
-            btn[i].setTextSize(20);
-            btn[i].setHeight(100);
-            btn[i].setLayoutParams(param);
-            btn[i].setPadding(15, 5, 15, 5);
-            linear.addView(btn[i]);
-
-            btn[i].setOnClickListener(handleOnClick(btn[i]));
-        }*/
-
-        //DEBUG
-       /* if(listOfPlaces.size() == 0){
-
-            Button b = new Button(getApplicationContext());
-            b.setText("SOListOfPlaces not working properly");
-
-            Button b2 = new Button(getApplicationContext());
-            b.setText("or Your SO has not added any places");
-
-            linear.addView(b);
-            linear.addView(b2);
-        } */
 
     }
     void loadButtons(final LinearLayout linear, final List<aFavoritePlace> listOfPlaces) {

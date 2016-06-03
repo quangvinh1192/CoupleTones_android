@@ -73,7 +73,7 @@ public class SOFavMap extends FragmentActivity implements OnMapReadyCallback, Go
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+    //TODO make an error message popup for no connection
     }
 
 
@@ -86,6 +86,5 @@ public class SOFavMap extends FragmentActivity implements OnMapReadyCallback, Go
             mMap.addMarker(new MarkerOptions().position(favPoint).title(place.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
         }
 
-        //mMap.setPadding(0,96,0,0);
     }
 }

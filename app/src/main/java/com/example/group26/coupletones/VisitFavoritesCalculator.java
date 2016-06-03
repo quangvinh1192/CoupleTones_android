@@ -71,7 +71,6 @@ public class    VisitFavoritesCalculator {
                 visited = temp;
                 return visited;
             }
-            //check locations
         }
 
         return visited;
