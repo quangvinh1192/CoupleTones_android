@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -84,6 +85,7 @@ public class changeSpousetest {
         onView(withId(R.id.spouseEditTextID)).check(matches(withHint("Enter Your Spouse Email")));
 
         // Type in new spouse email
+        onView(withId(R.id.spouseEditTextID)).perform(clearText());
         onView(withId(R.id.spouseEditTextID)).perform(typeText("jeremysiocon@gmail.com"), closeSoftKeyboard());
 
         // Exit the app and reenter it so spouse refreshes
