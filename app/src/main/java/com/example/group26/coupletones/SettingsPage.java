@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-public class SettingsPage extends AppCompatActivity {
+public class  SettingsPage extends AppCompatActivity {
 
     NotificationControl notificationControl;
 
