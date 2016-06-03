@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
@@ -57,16 +58,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import java.util.HashMap;
-import java.util.HashSet;
+
 
 public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
     private GoogleMap mMap;
     private Button addPlaceBtn;
     private boolean addingMode;
+    private boolean removeMode;
     private RelativeLayout addingView;
     private Button confirmAddBtn;
     private Button cancelAddBtn;
+    private Button removeBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
     private GoogleApiClient mGoogleApiClient;
@@ -117,6 +119,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         addPlaceBtn = (Button) findViewById(R.id.addPlaceBtnID);
         confirmAddBtn = (Button) findViewById(R.id.confirmAddID);
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
+        removeBtn = (Button) findViewById(R.id.removeBtn);
+        removeBtn.setVisibility(View.INVISIBLE);
 
         // Setup display for adding mode
         addingView = (RelativeLayout) findViewById(R.id.addingPlaceViewID);
@@ -146,14 +150,24 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onClick(View v) {
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
-                String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
-                if (nameOfPlace.isEmpty()) {
-                    Toast.makeText(favMapPage.this, "Please enter a name for this place.",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    temporaryMarker.setTitle(nameOfPlace);
-                    aFavoritePlace newPlace = new aFavoritePlace ();
-                    newPlace.addPlaceToServer(nameOfPlace, myFirebaseRef, temporaryMarker);
+                removeBtn.setVisibility(View.INVISIBLE);
+                if (removeMode && !addingMode) {
+                    aFavoritePlace oldPlace = new aFavoritePlace(temporaryMarker.getTitle(),temporaryMarker.getPosition().latitude,temporaryMarker.getPosition().longitude);
+
+                    oldPlace.removeFromServer(myFirebaseRef,temporaryMarker.getSnippet());
+                    temporaryMarker.remove();
+                    removeMode = false;
+                }
+                if (addingMode) {
+                    String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
+                    if (nameOfPlace.isEmpty()) {
+                        Toast.makeText(favMapPage.this, "Please enter a name for this place.",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        temporaryMarker.setTitle(nameOfPlace);
+                        aFavoritePlace newPlace = new aFavoritePlace();
+                        newPlace.addPlaceToServer(nameOfPlace, myFirebaseRef, temporaryMarker);
+                    }
                 }
             }
         });
@@ -161,7 +175,19 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onClick(View v) {
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
+                removeBtn.setVisibility(View.INVISIBLE);
                 temporaryMarker.remove();
+                removeMode = false;
+            }
+        });
+        removeBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                addingView.setVisibility(View.VISIBLE);
+                EditText edit = (EditText) findViewById(R.id.placeName);
+                edit.setVisibility(addingView.INVISIBLE);
+                TextView a = (TextView) findViewById(R.id.addingTitle);
+                a.setVisibility(addingView.INVISIBLE);
+                removeMode = true;
             }
         });
 
@@ -209,12 +235,31 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         };
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+                // TODO Auto-generated method stub
+                temporaryMarker = arg0;
+                removeBtn.setVisibility(View.VISIBLE);
+                Log.i("Maps", "TAP TO A MARKER");
+            }
+        });
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng point){
+                removeBtn.setVisibility(View.INVISIBLE);
+            }
+            });
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng point) {
                 if (addingMode) {
                     addingView.setVisibility(View.VISIBLE);
+                    EditText edit = (EditText) findViewById(R.id.placeName);
+                    edit.setVisibility(addingView.VISIBLE);
+                    TextView a = (TextView) findViewById(R.id.addingTitle);
+                    a.setVisibility(addingView.VISIBLE);
                     //temporaryMarker.position(point);
                     temporaryMarker = mMap.addMarker(new MarkerOptions().position(point).title(""));
                 }
@@ -258,7 +303,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 Log.e("Count ", "HAHAHA");
 
                 LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).snippet(temp));
 
             }
 

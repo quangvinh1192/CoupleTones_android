@@ -30,6 +30,11 @@ public class aFavoritePlace implements Serializable {
         this.arrived = arrivalTime;
         this.departure = departureTime;
     }
+    public aFavoritePlace(String inpName, double inpLatitude, double inpLongitude){
+        name= inpName;
+        latitude = inpLatitude;
+        longitude = inpLongitude;
+    }
     /**
      * constructor
      * @param inpName
@@ -94,6 +99,11 @@ public class aFavoritePlace implements Serializable {
         temp.push().setValue(newPlaceToAdd);
 
     }
-
+    public void removeFromServer(Firebase myFirebaseRef,String id){
+        AuthData authData = myFirebaseRef.getAuth();
+        String userId = authData.getUid();
+        Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces").child(id);
+        temp.removeValue();
+    }
 
 }

@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
-            android:id="@+id/textView2"
+            android:id="@+id/addingTitle"
             android:textColor="#ffffff"
             android:layout_alignBottom="@+id/placeName"
             android:layout_alignParentStart="true" />
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/placeName"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/textView2"
+            android:layout_toEndOf="@+id/addingTitle"
             android:background="#ffffff" />
 
         <Button
@@ -73,5 +73,15 @@
             android:layout_alignEnd="@+id/placeName" />
 
     </RelativeLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="106dp"
+        android:layout_height="wrap_content"
+        android:text="Remove"
+        android:id="@+id/removeBtn"
+        android:layout_gravity="right|top"
+        android:textColor="#ffffff"
+        android:background="#fa4646" />
 
 </FrameLayout>
