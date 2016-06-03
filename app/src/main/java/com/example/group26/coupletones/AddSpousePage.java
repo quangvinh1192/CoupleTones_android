@@ -136,18 +136,7 @@ public class AddSpousePage extends AppCompatActivity {
                         Log.d("MyApp", "The spouse you entered is using the app");
                         yourSpouseUID.put("spouseUID", UID);
                         findYourSpouseSpouse(UID);
-//                        if (yourSpouseSpouseEmail.equals(myEmail)) {
-//
-//                            Log.d("MyApp", "Your spouse added you");
-//
-//                        } else {
-//                            Log.d("MyApp", yourSpouseSpouseEmail);
-//
-//                            yourSpouseUID.put("spouseUID", "");
-//                            Log.d("MyApp", "Your spouse did not add you");
-//                            Firebase userRef = getUserRef();
-//                            userRef.updateChildren(yourSpouseUID);
-//                        }
+
                     } else {
                         Log.d("MyApp", "OMG");
                     }
@@ -171,8 +160,7 @@ public class AddSpousePage extends AppCompatActivity {
             public void onCancelled(FirebaseError e) {
             }
 
-            //... ChildEventListener also defines onChildChanged, onChildRemoved,
-            //    onChildMoved and onCanceled, covered in later sections.
+
         });
     }
     /** Name:

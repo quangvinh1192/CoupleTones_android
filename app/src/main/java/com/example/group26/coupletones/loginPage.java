@@ -181,24 +181,16 @@ public class loginPage extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-//                            Spouse spouse = globalAppVariables.getSpouse();
-//                            Firebase firebaseRef = globalAppVariables.getFirebase();
-//                            SOListOfPlaces soListOfPlaces = new SOListOfPlaces(spouse, firebaseRef);
 
                             Intent i=new Intent(loginPage.this, MenuPage.class);
                             startActivity(i);
                         }
                     }, 3000);
-                    //go to menupage
-                    //startActivity(new Intent(loginPage.this, MenuPage.class));
+
                 }
 
                 @Override
                 public void onAuthenticationError(FirebaseError firebaseError) {
-                    // Authenticated failed with error firebaseError
-                    //figure out what went wrong and return it to the developer
-                    //TODO
-
                     errorHandler.onLoginError();
                 }
             };
