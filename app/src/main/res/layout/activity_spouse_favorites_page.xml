@@ -34,13 +34,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/button" />
+        android:layout_alignBottom="@+id/viewSOFavsBtn" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View in Map"
-        android:id="@+id/button"
+        android:id="@+id/viewSOFavsBtn"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

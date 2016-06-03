@@ -39,6 +39,15 @@ public class SpouseFavoritesPage extends AppCompatActivity {
 
         loadButtons(linear, listOfPlaces);
 
+        Button showPlacesOnMap = (Button) findViewById(R.id.viewSOFavsBtn);
+
+        showPlacesOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SpouseFavoritesPage.this, SOFavMap.class));
+            }
+        });
+
 
 //        Button[] btnEdit = new Button[listOfPlaces.size()];
 //        Log.d("Size of favPlacesList", "Size: " + listOfPlaces.size());

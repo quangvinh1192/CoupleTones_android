@@ -13,4 +13,5 @@
         <item>electribe</item>
         <item>music box</item>
     </string-array>
+    <string name="title_activity_sofav_map">Map</string>
 </resources>

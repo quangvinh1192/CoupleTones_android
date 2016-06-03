@@ -77,7 +77,10 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".SettingsPage"></activity>
+        <activity android:name=".SettingsPage" />
+        <activity
+            android:name=".SOFavMap"
+            android:label="@string/title_activity_sofav_map"></activity>
     </application>
 
 </manifest>
