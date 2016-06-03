@@ -21,15 +21,19 @@ public class NotificationControl {
     private boolean should_vibrate;
     private boolean should_sound;
 
-    MediaPlayer mp;
-
     private Initialize initialize;
     NotificationCompat.Builder mBuilder;
+
+    VibrationHandler vH;
+    SoundHandler sH;
 
     public NotificationControl(Initialize initialize){
         this.initialize = initialize;
         mBuilder = new NotificationCompat.Builder(initialize);
-
+        vH = new VibrationHandler( initialize );
+        sH = new SoundHandler( initialize );
+        should_sound = true;
+        should_vibrate = true;
     }
 
 
@@ -44,14 +48,26 @@ public class NotificationControl {
         String message;
         if(arriveOrDepart){
             vibrate( getUniqueVibration( place.getName() ) );
-            playSound( getUniqueSound( place.getName() ) );
+            playSound(getUniqueSound(place.getName()));
             mBuilder.setContentTitle("Arriving");
             message = "Spouse is arriving at " + place.getName();
+
+            //first play arrival sound and vibration
+            vibrate("arrival vibration");
+            playSound("arrival sound" );
+
+            vibrate( getUniqueVibration( place.getName() ) );
+            playSound(getUniqueSound(place.getName()));
         }
 
         else{
+            //first play departure sound and vibration
+            vibrate( "departure vibration" );
+            playSound( "departure sound" );
+
             vibrate( getUniqueVibration( place.getName() ) );
-            playSound( getUniqueSound( place.getName() ) );
+            playSound(getUniqueSound(place.getName()));
+
             mBuilder.setContentTitle("Departing");
             message = "Spouse is departing from " + place.getName();
         }
@@ -75,28 +91,9 @@ public class NotificationControl {
 
         if(should_vibrate) {
 
-            Vibrator vibrator = (Vibrator) initialize.getSystemService(Context.VIBRATOR_SERVICE);
+            Log.d( "should have vibrated", vibration_type );
 
-            if(vibrator.hasVibrator()) {
-                Log.v("Can Vibrate", "YES");
-
-                switch (vibration_type) {
-                    case "2 short vibrations":
-                        long[] pattern = {0, 300, 200, 300};
-                        vibrator.vibrate(pattern, -1);
-                        break;
-                    case "1 short vibration":
-                        long[] pattern2 = {0, 1000};
-                        vibrator.vibrate(pattern2, -1);
-                        break;
-                    case "1 long vibration":
-                        long[] pattern3 = {0, 2000};
-                        vibrator.vibrate(pattern3, -1);
-                        break;
-                }
-            }else{
-                Log.v("Can Vibrate", "NO");
-            }
+            vH.vibrate( vibration_type );
 
             //if the phone vibrated return true
             return true;
@@ -141,21 +138,9 @@ public class NotificationControl {
 
         if( should_sound ) {
 
-            switch (sound_type) {
-                case "classic":
-                    mp = MediaPlayer.create( initialize , R.raw.classic);
-                    mp.start();
+            Log.d( "Should sound!", sound_type );
 
-                    break;
-                case "electribe":
-                    mp = MediaPlayer.create( initialize, R.raw.electribe);
-                    mp.start();
-                    break;
-                case "music box":
-                    mp = MediaPlayer.create( initialize, R.raw.musicbox);
-                    mp.start();
-                    break;
-            }
+            sH.playSound( sound_type );
             //if the sound was played pressed return true
             return true;
         }
@@ -163,4 +148,11 @@ public class NotificationControl {
         return false;
     }
 
+    public SoundHandler getSoundHandler(){
+        return sH;
+    }
+
+    public VibrationHandler getVibrationHandler(){
+        return vH;
+    }
 }

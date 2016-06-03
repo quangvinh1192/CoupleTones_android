@@ -11,53 +11,43 @@ public class VibrationHandler {
 
     String typeOfVibration; // Holds the type of vibration (arrival, departure, place-specific)
 
-    Vibrator vibratorObject; // Vibrator object to do actual vibrating
+    Vibrator vibrator; // Vibrator object to do actual vibrating
 
-    long[] arrivalPattern = {0, 1000};
-    long[] departurePattern = {0, 500, 100, 500};
-    long[] uniquePattern;
+    private final long[] arrivalPattern = {0, 100};
+    private final long[] departurePattern = {0, 500, 100, 500};
+    private final long[] two_short_vibrations = {0, 300, 200, 300};
+    private final long[] one_short_vibration = {0, 1000};
+    private final long[] one_long_vibration = {0, 2000};
 
     // Constructor for handling vibrations NON-UNIQUE
-    VibrationHandler (String typeOfVibration, Context thisContext) {
-        this.typeOfVibration = typeOfVibration;
-        vibratorObject = (Vibrator) thisContext.getSystemService(Context.VIBRATOR_SERVICE);
+    VibrationHandler (Context thisContext) {
+        vibrator = (Vibrator) thisContext.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-    // Constructor for handling vibrations UNIQUE
-    VibrationHandler (String typeOfVibration, Context thisContext, long[] uniquePattern) {
-        this.typeOfVibration = typeOfVibration;
-        vibratorObject = (Vibrator) thisContext.getSystemService(Context.VIBRATOR_SERVICE);
-        this.uniquePattern = uniquePattern;
-    }
+    public void vibrate( String vibration_type ){
 
-    // Method to call appropriate vibration pattern
-    void vibrateByType () {
+        if(vibrator.hasVibrator()) {
+            Log.v("Can Vibrate", "YES");
+            if( vibration_type.equals( "2 short vibrations" ) ) {
 
-        // Play arrival tone
-        if (typeOfVibration.equals("arrival")) {
+                vibrator.vibrate( two_short_vibrations, -1);
+            }else if(vibration_type.equals("1 short vibration")) {
 
-            vibratorObject.vibrate(arrivalPattern, -1);
-        }
+                vibrator.vibrate( one_short_vibration, -1);
+            }else if( vibration_type.equals("1 long vibration")) {
 
-        // Play departure tone
-        else if (typeOfVibration.equals("departure")) {
+                vibrator.vibrate( one_long_vibration, -1);
+            }else if( vibration_type.equals("arrival vibration")){
 
-            vibratorObject.vibrate(departurePattern, -1);
-        }
+                vibrator.vibrate( arrivalPattern, -1);
+            }else if( vibration_type.equals("departure vibration")){
 
-        // Play unique tone for the location
-        else if (typeOfVibration.equals("unique")) {
-
-            if (uniquePattern != null && uniquePattern.length != 0) {
-
-                vibratorObject.vibrate(uniquePattern, -1);
+                vibrator.vibrate( departurePattern, -1 );
+            }else{
+                Log.d( "vibration set to: ", vibration_type );
             }
-        }
-
-        // Debug - error, incorrect call
-        else {
-
-            Log.d("ErrorMsg", "Incorrect vibration type passed in");
+        }else{
+            Log.v("Can Vibrate", "NO");
         }
     }
 }

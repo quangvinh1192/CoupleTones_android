@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class LocationSettingsPage extends AppCompatActivity {
 
-    String location_name;
+    private String location_name;
+    private NotificationControl notificationControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,7 @@ public class LocationSettingsPage extends AppCompatActivity {
         setContentView(R.layout.activity_location_settings);
 
         this.location_name = getIntent().getStringExtra("Location Name");
+        this.notificationControl = ((Initialize)getApplication()).getNotificationControl();
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(location_name + " Settings");
@@ -28,12 +31,12 @@ public class LocationSettingsPage extends AppCompatActivity {
     //Plays the vibration
     public void onClickTestVibration(View view){
 
-        Intent intent = new Intent(LocationSettingsPage.this, VibrationService.class);
         Spinner vibration_spinner = (Spinner) findViewById( R.id.vibrationSpinner );
         String vibration_selected = String.valueOf( vibration_spinner.getSelectedItem() );
-        intent.putExtra( "vibration selected", vibration_selected );
 
-        this.startService(intent);
+        VibrationHandler vibrationHandler = notificationControl.getVibrationHandler();
+
+        vibrationHandler.vibrate( vibration_selected );
     }
 
     //sets the vibration locally for the specific location
@@ -51,17 +54,20 @@ public class LocationSettingsPage extends AppCompatActivity {
         editor.putString( location_name + "_vibration" , vibration_selected );
         editor.apply();
 
-
+        Toast toast = Toast.makeText( getApplicationContext(), "Vibration Set" , Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     //
     public void onClickTestSound(View view){
-        Intent intent = new Intent(LocationSettingsPage.this, SoundService.class);
+
+
         Spinner sound_spinner = (Spinner) findViewById( R.id.soundSpinner );
         String sound_selected = String.valueOf( sound_spinner.getSelectedItem() );
-        intent.putExtra( "sound selected", sound_selected );
 
-        this.startService(intent);
+        SoundHandler soundHandler = notificationControl.getSoundHandler();
+
+        soundHandler.playSound(sound_selected);
     }
 
     //sets the Sound locally for the location
@@ -79,5 +85,7 @@ public class LocationSettingsPage extends AppCompatActivity {
         editor.putString( location_name + "_sound" , sound_selected );
         editor.apply();
 
+        Toast toast = Toast.makeText( getApplicationContext(), "Sound Set" , Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
