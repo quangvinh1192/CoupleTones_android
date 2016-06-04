@@ -34,7 +34,7 @@ public class LocationSettingsPage extends AppCompatActivity {
         Spinner vibration_spinner = (Spinner) findViewById( R.id.vibrationSpinner );
         String vibration_selected = String.valueOf( vibration_spinner.getSelectedItem() );
 
-        Intent intent = new Intent( LocationSettingsPage.this, UniqueSoundService.class );
+        Intent intent = new Intent( LocationSettingsPage.this, UniqueVibrationService.class );
         intent.putExtra( "vibration_type", vibration_selected );
 
         startService(intent);
