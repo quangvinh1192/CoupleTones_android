@@ -87,7 +87,7 @@ public class changeSpousetest {
         // Type in new spouse email
         onView(withId(R.id.spouseEditTextID)).perform(clearText());
         onView(withId(R.id.spouseEditTextID)).perform(typeText("jeremysiocon@gmail.com"), closeSoftKeyboard());
-
+        onView(withId(R.id.updateSpouseButtonID)).perform(click());
         // Exit the app and reenter it so spouse refreshes
 
     }
@@ -116,6 +116,11 @@ public class changeSpousetest {
 
         // Check to see if new spouse email was saved
         onView(withId(R.id.spouseEditTextID)).check(matches(withText("jeremysiocon@gmail.com")));
+
+        //Reset test for next time
+        onView(withId(R.id.spouseEditTextID)).perform(clearText());
+        onView(withId(R.id.spouseEditTextID)).perform(typeText("test@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.updateSpouseButtonID)).perform(click());
 
     }
 }

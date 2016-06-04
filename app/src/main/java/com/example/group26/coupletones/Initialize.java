@@ -35,8 +35,8 @@ public class Initialize extends android.app.Application {
     private LocationManager locationManager;
     private HashMap<String, aFavoritePlace> favoriteLocations; //It's your favoriteLocations
     private PushPullMediator mediator;
-    private long minTime = 10 * 1000; //5 minutes  = 5 * 60 * 1000;
-    private long minDistance = 20;
+    private final long minTime = 10 * 1000; //5 minutes  = 5 * 60 * 1000;
+    private final long minDistance = 20;
     SOListOfPlaces solistofplaces;
     private NotificationControl notificationControl;
 
@@ -99,11 +99,15 @@ public class Initialize extends android.app.Application {
         return solistofplaces;
     }
 
+    /* calls of Solistofplaces object's setter */
     void updateSOListOfPlaces() {
         solistofplaces.updateList();
     }
 
-
+    /**
+     * This method listens to user's current location and calls on other methods to check if firebase
+     * needs to be udated
+     */
     public void startListeningToMyself() {
         //null check
         Log.d("Initialize", "startListeningToMyself");
@@ -136,25 +140,16 @@ public class Initialize extends android.app.Application {
 
             }
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
             @Override
-            public void onProviderEnabled(String provider) {
-            }
+            public void onProviderEnabled(String provider) {}
             @Override
-            public void onProviderDisabled(String provider) {
-            }
+            public void onProviderDisabled(String provider) {}
         };
 
         // Register the listener with the Location Manager to receive location updates
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             Log.d("INITIALIZE", "NEED PERMISSION FOR GPS");
             return;
         }
@@ -170,6 +165,7 @@ public class Initialize extends android.app.Application {
         return spouse;
     }
 
+
     /** Name: getFirebase
      * returns the firebase that was initialized
      * @return Firebase
@@ -178,11 +174,13 @@ public class Initialize extends android.app.Application {
         return myFirebaseRef;
     }
 
+    /* add a favorite location to the list of favorite locations*/
     public void addFavoriteLocation(String name, aFavoritePlace newFavoritePlace) {
         Log.d("Initialize", "addFavoriteLocation");
         favoriteLocations.put(name, newFavoritePlace);
     }
 
+    /* update the hashmap that contains our favoritelocations */
    public void updateHashMap() {
        Log.d("INITIALIZE", "UpdateHashMap");
        AuthData authData = myFirebaseRef.getAuth();
@@ -204,22 +202,14 @@ public class Initialize extends android.app.Application {
            }
 
            @Override
-           public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-           }
-
+           public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {}
            @Override
-           public void onChildRemoved(DataSnapshot snapshot) {
-           }
-
+           public void onChildRemoved(DataSnapshot snapshot) {}
            @Override
-           public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-           }
-
+           public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {}
            @Override
-           public void onCancelled(FirebaseError e) {
-           }
-           //... ChildEventListener also defines onChildChanged, onChildRemoved,
-           //    onChildMoved and onCanceled, covered in later sections.
+           public void onCancelled(FirebaseError e) {}
+
        });
 
    }

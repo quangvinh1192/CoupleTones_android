@@ -25,9 +25,7 @@ public class PushPullMediator {
     aFavoritePlace lastPlace;
     private Firebase myFirebaseRef;
 
-    PushPullMediator(){
-
-    }
+    PushPullMediator(){}
 
     void setMyFirebaseRef(Firebase myFirebaseRef) {
         this.myFirebaseRef = myFirebaseRef;
@@ -46,38 +44,42 @@ public class PushPullMediator {
         this.currentLocation = newlyVisited;
 
     }
+
+
     public aFavoritePlace getVisited(){
         return currentLocation;
     }
 
+    /** this method calls on helper functions to send info about arrival and departure to firebase
+     *
+     */
     public void sendInfoToFirebase() {
 
         // Arrival
         if (lastPlace == null && currentLocation != null) {
-
             arrived (currentLocation.getName());
         }
 
         // Departure
         else if (lastPlace != null && currentLocation == null) {
-
             departed (lastPlace.getName());
         }
 
         // Departure + Arrival
-
         else if (lastPlace != null && currentLocation != null
-                && (lastPlace.getLatitude() !=currentLocation.getLatitude() && lastPlace.getLongitude() != currentLocation.getLongitude())) {
-
+                && (lastPlace.getLatitude() !=currentLocation.getLatitude()
+                && lastPlace.getLongitude() != currentLocation.getLongitude())) {
             departed(lastPlace.getName());
             arrived (currentLocation.getName());
-
         }
 
     }
 
 
-    // Helper function to update Firebase when we arrive at a place
+    /** This updates the place in firebase to be set as "arrived"
+     *
+     * @param nameOfPlace
+     */
     private void arrived (final String nameOfPlace) {
 
         AuthData authData = myFirebaseRef.getAuth();
@@ -90,6 +92,7 @@ public class PushPullMediator {
 
                 String temp = dataSnapshot.getKey();
                 aFavoritePlace tempPlace = dataSnapshot.getValue(aFavoritePlace.class);
+                // check to see if place exists in firebase, and update
                 if (tempPlace.getName().equals(nameOfPlace)) {
                     Firebase updatePlace = tempRef.child(temp).child("visited");
                     updatePlace.setValue(true);
@@ -98,35 +101,22 @@ public class PushPullMediator {
                     updateTime.push().setValue(System.currentTimeMillis());
                 }
             }
-
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         };
-
-        //TODO IF THERE'S A PROBLEM IT'S PROBABLY HERE
         tempRef.addChildEventListener(addListener);
-
-        //tempRef.removeEventListener(addListener);
     }
 
-    // Helper function for when we depart from a place
+    /** this function updates the place in firebase to be set to departed
+     *
+     * @param nameOfPlace: name of place that was updated
+     */
     private void departed (final String nameOfPlace) {
 
         AuthData authData = myFirebaseRef.getAuth();
@@ -136,10 +126,9 @@ public class PushPullMediator {
         ChildEventListener addListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                 String temp = dataSnapshot.getKey();
                 aFavoritePlace tempPlace = dataSnapshot.getValue(aFavoritePlace.class);
-
+                /* check to see if place exists and update it.*/
                 if (tempPlace.getName().equals(nameOfPlace)) {
                     Firebase updatePlace = tempRef.child(temp).child("visited");
                     updatePlace.setValue(false);
@@ -150,30 +139,16 @@ public class PushPullMediator {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         };
-
-        //TODO IF THERE'S A PROBLEM IT'S PROBABLY HERE
         tempRef.addChildEventListener(addListener);
 
-        //tempRef.removeEventListener(addListener);
     }
 
 }

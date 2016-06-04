@@ -45,65 +45,45 @@ public class SpouseVisitsPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spouse_visits_page);
-
         ref = ((Initialize) this.getApplication()).getFirebase();
         spouse = ((Initialize) this.getApplication()).getSpouse().spouseUID;
-
         Firebase tempRef = ref.child("users").child(spouse).child("history");
-
         linear = (LinearLayout) findViewById(R.id.linear);
-
         param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
 
+        /** use this to fill the spouse visited page */
         tempRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 populateHistory(dataSnapshot);
             }
-
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         });
-        //createButtons();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     // This method gets the arrival/departure information from history in a Firebase snapshot
     // and uses it to populate a Hashmap whose keys are used to populate the arrayList
     private void populateHistory(DataSnapshot dataSnapshot) {
-
         // For all favorite locations
         for (DataSnapshot favLoc : dataSnapshot.getChildren()) {
-
             // For both arrival and departure
             for (DataSnapshot arDep : favLoc.getChildren()) {
-
                 // For all arrival and departure times
                 for (DataSnapshot time : arDep.getChildren()) {
-
                     // Set up pair to handle the name and whether one is arriving or departing
                     Pair<String, Boolean> temp;
-
                     if (arDep.getKey().toString().equals("arrive")) {
-
                         // Arriving = true bool
                         temp = new Pair<>(favLoc.getKey().toString(), Boolean.TRUE);
                     } else {
-
                         // Departing = false bool
                         temp = new Pair<>(favLoc.getKey().toString(), Boolean.FALSE);
                     }
-
                     historyMap.put(Long.parseLong(time.getValue().toString()), temp);
                 }
-
             }
         }
 
@@ -117,24 +97,16 @@ public class SpouseVisitsPage extends AppCompatActivity {
 
     // Creates buttons for the page
     private void createButtons() {
-
         TextView[] visitedList = new TextView[timeKeys.size()];
-
         for (int i = 0; i < timeKeys.size(); i++) {
-
             visitedList[i] = new TextView(getApplicationContext());
-
             // Set up the right text to print: LOCATION NAME, arrived at: DATE + TIME
             String textToPrint = historyMap.get(timeKeys.get(i)).first;
-
             if (historyMap.get(timeKeys.get(i)).second) {
-
                 textToPrint += ", arrived at: ";
             } else {
-
                 textToPrint += ", departed from: ";
             }
-
             Date time = new Date(timeKeys.get(i));
             textToPrint += time.toString();
 

@@ -22,33 +22,26 @@ public class SOListOfPlaces {
     String spouseID;
 
 
-    SOListOfPlaces() {
-    }
+    SOListOfPlaces() {}
 
     // Initialization for favorite place list class
     SOListOfPlaces(Spouse mySpouse, Firebase thisFirebaseRef) {
-
-        // TODO Initialize list of favorite places
         favoritePlaceList = new ArrayList<aFavoritePlace>();
-
         this.spouseID = mySpouse.spouseUID;
         if(spouseID == null) {
             Log.d ("SOListOfPlaces", "NO SPOUSE UID");
         }
         this.myFireBaseRef = thisFirebaseRef;
-
-        Log.d("SOLISTOFPLACES", "constructor");
     }
 
+    /** gets whats in the favoritePlaceList and puts it in the arraylist that is passed in*/
     public void getFavoritesList(ArrayList<aFavoritePlace> a) {
-
-        Log.d("aFavoritePlace", "Size of list: " + favoritePlaceList.size());
         for (aFavoritePlace temp : this.favoritePlaceList){
             a.add(temp);
         }
-        //return this.favoritePlaceList;
     }
 
+    /** add to user's favoriteplacelist */
     void addToList(aFavoritePlace temp) {
         favoritePlaceList.add(temp);
     }
@@ -62,33 +55,18 @@ public class SOListOfPlaces {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Log.d("aFavoritePlace", "Favorite place is being added to list" + dataSnapshot.child("name").getValue());
-
                 aFavoritePlace temp = dataSnapshot.getValue(aFavoritePlace.class);
-
                 addToList(temp);
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onCancelled(FirebaseError firebaseError) {}
         });
     }
 }

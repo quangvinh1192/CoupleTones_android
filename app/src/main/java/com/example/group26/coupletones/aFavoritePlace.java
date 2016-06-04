@@ -1,10 +1,7 @@
 package com.example.group26.coupletones;
 
-import android.widget.EditText;
-
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.io.Serializable;
@@ -88,22 +85,51 @@ public class aFavoritePlace implements Serializable {
      * PRECONDITION: NAME EXISTS
      */
     public void addPlaceToServer(String nameOfPlace, Firebase myFirebaseRef, Marker temporaryMarker) {
-
+        //get authority from firebase
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
         Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
 
+        //create and push marker
         double lat = temporaryMarker.getPosition().latitude;
         double longitude = temporaryMarker.getPosition().longitude;
         aFavoritePlace newPlaceToAdd = new aFavoritePlace(nameOfPlace, lat, longitude, false);
         temp.push().setValue(newPlaceToAdd);
 
     }
+
+    /** Name: removeFromServer
+     * Removes a place from the server
+     * @param myFirebaseRef
+     * @param id: name of the place to remove
+     */
     public void removeFromServer(Firebase myFirebaseRef,String id){
+        //get authority from firebase
         AuthData authData = myFirebaseRef.getAuth();
         String userId = authData.getUid();
+        
+        //remove from firebase
         Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces").child(id);
         temp.removeValue();
+    }
+    /** Name: editFromServer
+     * Removes a place from the server
+     * @param myFirebaseRef
+     * @param id: name of the place to editFromServer
+     */
+    public void editFromServer(Firebase myFirebaseRef,String id, String newName){
+        //get authority from firebase
+        AuthData authData = myFirebaseRef.getAuth();
+        String userId = authData.getUid();
+        this.name = newName;
+
+
+        //remove from firebase
+        Firebase temp = myFirebaseRef.child("users").child(userId).child("favPlaces").child(id);
+        temp.removeValue();
+        temp = myFirebaseRef.child("users").child(userId).child("favPlaces");
+        temp.push().setValue(this);
+
     }
 
 }
