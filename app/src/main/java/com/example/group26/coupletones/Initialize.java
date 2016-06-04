@@ -179,6 +179,9 @@ public class Initialize extends android.app.Application {
         Log.d("Initialize", "addFavoriteLocation");
         favoriteLocations.put(name, newFavoritePlace);
     }
+    public void removeFavoriteLocation(String name) {
+        favoriteLocations.remove(name);
+    }
 
     /* update the hashmap that contains our favoritelocations */
    public void updateHashMap() {
