@@ -9,6 +9,7 @@ import com.example.group26.coupletones.R;
 import com.example.group26.coupletones.SOListOfPlaces;
 import com.example.group26.coupletones.loginPage;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,9 +29,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class placesExist {
+    @Rule
     public ActivityTestRule<loginPage> testloginPage= new ActivityTestRule<>(loginPage.class);
 
-
+    /*
+     * First test: Check if the SO Favorite Places Page is working
+     * Input: Valid account w/SO
+     */
     @Test
     public void TestOpeningPlacesPage () {
 
@@ -52,6 +57,10 @@ public class placesExist {
         onView(withId(R.id.viewSOFavsBtn)).check(matches(withText("View in Map")));
     }
 
+    /*
+     * Second Test: Check if SO Favorite Places Page Map is working
+     * Input: Valid account w/SO
+     */
     @Test
     public void TestOpeningPlacesMap () {
 
