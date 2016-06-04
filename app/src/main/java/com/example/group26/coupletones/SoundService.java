@@ -47,14 +47,6 @@ public class SoundService extends Service {
                     }
                 }
 
-                playSound( sound_type );//plays the unique sound
-
-                try{
-                    wait( 5000 );
-                }catch ( InterruptedException e){
-                    e.printStackTrace();
-                }
-
                  stopSelf();
             }
         }
@@ -67,15 +59,6 @@ public class SoundService extends Service {
             mp.start();
         }else if( sound_type.equals(departure)){
             mp = MediaPlayer.create( this, R.raw.departure);
-            mp.start();
-        }else if( sound_type.equals( electribe ) ){
-            mp = MediaPlayer.create( this, R.raw.electribe);
-            mp.start();
-        }else if( sound_type.equals(music_box)){
-            mp = MediaPlayer.create( this, R.raw.musicbox);
-            mp.start();
-        }else if( sound_type.equals( classic ) ){
-            mp = MediaPlayer.create( this, R.raw.classic );
             mp.start();
         }
     }

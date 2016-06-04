@@ -4,15 +4,30 @@
     <string name="title_activity_fav_map">Map</string>
     <string name="title_activity_menu_page">MenuPage</string>
     <string-array name="vibrations">
+        <item>none</item>
         <item>2 short vibrations</item>
         <item>1 short vibration</item>
         <item>1 long vibration</item>
+        <item>3 short vibrations</item>
+        <item>2 long vibrations</item>
+        <item></item>
+        <item></item>
+        <item></item>
+
     </string-array>
     <string-array name="sounds">
         <item>none</item>
         <item>classic</item>
         <item>electribe</item>
         <item>music box</item>
+        <item>doorchime</item>
+        <item>horn</item>
+        <item>station notification</item>
+        <item>military march</item>
+        <item>invasion</item>
+        <item>alarm clock</item>
+        <item>electronic beat</item>
+
     </string-array>
     <string name="title_activity_sofav_map">Map</string>
 </resources>

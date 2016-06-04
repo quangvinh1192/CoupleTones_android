@@ -12,7 +12,8 @@ public class VibrationService extends Service {
     private String aOrD;
     private String vibration_type;
 
-    Vibrator vibrator; // Vibrator object to do actual vibrating
+    Vibrator vibrator1; // Vibrator object to do actual vibrating
+    Vibrator vibrator2; // Vibrator for the unique vibration
 
     private final long[] arrivalPattern = {0, 100};
     private final long[] departurePattern = {0, 500, 100, 500};
@@ -36,16 +37,10 @@ public class VibrationService extends Service {
             synchronized (this){
 
                 if( !aOrD.equals("None") ) {
-                    vibrate(aOrD);//plays arrival or departure
 
-                    try {
-                        wait(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                    vibrateAorD();//plays arrival or departure
                 }
-                vibrate(vibration_type);//plays the unique sound
+                //vibrateUnique();//plays the unique sound
 
                 try{
                     wait( 5000 );
@@ -59,28 +54,43 @@ public class VibrationService extends Service {
     }
 
     //TODO switch to switch case
-    public void vibrate( String vibration_type ){
+    public void vibrateAorD(){
 
-        if(vibrator.hasVibrator()) {
+        if(vibrator1.hasVibrator()) {
             Log.v("Can Vibrate", "YES");
-            if( vibration_type.equals( "2 short vibrations" ) ) {
 
-                vibrator.vibrate( two_short_vibrations, -1);
-            }else if(vibration_type.equals("1 short vibration")) {
+            if( aOrD.equals("arrival")) {
+                vibrator1.vibrate(arrivalPattern, -1);
 
-                vibrator.vibrate( one_short_vibration, -1);
-            }else if( vibration_type.equals("1 long vibration")) {
+            }else if( aOrD.equals("departure")){
+                vibrator1.vibrate( departurePattern, -1 );
 
-                vibrator.vibrate( one_long_vibration, -1);
-            }else if( vibration_type.equals("arrival")){
-
-                vibrator.vibrate( arrivalPattern, -1);
-            }else if( vibration_type.equals("departure")){
-
-                vibrator.vibrate( departurePattern, -1 );
             }else{
                 Log.d( "vibration set to: ", vibration_type );
             }
+
+        }else{
+            Log.v("Can Vibrate", "NO");
+        }
+    }
+
+    public void vibrateUnique(){
+
+        if( vibrator2.hasVibrator() ) {
+
+            Log.v("Can Vibrate", "YES");
+
+            if (vibration_type.equals("2 short vibrations")) {
+
+                vibrator2.vibrate(two_short_vibrations, -1);
+            } else if (vibration_type.equals("1 short vibration")) {
+
+                vibrator2.vibrate(one_short_vibration, -1);
+            } else if (vibration_type.equals("1 long vibration")) {
+
+                vibrator2.vibrate(one_long_vibration, -1);
+            }
+
         }else{
             Log.v("Can Vibrate", "NO");
         }
@@ -96,10 +106,11 @@ public class VibrationService extends Service {
     @Override
     public int onStartCommand( Intent intent, int flags, int startId ){
 
-        vibrator =  (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator1 =  (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        //vibrator2 =  (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
         aOrD = (String)intent.getExtras().get( "aOrD" );
-        vibration_type = (String)intent.getExtras().get( "vibration_type");
+        //vibration_type = (String)intent.getExtras().get( "vibration_type");
 
         Thread vibrationThread = new Thread( new VibrationThread( startId ) );
         vibrationThread.start();

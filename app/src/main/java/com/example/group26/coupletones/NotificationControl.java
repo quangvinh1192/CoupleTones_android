@@ -78,16 +78,22 @@ public class NotificationControl {
 
         if(should_vibrate) {
 
-            Log.d( "this is a ", aOrD );
-            Log.d( "should have vibrated", vibration_type );
+            Log.d("this is a ", aOrD);
+            Log.d("should have vibrated", vibration_type);
 
             Intent intent = new Intent( initialize, VibrationService.class );
             intent.putExtra( "aOrD", aOrD );
-            intent.putExtra( "sound_type", vibration_type );
 
+            Intent intentUnique = new Intent( initialize, UniqueVibrationService.class);
+            intentUnique.putExtra( "vibration_type", vibration_type );
+
+            //used so it doesnt crash because we cant call service outside activity
             intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+            intentUnique.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+
 
             initialize.startService(intent);
+            initialize.startService( intentUnique );
             //if the phone vibrated return true
             return true;
         }
@@ -135,11 +141,15 @@ public class NotificationControl {
 
             Intent intent = new Intent( initialize, SoundService.class );
             intent.putExtra( "aOrD", aOrD );
-            intent.putExtra( "sound_type", sound_type );
 
-            intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+            Intent intentUnique = new Intent( initialize, UniqueSoundService.class );
+            intentUnique.putExtra( "sound_type", sound_type );
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentUnique.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
 
             initialize.startService(intent);
+            initialize.startService(intentUnique);
             //if the sound was played pressed return true
             return true;
         }
