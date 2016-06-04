@@ -47,6 +47,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
@@ -65,7 +67,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private GoogleApiClient mGoogleApiClient;
     protected LocationManager locationManager;
     private Application app;
-
+    private HashMap <String, aFavoritePlace> yourFavPlaces;
     private static final long LOCATION_REFRESH_TIME = 30;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -161,6 +163,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     editPlace.editFromServer(myFirebaseRef,temporaryMarker.getSnippet(),newName);
                     editMode = false;
                     temporaryMarker.setTitle(newName);
+                    ((Initialize)app).removeFavoriteLocation(editPlace.getName());
 
 
                 }
@@ -171,6 +174,16 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                         Toast.makeText(favMapPage.this, "Please enter a name for this place.",
                                 Toast.LENGTH_SHORT).show();
                     } else {
+                        //check to see if name exists already
+                        if ((((Initialize)app).getFavoriteLocations()).get(nameOfPlace) != null) {
+                            Toast.makeText(favMapPage.this, "This name already exists! Please choose a new one.",
+                                    Toast.LENGTH_SHORT).show();
+
+                            addingView.setVisibility(View.VISIBLE);
+//                            addPlaceBtn.performClick();
+                            return;
+                        }
+
                         temporaryMarker.setTitle(nameOfPlace);
                         aFavoritePlace newPlace = new aFavoritePlace();
                         newPlace.addPlaceToServer(nameOfPlace, myFirebaseRef, temporaryMarker);
@@ -180,6 +193,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         });
         cancelAddBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d("favMapPage", "canceled button");
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
                 removeBtn.setVisibility(View.INVISIBLE);
@@ -187,6 +201,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 editBtn.setVisibility(View.INVISIBLE);
                 removeMode = false;
                 editMode = false;
+                temporaryMarker.remove();
+                addPlaceBtn.setText("Add Favorite Place");
             }
         });
         editBtn.setOnClickListener(new View.OnClickListener(){
