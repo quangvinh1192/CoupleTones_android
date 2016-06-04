@@ -133,15 +133,7 @@ public class Initialize extends android.app.Application {
                         location.getLatitude(), location.getLongitude(), true);
                 mediator.updateCurrentLocation(currentLocation, favoriteLocations);
                 mediator.sendInfoToFirebase();
-//                    aFavoritePlace temp = mediator.getVisited();
-//                    // if we visited a place, update that place in firebase
-//                    if (temp != null){
-//                        mediator.updateVisitedPlaceFirebase(temp.getName());
-//                    }
-//
-//                } else {
-//                    mediator.updateVisitedPlaceFirebase("YOU-ARE-NOT-VISITING-ANY-PLACE");
-//                }
+
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {

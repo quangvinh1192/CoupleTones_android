@@ -50,10 +50,6 @@ public class MenuPage extends AppCompatActivity {
         final SOListOfPlaces soListOfPlaces = ((Initialize)this.getApplication()).getSOListOfFavoritePlaces();
 
 
-
-        Log.d("SPPUSEFAVORITESPAGE", "ONCREATE");
-
-
         Button goToMapBtn = (Button) findViewById(R.id.goToMapBtn);
         Button spouseOptionsBtn = (Button) findViewById(R.id.spouseOptionsBtn);
         Button viewSpousesVisitsBtn = (Button) findViewById(R.id.viewSpousesVisitsBtn);
