@@ -14,6 +14,13 @@ public class UniqueVibrationService extends Service {
     private final long[] two_short_vibrations = {0, 300, 200, 300};
     private final long[] one_short_vibration = {0, 1000};
     private final long[] one_long_vibration = {0, 2000};
+    private final long[] three_vibrations = {0, 200, 100, 200, 100, 200};
+    private final long[] short_long_short = {0, 100, 100, 500, 100, 100};
+    private final long[] quickening = {0, 500, 50, 250, 50, 100, 50, 50};
+    private final long[] slowing_down = {0, 50, 50, 100, 50, 250, 50, 500};
+    private final long[] rapid_fire = {0, 50, 10, 50, 10, 50, 10, 50, 10, 50};
+    private final long[] final_fantasy = {0, 50, 100, 50, 100, 50, 100, 400, 100, 300, 100, 350, 200, 100, 100, 50, 600};
+    private final long[] special = {0, 150, 50, 75, 50, 75, 50, 150, 50, 75, 50, 75, 50, 300};
 
     private String vibration_type;
 
@@ -64,15 +71,52 @@ public class UniqueVibrationService extends Service {
 
             Log.v("Can Vibrate", "YES");
 
-            if (vibration_type.equals("2 short vibrations")) {
 
-                vibrator2.vibrate(two_short_vibrations, -1);
-            } else if (vibration_type.equals("1 short vibration")) {
 
-                vibrator2.vibrate(one_short_vibration, -1);
-            } else if (vibration_type.equals("1 long vibration")) {
+            switch (vibration_type) {
 
-                vibrator2.vibrate(one_long_vibration, -1);
+                case "2 short vibrations":
+                    vibrator2.vibrate(two_short_vibrations, -1);
+                    break;
+
+                case "1 short vibration":
+                    vibrator2.vibrate(one_short_vibration, -1);
+                    break;
+
+                case "1 long vibration":
+                    vibrator2.vibrate(one_long_vibration, -1);
+                    break;
+
+                case "3 vibrations":
+                    vibrator2.vibrate(three_vibrations, -1);
+                    break;
+
+                case "short long short":
+                    vibrator2.vibrate(short_long_short, -1);
+                    break;
+
+                case "quickening":
+                    vibrator2.vibrate(quickening, -1);
+                    break;
+
+                case "slowing down":
+                    vibrator2.vibrate(slowing_down, -1);
+                    break;
+
+                case "rapid fire":
+                    vibrator2.vibrate(rapid_fire, -1);
+                    break;
+
+                case "final fantasy":
+                    vibrator2.vibrate(final_fantasy, -1);
+                    break;
+
+                case "none":
+                    break;
+
+                default:
+                    vibrator2.vibrate(special, -1);
+                    break;
             }
 
         }else{
