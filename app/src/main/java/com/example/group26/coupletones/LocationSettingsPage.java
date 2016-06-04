@@ -34,11 +34,27 @@ public class LocationSettingsPage extends AppCompatActivity {
         Spinner vibration_spinner = (Spinner) findViewById( R.id.vibrationSpinner );
         String vibration_selected = String.valueOf( vibration_spinner.getSelectedItem() );
 
-        VibrationHandler vibrationHandler = notificationControl.getVibrationHandler();
+        Intent intent = new Intent( LocationSettingsPage.this, VibrationService.class );
+        intent.putExtra( "aOrD", "None" );
+        intent.putExtra( "vibration_type", vibration_selected );
 
-        vibrationHandler.vibrate( vibration_selected );
+        startService( intent );
     }
 
+
+    //
+    public void onClickTestSound(View view){
+
+
+        Spinner sound_spinner = (Spinner) findViewById( R.id.soundSpinner );
+        String sound_selected = String.valueOf(sound_spinner.getSelectedItem());
+
+        Intent intent = new Intent( LocationSettingsPage.this, SoundService.class );
+        intent.putExtra( "aOrD", "None" );
+        intent.putExtra( "sound_type", sound_selected );
+
+        startService( intent );
+    }
     //sets the vibration locally for the specific location
     //Check SharedPreferences Lab to see how to access it
     //TODO possible bug will be when another vibration is set is might just append to the old vibration_selected
@@ -51,23 +67,11 @@ public class LocationSettingsPage extends AppCompatActivity {
         SharedPreferences sharedPreference = getSharedPreferences("location_info", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreference.edit();
 
-        editor.putString( location_name + "_vibration" , vibration_selected );
+        editor.putString(location_name + "_vibration", vibration_selected);
         editor.apply();
 
         Toast toast = Toast.makeText( getApplicationContext(), "Vibration Set" , Toast.LENGTH_SHORT);
         toast.show();
-    }
-
-    //
-    public void onClickTestSound(View view){
-
-
-        Spinner sound_spinner = (Spinner) findViewById( R.id.soundSpinner );
-        String sound_selected = String.valueOf( sound_spinner.getSelectedItem() );
-
-        SoundHandler soundHandler = notificationControl.getSoundHandler();
-
-        soundHandler.playSound(sound_selected);
     }
 
     //sets the Sound locally for the location

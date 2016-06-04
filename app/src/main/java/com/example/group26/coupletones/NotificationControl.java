@@ -24,14 +24,9 @@ public class NotificationControl {
     private Initialize initialize;
     NotificationCompat.Builder mBuilder;
 
-    VibrationHandler vH;
-    SoundHandler sH;
-
     public NotificationControl(Initialize initialize){
         this.initialize = initialize;
         mBuilder = new NotificationCompat.Builder(initialize);
-        vH = new VibrationHandler( initialize );
-        sH = new SoundHandler( initialize );
         should_sound = true;
         should_vibrate = true;
     }
@@ -46,27 +41,19 @@ public class NotificationControl {
         mBuilder.setSmallIcon(R.drawable.notifications_icon);
         //if the spouse is arriving at a location then set the tittle to "Arriving"
         String message;
+
         if(arriveOrDepart){
-            vibrate( getUniqueVibration( place.getName() ) );
-            playSound(getUniqueSound(place.getName()));
+            vibrate( "arrival", getUniqueVibration( place.getName() ) );
+            playSounds("arrival", getUniqueSound(place.getName()));
             mBuilder.setContentTitle("Arriving");
             message = "Spouse is arriving at " + place.getName();
 
-            //first play arrival sound and vibration
-            vibrate("arrival vibration");
-            playSound("arrival sound" );
-
-            vibrate( getUniqueVibration( place.getName() ) );
-            playSound(getUniqueSound(place.getName()));
         }
 
         else{
             //first play departure sound and vibration
-            vibrate( "departure vibration" );
-            playSound( "departure sound" );
-
-            vibrate( getUniqueVibration( place.getName() ) );
-            playSound(getUniqueSound(place.getName()));
+            vibrate( "departure", getUniqueVibration(place.getName()) );
+            playSounds("departure", getUniqueSound(place.getName()));
 
             mBuilder.setContentTitle("Departing");
             message = "Spouse is departing from " + place.getName();
@@ -87,14 +74,20 @@ public class NotificationControl {
     //3 types of vibrations
     // 3 unique vibrates: "2 short vibrations", "1 short vibration", "1 long vibration"
     // To choose the vibration, pass in any of the above vibration Strings
-    public boolean vibrate(  String vibration_type ){
+    public boolean vibrate(  String aOrD, String vibration_type ){
 
         if(should_vibrate) {
 
+            Log.d( "this is a ", aOrD );
             Log.d( "should have vibrated", vibration_type );
 
-            vH.vibrate( vibration_type );
+            Intent intent = new Intent( initialize, VibrationService.class );
+            intent.putExtra( "aOrD", aOrD );
+            intent.putExtra( "sound_type", vibration_type );
 
+            intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+
+            initialize.startService(intent);
             //if the phone vibrated return true
             return true;
         }
@@ -134,13 +127,19 @@ public class NotificationControl {
     //3 types of sounds
     // "classic", "electribe", "music box"
     // To choose the sound, just pass in any of the above Strings
-    public boolean playSound( String sound_type ){
+    public boolean playSounds( String aOrD, String sound_type ){
 
         if( should_sound ) {
 
-            Log.d( "Should sound!", sound_type );
+            Log.d("Should sound!", sound_type);
 
-            sH.playSound( sound_type );
+            Intent intent = new Intent( initialize, SoundService.class );
+            intent.putExtra( "aOrD", aOrD );
+            intent.putExtra( "sound_type", sound_type );
+
+            intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+
+            initialize.startService(intent);
             //if the sound was played pressed return true
             return true;
         }
@@ -148,11 +147,4 @@ public class NotificationControl {
         return false;
     }
 
-    public SoundHandler getSoundHandler(){
-        return sH;
-    }
-
-    public VibrationHandler getVibrationHandler(){
-        return vH;
-    }
 }

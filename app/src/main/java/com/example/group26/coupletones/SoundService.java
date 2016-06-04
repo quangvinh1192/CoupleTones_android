@@ -3,6 +3,7 @@ package com.example.group26.coupletones;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 //TODO Please Write Comments :)
 
@@ -19,10 +20,9 @@ public class SoundService extends Service {
     private String departure = "departure";
     private String classic = "classic";
     private String electribe = "electribe";
-    private String music_box = "music_box";
+    private String music_box = "music box";
 
     public SoundService() {
-        mp = new MediaPlayer();
     }
 
     final class SoundThread implements Runnable{
@@ -37,12 +37,14 @@ public class SoundService extends Service {
         public void run(){
             synchronized (this){
 
-                playSound( aOrD );//plays arrival or departure
+                if( !aOrD.equals("None") ) {
+                    playSound(aOrD);//plays arrival or departure
 
-                try{
-                    wait( 5000 );
-                }catch ( InterruptedException e){
-                    e.printStackTrace();
+                    try {
+                        wait(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 playSound( sound_type );//plays the unique sound
@@ -52,6 +54,7 @@ public class SoundService extends Service {
                 }catch ( InterruptedException e){
                     e.printStackTrace();
                 }
+
                  stopSelf();
             }
         }
@@ -86,8 +89,8 @@ public class SoundService extends Service {
     @Override
     public int onStartCommand( Intent intent, int flags, int startId ){
 
-        aOrD = intent.getExtras().getString("aOrD", "");
-        sound_type = intent.getExtras().getString( "sound_type", "");
+        aOrD = (String)intent.getExtras().get("aOrD");
+        sound_type = (String)intent.getExtras().get( "sound_type");
 
         Thread soundThread = new Thread( new SoundThread( startId ) );
         soundThread.start();
