@@ -64,7 +64,7 @@ public class UniqueSoundService extends Service {
                 mp = MediaPlayer.create( this, R.raw.electribe );
                 mp.start();
                 break;
-            case "electron beat":
+            case "electronic beat":
                 mp = MediaPlayer.create( this, R.raw.electronicbeat );
                 mp.start();
                 break;
@@ -84,6 +84,10 @@ public class UniqueSoundService extends Service {
                 mp = MediaPlayer.create( this, R.raw.musicbox );
                 mp.start();
                 break;
+
+            case "none":
+                break;
+
             default:
                 mp = MediaPlayer.create( this, R.raw.stationnotification );
                 mp.start();
