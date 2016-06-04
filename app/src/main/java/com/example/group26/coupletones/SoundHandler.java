@@ -2,7 +2,6 @@ package com.example.group26.coupletones;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-
 /**
  * Created by kssarabi on 6/3/2016.
  */

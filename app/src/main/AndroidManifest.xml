@@ -67,11 +67,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SpouseFavoritesPage" />
         <activity android:name=".LocationSettingsPage" />
-
         <activity android:name=".SettingsPage" />
         <activity
             android:name=".SOFavMap"
-            android:label="@string/title_activity_sofav_map"></activity>
+            android:label="@string/title_activity_sofav_map" />
+
+        <service
+            android:name=".SoundService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
