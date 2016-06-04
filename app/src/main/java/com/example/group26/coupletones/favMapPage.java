@@ -2,30 +2,19 @@ package com.example.group26.coupletones;
 
 import android.Manifest;
 import android.app.Application;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.bluetooth.le.AdvertiseData;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.Intent;
-import android.gesture.GestureOverlayView;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,19 +24,19 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -56,8 +45,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+
+import java.util.HashMap;
 
 
 public class favMapPage extends FragmentActivity implements OnMapReadyCallback, OnConnectionFailedListener    {
@@ -65,9 +54,11 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     private Button addPlaceBtn;
     private boolean addingMode;
     private boolean removeMode;
+    private boolean editMode;
     private RelativeLayout addingView;
     private Button confirmAddBtn;
     private Button cancelAddBtn;
+    private Button editBtn;
     private Button removeBtn;
     private Marker temporaryMarker;
     private Firebase myFirebaseRef;
@@ -120,6 +111,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         cancelAddBtn = (Button) findViewById(R.id.cancelAddID);
         removeBtn = (Button) findViewById(R.id.removeBtn);
         removeBtn.setVisibility(View.INVISIBLE);
+        editBtn = (Button) findViewById(R.id.editBtn);
+        editBtn.setVisibility(View.INVISIBLE);
 
         // Setup display for adding mode
         addingView = (RelativeLayout) findViewById(R.id.addingPlaceViewID);
@@ -134,12 +127,13 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     Log.d("MyApp", "I am here");
                     addingMode = true;
                     addPlaceBtn.setText("Cancel");
+                    addingSearchingPlace();
+
                 } else {
                     addingMode = false;
                     addPlaceBtn.setText("Add Favorite Place");
 
                 }
-                addingSearchingPlace();
 
             }
         });
@@ -150,6 +144,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
                 removeBtn.setVisibility(View.INVISIBLE);
+                editBtn.setVisibility(View.INVISIBLE);
+                addPlaceBtn.setVisibility(View.VISIBLE);
                 if (removeMode && !addingMode) {
                     aFavoritePlace oldPlace = new aFavoritePlace(temporaryMarker.getTitle(),temporaryMarker.getPosition().latitude,temporaryMarker.getPosition().longitude);
 
@@ -157,7 +153,17 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     temporaryMarker.remove();
                     removeMode = false;
                 }
+                if (editMode){
+                    EditText nameText = (EditText) findViewById(R.id.placeName);
+                    String newName = nameText.getText().toString();
+                    HashMap<String, aFavoritePlace> tempHashMap = ((Initialize) app).getFavoriteLocations();
+                    aFavoritePlace editPlace  = tempHashMap.get(temporaryMarker.getTitle());
+                    editPlace.editFromServer(myFirebaseRef,temporaryMarker.getSnippet(),newName);
+                    editMode = false;
+                    temporaryMarker.setTitle(newName);
 
+
+                }
                 //adding markers
                 if (addingMode) {
                     String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
@@ -177,13 +183,25 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                 // Perform action on click
                 addingView.setVisibility(View.INVISIBLE);
                 removeBtn.setVisibility(View.INVISIBLE);
-                temporaryMarker.remove();
+                addPlaceBtn.setVisibility(View.VISIBLE);
+                editBtn.setVisibility(View.INVISIBLE);
                 removeMode = false;
+                editMode = false;
+            }
+        });
+        editBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                addingView.setVisibility(View.VISIBLE);
+                editMode = true;
+                addPlaceBtn.setVisibility(View.INVISIBLE);
+
             }
         });
         removeBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 addingView.setVisibility(View.VISIBLE);
+                addPlaceBtn.setVisibility(View.INVISIBLE);
+
                 EditText edit = (EditText) findViewById(R.id.placeName);
                 edit.setVisibility(addingView.INVISIBLE);
                 TextView a = (TextView) findViewById(R.id.addingTitle);
@@ -231,6 +249,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onInfoWindowClick(Marker arg0) {
                 temporaryMarker = arg0;
                 removeBtn.setVisibility(View.VISIBLE);
+                editBtn.setVisibility(View.VISIBLE);
+                addPlaceBtn.setVisibility(View.INVISIBLE);
                 Log.i("Maps", "TAP TO A MARKER");
             }
         });
@@ -238,6 +258,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             @Override
             public void onMapClick(LatLng point){
                 removeBtn.setVisibility(View.INVISIBLE);
+                editBtn.setVisibility(View.INVISIBLE);
+                addPlaceBtn.setVisibility(View.VISIBLE);
             }
             });
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {

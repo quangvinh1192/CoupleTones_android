@@ -16,8 +16,8 @@
     tools:layout="@android:layout/simple_gallery_item" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="105dp"
+        android:layout_height="71dp"
         android:text="Add Favorite Place"
         android:id="@+id/addPlaceBtnID"
         android:layout_gravity="left|top" />
@@ -83,5 +83,13 @@
         android:layout_gravity="right|top"
         android:textColor="#ffffff"
         android:background="#fa4646" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="96dp"
+        android:layout_height="59dp"
+        android:text="Edit"
+        android:id="@+id/editBtn"
+        android:layout_gravity="center_horizontal|top" />
 
 </FrameLayout>
