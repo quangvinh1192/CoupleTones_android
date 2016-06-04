@@ -36,8 +36,6 @@ public class loginPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         email = (TextView) findViewById(R.id.emailTV_Login);
@@ -55,8 +53,6 @@ public class loginPage extends AppCompatActivity {
         if(ref == null) {
             Log.d ("LoginPage", "OnCreate: could not initialize Firebase");
         }
-
-        Log.d("LoginPage","OnCreate, initialized firebase");
 
         /******[START]******/
         //create submit and sign up buttons and set there respective actions
@@ -103,16 +99,12 @@ public class loginPage extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
@@ -131,8 +123,6 @@ public class loginPage extends AppCompatActivity {
     public void onStop() {
         super.onStop();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "loginPage Page", // TODO: Define a title for the content shown.
@@ -186,7 +176,6 @@ public class loginPage extends AppCompatActivity {
                             startActivity(i);
                         }
                     }, 3000);
-
                 }
 
                 @Override

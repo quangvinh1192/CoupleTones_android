@@ -88,13 +88,9 @@ public class NotificationControl {
     // 3 unique vibrates: "2 short vibrations", "1 short vibration", "1 long vibration"
     // To choose the vibration, pass in any of the above vibration Strings
     public boolean vibrate(  String vibration_type ){
-
         if(should_vibrate) {
-
             Log.d( "should have vibrated", vibration_type );
-
             vH.vibrate( vibration_type );
-
             //if the phone vibrated return true
             return true;
         }
@@ -117,7 +113,11 @@ public class NotificationControl {
         this.should_sound = false;
     }
 
-
+    /** get the sound of the location from shared preferences
+     *
+     * @param location_name
+     * @return
+     */
     public String getUniqueSound( String location_name ){
         SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE);
         String sound_type = sharedPreferences.getString( location_name + "_sound", "");
@@ -125,6 +125,11 @@ public class NotificationControl {
         return sound_type;
     }
 
+    /** gets the unique vibration of the location from the shared preferences
+     *
+     * @param location_name
+     * @return
+     */
     public String getUniqueVibration( String location_name ){
         SharedPreferences sharedPreferences = initialize.getSharedPreferences("location_info", initialize.MODE_PRIVATE );
         String vibration_type = sharedPreferences.getString( location_name + "_vibration", "" );
@@ -144,14 +149,15 @@ public class NotificationControl {
             //if the sound was played pressed return true
             return true;
         }
-
         return false;
     }
 
+    /** returns the soundHandler*/
     public SoundHandler getSoundHandler(){
         return sH;
     }
 
+    /** returns the vibration handler */
     public VibrationHandler getVibrationHandler(){
         return vH;
     }

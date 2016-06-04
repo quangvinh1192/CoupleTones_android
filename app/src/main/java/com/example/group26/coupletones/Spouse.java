@@ -24,21 +24,11 @@ public class Spouse {
     private boolean addedListeners;
 
     /** empty constructor */
-    Spouse () {
-    }
+    Spouse () {}
 
     /** sets up my firebase */
     public void setMyFirebaseRef(Firebase FirebaseRef) {
         this.myFirebaseRef = FirebaseRef;
-    }
-
-
-    /** name: createANotification
-     * sends a notification to you saying that your S.O. visited a page
-     * @param title
-     */
-    void createANotification(String title){
-
     }
 
     /**
@@ -56,8 +46,8 @@ public class Spouse {
         tempRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                /* if spouse exists, create a listener to spouse and save spouse's info */
                 if (snapshot.child("spouseUID").exists()){
-                    Log.d("MyApp", snapshot.child("spouseUID").getValue().toString());
                     spouseUID = snapshot.child("spouseUID").getValue().toString();
                     spouseEmail = snapshot.child("spouseEmail").getValue().toString();
                     createAListenerToSpouseFavPlaces(spouseUID,spouseEmail);
@@ -65,7 +55,6 @@ public class Spouse {
                 else{
                     Log.d("MyApp", "You have no spouse");
                 }
-
             }
 
             @Override
@@ -80,9 +69,6 @@ public class Spouse {
      * @param spouseID
      */
     private void createAListenerToSpouseFavPlaces(final String spouseID, final String spouseEmail){
-
-        Log.d("LoginPage","OnCreate, initialized firebase");
-
         if (myFirebaseRef == null) {
             Log.d ("SPOUSE", "createAListener: Could not listen to Firebase");
             return;
@@ -96,6 +82,7 @@ public class Spouse {
                     String a = snapshot.child("yourEmail").getValue().toString();
                     if (a.equals(spouseEmail)) {
                         Log.d("MyApp", "Do you ever go here?");
+                        /* only if listeners have not been added, add a listener */
                         if(!addedListeners) {
                             check(spouseID);
                             addedListeners = true;
@@ -105,36 +92,32 @@ public class Spouse {
                 else{
                     Log.d("MyApp","Your spouse is not using the app yet!");
                 }
-
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
-
         });
 
 
     }
 
-    // checks to see if a notification can be sent
+    // checks to see if a notification can be sent and then calls on it
     public void check(String spouseID){
-        Log.d("I WANT TO SEE HiM", spouseID);
 
         final Firebase spouseRef = myFirebaseRef.child("users").child(spouseID).child("favPlaces");
-        Log.d("SpouseID", spouseID);
+
         spouseRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to the database
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-
-            }
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {}
 
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
 
                 String title = (String) snapshot.child("name").getValue();
                 boolean arrived = false;
+                /* checks to see whether place has been arrived at or departed from */
                 if ((String) snapshot.child("visited").getValue().toString() == "true") {
                     arrived = true;
                 } else {
@@ -148,18 +131,11 @@ public class Spouse {
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-            }
-
+            public void onChildRemoved(DataSnapshot snapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-            }
-
+            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {}
             @Override
-            public void onCancelled(FirebaseError e) {
-            }
-            //... ChildEventListener also defines onChildChanged, onChildRemoved,
-            //    onChildMoved and onCanceled, covered in later sections.
+            public void onCancelled(FirebaseError e) {}
         });
 
     }

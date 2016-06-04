@@ -30,7 +30,7 @@ public class signUpPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            added = false;
+        added = false;
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://coupletonescse100.firebaseio.com");

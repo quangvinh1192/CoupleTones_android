@@ -93,7 +93,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             Log.d("favMapPage", "favMap cannot get app instance");
         }
 
-
         // Create map using existing map instance state from Firebase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav_map);
@@ -158,6 +157,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                     temporaryMarker.remove();
                     removeMode = false;
                 }
+
+                //adding markers
                 if (addingMode) {
                     String nameOfPlace = ((EditText) findViewById(R.id.placeName)).getText().toString();
                     if (nameOfPlace.isEmpty()) {
@@ -207,30 +208,19 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
         // Add zoom feature
         mMap.getUiSettings().setZoomControlsEnabled(true);
         showYourFavMap();
 
-
         LocationListener mLocationListener = new LocationListener() {
             @Override
-            public void onLocationChanged(final Location location) {
-
-            }
+            public void onLocationChanged(final Location location) {}
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras){
-
-            }
+            public void onStatusChanged(String provider, int status, Bundle extras){}
             @Override
-            public void onProviderEnabled(String provider){
-
-            }
-
+            public void onProviderEnabled(String provider){}
             @Override
-            public void onProviderDisabled(String provider){
-
-            }
+            public void onProviderDisabled(String provider){}
 
         };
 
@@ -239,7 +229,6 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
 
             @Override
             public void onInfoWindowClick(Marker arg0) {
-                // TODO Auto-generated method stub
                 temporaryMarker = arg0;
                 removeBtn.setVisibility(View.VISIBLE);
                 Log.i("Maps", "TAP TO A MARKER");
@@ -254,6 +243,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng point) {
+                // allow for adding a marker
                 if (addingMode) {
                     addingView.setVisibility(View.VISIBLE);
                     EditText edit = (EditText) findViewById(R.id.placeName);
@@ -280,9 +270,8 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             Log.d("MyApp", "User not allow us to see our location   ");
 
         }
-
-
     }
+
 
     /** name:showYourFavMap()
      * shows all your favorite places as pins on the map
@@ -298,37 +287,28 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 String temp = snapshot.getKey();
                 aFavoritePlace tempClass = snapshot.getValue(aFavoritePlace.class);
-                Log.e("Count ", tempClass.getLatitude() + "");
-                Log.e("Count ", tempClass.getLongitude() + "");
-                Log.e("Count ", "HAHAHA");
-
                 LatLng favPoint = new LatLng(tempClass.getLatitude(), tempClass.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(favPoint).title(tempClass.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).snippet(temp));
 
             }
 
             @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-            }
-
+            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {}
             @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-            }
-
+            public void onChildRemoved(DataSnapshot snapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-            }
-
+            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {}
             @Override
-            public void onCancelled(FirebaseError e) {
-            }
-            //... ChildEventListener also defines onChildChanged, onChildRemoved,
-            //    onChildMoved and onCanceled, covered in later sections.
+            public void onCancelled(FirebaseError e) {}
+
         });
         mMap.setPadding(0, 96, 0, 0);
     }
 
 
+    /** Name: addingSearchingPlace()
+     * allow for the search function on google maps
+     */
     void addingSearchingPlace(){
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -337,13 +317,12 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("haha", "Place: " + place.getName());
+                Log.i("favMapPage", "addingSearchingPlace: Place: " + place.getName());
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i("haha", "An error occurred: " + status);
+                Log.i("favMapPage", "addingSearchingPlaec: An error occurred: " + status);
             }
         });
 
@@ -353,22 +332,21 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
                             .build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
         } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
         }
 
     }
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {}
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                Log.i("HAHA", "Place: " + place.getName());
                 LatLng position = place.getLatLng();
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,10) );
@@ -377,13 +355,14 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
-                Log.i("HAHA", status.getStatusMessage());
+                Log.i("favMapPage", "onActivityResult: " + status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
         }
     }
+
 
     @Override
     public void onStart() {
@@ -405,6 +384,7 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
@@ -424,8 +404,5 @@ public class favMapPage extends FragmentActivity implements OnMapReadyCallback, 
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
         mGoogleApiClient.disconnect();
     }
-
-
-
 
 }

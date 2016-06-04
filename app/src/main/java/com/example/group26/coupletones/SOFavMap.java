@@ -76,11 +76,11 @@ public class SOFavMap extends FragmentActivity implements OnMapReadyCallback, Go
     //TODO make an error message popup for no connection
     }
 
-
+    /** shows a map that has markers that match up with the soListOfFavPlaces */
     void showSOFavMap() {
         soListFavPlaces = app.getSOListOfFavoritePlaces();
         List<aFavoritePlace> list = soListFavPlaces.favoritePlaceList;
-
+        /** create all the markers and add it */
         for(aFavoritePlace place: list) {
             LatLng favPoint = new LatLng(place.getLatitude(), place.getLongitude());
             mMap.addMarker(new MarkerOptions().position(favPoint).title(place.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));

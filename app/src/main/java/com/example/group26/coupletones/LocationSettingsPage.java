@@ -58,15 +58,14 @@ public class LocationSettingsPage extends AppCompatActivity {
         toast.show();
     }
 
-    //
+    /** plays the sound that is selected
+     *
+     * @param view
+     */
     public void onClickTestSound(View view){
-
-
         Spinner sound_spinner = (Spinner) findViewById( R.id.soundSpinner );
         String sound_selected = String.valueOf( sound_spinner.getSelectedItem() );
-
         SoundHandler soundHandler = notificationControl.getSoundHandler();
-
         soundHandler.playSound(sound_selected);
     }
 

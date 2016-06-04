@@ -23,18 +23,18 @@ import java.util.Map;
 import java.util.Objects;
 
 public class AddSpousePage extends AppCompatActivity {
-    private Button updateYourSpouseBtn;
-    private EditText spouseNameEditText;
-    private Firebase myFirebaseRef;
+    private Button updateYourSpouseBtn; // button to update spouse
+    private EditText spouseNameEditText; // edit text field
+    private Firebase myFirebaseRef; // firebase
     private String yourSpouseSpouseEmail;
     private String myEmail;
-    private String yourSpouseEmail;
-    private String yourSpouseUID;
+    private String yourSpouseEmail; //spouse email
+    private String yourSpouseUID; //spouse uid
 
     /**
      * Name: onCreate
      * @param savedInstanceState
-     * create spouse page, add buttons
+     * create spouse page, add buttons to the addSpousePage,
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +50,15 @@ public class AddSpousePage extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
                 String spouseEmail =  spouseNameEditText.getText().toString();
-
                 findSpouseUID(spouseEmail);
-                Log.d("MyApp", "Update Successful");
+                Log.d("AddSpousePage", "onCreate: Update Successful");
 
 
             }
         });
-        spouseNameEditText = (EditText) findViewById(R.id.spouseEditTextID);
 
+        //fill the textView so that you can see the current spouse
+        spouseNameEditText = (EditText) findViewById(R.id.spouseEditTextID);
         displaySpouseID();
 
     }
@@ -74,18 +74,17 @@ public class AddSpousePage extends AppCompatActivity {
         tempRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("MyApp", snapshot.toString());
-
+                //gets your email
                 if (snapshot.child("yourEmail").exists()) {
                     myEmail = snapshot.child("yourEmail").getValue().toString();
                 } else {
-                    Log.d("MyApp", "You dont have Email");
+                    Log.d("AddSpousePage", "displaySpouseID: You dont have Email");
                 }
+                //get spouse email
                 if (snapshot.child("spouseEmail").exists()) {
                     spouseNameEditText.setText(snapshot.child("spouseEmail").getValue().toString(), TextView.BufferType.EDITABLE);
-                    Log.d("MyApp", snapshot.getValue().toString());
                 } else {
-                    Log.d("MyApp", "You dont have spouse");
+                    Log.d("AddSpousePage", "displaySpouseID: You dont have spouse");
                 }
 
             }
@@ -95,7 +94,6 @@ public class AddSpousePage extends AppCompatActivity {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
-//
     }
 
     /**
@@ -113,6 +111,10 @@ public class AddSpousePage extends AppCompatActivity {
 
     }
 
+    /** updates the spouseUID so that when you update your spouse, you're connected on firebase
+     *
+     * @param spouseEmail : the new spouse's email
+     */
     private void updateSpouseUID(final String spouseEmail) {
         Firebase allUsersRef = myFirebaseRef.child("users");
         Log.d("My Email:", myEmail);
@@ -129,41 +131,37 @@ public class AddSpousePage extends AppCompatActivity {
                     Log.d("MyApp", email);
                     Log.d("MyApp", spouseEmail);
 
+                    //checks to see if soouse added you. If so, then you can update your spouse
+                    //locally
                     if (email.equals(spouseEmail)) {
                         Map<String, Object> yourSpouseUID = new HashMap<String, Object>();
                         String UID = snapshot.getKey().toString();
-                        Log.d("MyApp", UID);
-                        Log.d("MyApp", "The spouse you entered is using the app");
+                        Log.d("AddSpousePage", "updateSpouseUIDL The spouse you entered is using the app");
                         yourSpouseUID.put("spouseUID", UID);
                         findYourSpouseSpouse(UID);
 
                     } else {
-                        Log.d("MyApp", "OMG");
+                        Log.d("AddSpousePage", "UpdateSpouseUID: No Spouse");
                     }
                 }
 
             }
 
             @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-            }
+            public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {}
 
             @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-            }
+            public void onChildRemoved(DataSnapshot snapshot) {}
 
             @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {
-            }
+            public void onChildMoved(DataSnapshot snapshot, String previousChildKey) {}
 
             @Override
-            public void onCancelled(FirebaseError e) {
-            }
-
-
+            public void onCancelled(FirebaseError e) {}
         });
     }
-    /** Name:
+
+    /** Name: getUserRef()
      * get the User's Firebase authorization
      * @return
      */
@@ -173,15 +171,21 @@ public class AddSpousePage extends AppCompatActivity {
         Firebase userRef = myFirebaseRef.child("users").child(userId);
         return userRef;
     }
+
+    /** findYourSpouseSpouse
+     * This method checks to see if you are your spouse's spouse and updates accordingly
+     * @param spouseUID: your spouse's uid
+     */
     private void findYourSpouseSpouse(final String spouseUID){
         final Firebase spouseRef = myFirebaseRef.child("users").child(spouseUID);
         spouseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("MyApp",snapshot.toString());
+                // if your spouse has a spouse
                 if (snapshot.child("spouseEmail").exists()){
                     yourSpouseSpouseEmail = snapshot.child("spouseEmail").getValue().toString();
-                    Log.d("MyApp","Your spouse's spouse have some data!");
+
+                    //checks to see if your spouse's spouse is you
                     if (yourSpouseSpouseEmail.equals(myEmail)){
                         Firebase userRef = getUserRef();
                         Map<String, Object> yourSpouseUID = new HashMap<String, Object>();
@@ -189,9 +193,8 @@ public class AddSpousePage extends AppCompatActivity {
                         userRef.updateChildren(yourSpouseUID);
                     }
 
-                }
-                else{
-                    Log.d("MyApp","Your spouse is not using the app yet!");
+                } else{ // you are not set as spouse
+                    Log.d("AddSpousePage","findYourSpouseSpouse: Your spouse is not using the app yet!");
                 }
 
             }

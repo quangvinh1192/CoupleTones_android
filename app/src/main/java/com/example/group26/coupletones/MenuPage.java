@@ -49,7 +49,7 @@ public class MenuPage extends AppCompatActivity {
         Firebase firebaseRef = ((Initialize)this.getApplication()).getFirebase();
         final SOListOfPlaces soListOfPlaces = ((Initialize)this.getApplication()).getSOListOfFavoritePlaces();
 
-
+        //create all the buttons
         Button goToMapBtn = (Button) findViewById(R.id.goToMapBtn);
         Button spouseOptionsBtn = (Button) findViewById(R.id.spouseOptionsBtn);
         Button viewSpousesVisitsBtn = (Button) findViewById(R.id.viewSpousesVisitsBtn);
@@ -75,11 +75,9 @@ public class MenuPage extends AppCompatActivity {
                 //Perform action on click
 
                 if (((Initialize) app).getSpouse().spouseEmail == null) { // Don't attempt to open visited places without spouse
-
                     Toast.makeText(MenuPage.this, "No spouse detected", Toast.LENGTH_SHORT).show();
                 }
                 else {
-
                     startActivity(new Intent(MenuPage.this, SpouseVisitsPage.class));
                 }
             }
